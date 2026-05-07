@@ -1,0 +1,10 @@
+services:
+  app:
+    image: ghcr.io/biisal/gita/app:latest
+    container_name: nextjs-standalone-bun-container
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
