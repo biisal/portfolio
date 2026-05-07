@@ -1,7 +1,7 @@
 name: CD Pipeline
 
 env:
-  APP_NAME: biisal-portfolio
+  APP_NAME: app
 
 on:
   push:
