@@ -1,7 +1,9 @@
 services:
   app:
-    image: ghcr.io/biisal/portfolio/biisal-portfolio:latest
-    container_name: nextjs-standalone-pnpm-container
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    container_name: portfolio
     environment:
       NODE_ENV: production
       PORT: "3000"
@@ -10,3 +12,5 @@ services:
     ports:
       - "3001:3000"
     restart: unless-stopped
+
+# build and run command : docker compose up --build -d
