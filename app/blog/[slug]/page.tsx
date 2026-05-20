@@ -82,6 +82,16 @@ export default async function Post({
           <h1 className="text-4xl font-bold text-blog-red">Post not found</h1>
         ) : (
           <article>
+            {post.coverImage && (
+              <div className="mb-8 relative w-full aspect-[2/1] rounded-lg overflow-hidden border border-blog-inactive-border">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            )}
             <h1 className="text-blog-white mb-4 text-4xl font-bold">
               {post.title}
             </h1>
