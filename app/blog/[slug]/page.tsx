@@ -83,12 +83,20 @@ export default async function Post({
         ) : (
           <article>
             {post.coverImage && (
-              <div className="mb-8 relative w-full aspect-[2/1] rounded-lg overflow-hidden border border-blog-inactive-border">
+              <div className="mb-8 relative w-full  aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.coverImage}
+                  className="w-full h-full object-cover"
+                  alt={post.title}
+                />
+                <div className="w-full h-full backdrop-blur-sm absolute inset-0" />
+
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={post.coverImage}
                   alt={post.title}
-                  className="object-cover w-full h-full"
+                  className="absolute inset-0 mx-auto h-full w-auto object-cover"
                 />
               </div>
             )}
