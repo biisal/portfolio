@@ -8,6 +8,7 @@ services:
       NODE_ENV: production
       PORT: "3000"
       HOSTNAME: "0.0.0.0"
+      NODE_OPTIONS: "--no-network-family-autoselection"
 
     ports:
       - "3001:3000"
