@@ -9,7 +9,7 @@ RUN corepack enable && corepack prepare pnpm@9 --activate
 WORKDIR /app
 
 # Copy package-related files first to leverage Docker's caching mechanism
-COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml* ./
 COPY prisma ./prisma
 
 # Install project dependencies with frozen lockfile for reproducible builds
