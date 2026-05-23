@@ -3,6 +3,7 @@
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import rehypeRaw from "rehype-raw";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 
@@ -15,6 +16,20 @@ interface BlogPreviewProps {
 }
 
 export function BlogPreview({ content, className }: BlogPreviewProps) {
+  const processedContent = content
+    .replace(/\r\n/g, "\n")
+    .split(/(```[\s\S]*?```)/g)
+    .map((part, index) => {
+      if (index % 2 === 0) {
+        return part.replace(/\n{3,}/g, (match) => {
+          const extra = match.length - 2;
+          return "\n\n" + "<br>\n".repeat(extra) + "\n";
+        });
+      }
+      return part;
+    })
+    .join("");
+
   return (
     <article
       className={cn(
@@ -25,6 +40,7 @@ export function BlogPreview({ content, className }: BlogPreviewProps) {
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkBreaks]}
+        rehypePlugins={[rehypeRaw]}
         components={{
           br() {
             return <br className="my-4" />;
@@ -142,9 +158,8 @@ export function BlogPreview({ content, className }: BlogPreviewProps) {
                 style={oneDark}
                 language={match[1]}
                 PreTag="div"
-                className="my-4 rounded-lg border border-blog-selection-bg"
+                className="my-6 rounded-lg border border-blog-selection-bg"
                 customStyle={{
-                  margin: 0,
                   padding: "1rem",
                   background: "#16161E",
                   fontSize: "0.875rem",
@@ -159,7 +174,7 @@ export function BlogPreview({ content, className }: BlogPreviewProps) {
           },
         }}
       >
-        {content}
+        {processedContent}
       </ReactMarkdown>
     </article>
   );

@@ -11,13 +11,13 @@ import {
   TimelineTitle,
 } from "@/components/reui/timeline";
 import { JetBrainsMono } from "@/fonts";
-import { getblogPost } from "@/lib/actions/blogs";
+import { getPublishedBlogPosts } from "@/lib/actions/blogs";
 import { cn } from "@/lib/utils";
 
 import { BlurFade } from "./ui/blur-fade";
 
 export default async function BlogPreview() {
-  const allPosts = await getblogPost();
+  const allPosts = await getPublishedBlogPosts();
   if (allPosts.length === 0) {
     return null;
   }

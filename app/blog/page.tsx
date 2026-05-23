@@ -43,9 +43,9 @@ export default async function BlogIndex() {
     >
       <div className="max-w-4xl mx-auto">
         <header className="mb-16">
-          <h1 className="text-5xl font-bold mb-4 text-blog-orange">Blog</h1>
+          <h1 className="text-4xl font-bold mb-4 text-blog-orange">Blogs</h1>
           <p className="text-xl text-blog-fg opacity-80">
-            Thoughts, ideas, and code snippets from the void.
+            Things I&apos;ve written.
           </p>
         </header>
 

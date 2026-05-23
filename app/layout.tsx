@@ -6,10 +6,8 @@ import { ThemeProvider } from "next-themes";
 import Dock from "@/components/dock";
 import GlobalBackground from "@/components/global-background";
 import Navbar from "@/components/navbar";
-import SmoothScroll from "@/components/smooth-scroll";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import { Toaster } from "@/components/ui/sonner";
-import { AlbertSans } from "@/fonts";
+import { JetBrainsMono } from "@/fonts";
 import { cn } from "@/lib/utils";
 
 const heroImgUrl =
@@ -79,15 +77,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("text-white cursor-none", AlbertSans.className)}>
+      <body className={cn("text-white", JetBrainsMono.className)}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           <GlobalBackground />
           <Navbar />
           <Dock />
-          <SmoothScroll>{children}</SmoothScroll>
+          {children}
           <Toaster />
-
-          <SmoothCursor />
         </ThemeProvider>
       </body>
     </html>

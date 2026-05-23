@@ -24,6 +24,18 @@ export const getblogPost = cache(async () => {
   }
 });
 
+export const getPublishedBlogPosts = cache(async () => {
+  try {
+    return await prisma.blogPost.findMany({
+      where: { published: true },
+      orderBy: { created_at: "desc" },
+    });
+  } catch (error) {
+    console.error("Error fetching published blog posts:", error);
+    return [];
+  }
+});
+
 export const getBlogPost = cache(async (slug: string) => {
   try {
     const session = await auth.api.getSession({
