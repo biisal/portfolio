@@ -7,7 +7,6 @@ import { default as NextImage } from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ZodIssue } from "zod";
 
-import api from "@/api";
 import { ProjectFormSchema } from "@/lib/schema/project.types";
 
 const ProjectForm = () => {
@@ -96,7 +95,13 @@ const ProjectForm = () => {
     }
 
     console.log("Valid submission:", result.data);
-    const res = await api.post("/projects", result.data);
+    const res = await fetch("/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(result.data),
+    });
     if (res.status === 201) {
       setFormData({
         title: "",

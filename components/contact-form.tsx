@@ -6,7 +6,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import api from "@/api";
 import {
   formSchema as FormSchema,
   FormValues,
@@ -70,7 +69,13 @@ export default function ContactForm() {
     } else {
       try {
         setLoading(true);
-        const res = await api.post("/contact", data);
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         if (res.status === 200) {
           regenerateCaptcha();
           reset();

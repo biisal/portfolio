@@ -46,6 +46,10 @@ export default async function BlogIndex() {
           <h1 className="text-4xl font-bold mb-4 text-blog-orange">Blogs</h1>
           <p className="text-xl text-blog-fg opacity-80">
             Things I&apos;ve written.
+            <br />
+            <p className="text-xs text-muted-foreground blur-[1px] hover:blur-none transition-all duration-300">
+              I may be wrong sometimes, so don’t trust everything I say 100%.
+            </p>
           </p>
         </header>
 
