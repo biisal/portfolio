@@ -35,8 +35,16 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, excerpt, content, slug, author, coverImage, published } =
-      body;
+    const {
+      title,
+      excerpt,
+      content,
+      slug,
+      author,
+      coverImage,
+      published,
+      views,
+    } = body;
 
     if (!title || !excerpt || !content || !slug || !author?.name) {
       return NextResponse.json(
@@ -62,6 +70,7 @@ export async function POST(request: NextRequest) {
         authorName: author.name,
         coverImage,
         published: published || false,
+        views: typeof views === "number" ? views : parseInt(views) || 0,
       },
     });
 
@@ -95,6 +104,7 @@ export async function PUT(request: NextRequest) {
       coverImage,
       published,
       originalSlug,
+      views,
     } = body;
 
     if (originalSlug && slug !== originalSlug) {
@@ -117,6 +127,7 @@ export async function PUT(request: NextRequest) {
         authorName: author.name,
         coverImage,
         published: published,
+        views: typeof views === "number" ? views : parseInt(views) || 0,
       },
     });
 
