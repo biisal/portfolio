@@ -20,7 +20,6 @@ export default function BlogPagination({
 
   return (
     <div className="mt-16 pt-12 border-t border-blog-selection-bg/30 grid grid-cols-1 sm:grid-cols-2 gap-8">
-      {/* Previous Post (Left Side) */}
       <div className="flex flex-col items-start">
         {prevPost && (
           <Link
@@ -37,7 +36,6 @@ export default function BlogPagination({
         )}
       </div>
 
-      {/* Next Post (Right Side) */}
       <div className="flex flex-col items-end text-right">
         {nextPost && (
           <Link
