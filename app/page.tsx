@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import { BlogPost } from "@/.generated/client";
+import BlogsIntro from "@/components/blogs-intro";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
 import Intro from "@/components/intro";
@@ -25,7 +26,17 @@ export default async function Home() {
     <>
       <div className="pb-28 pt-8 px-8 md:px-20 md:pt-20">
         <div className="mx-auto max-w-4xl">
-          <Intro latestPosts={latestPosts} />
+          <section
+            id="intro"
+            className="relative flex min-h-screen w-full flex-col justify-center py-16 text-blog-fg md:py-20"
+          >
+            <div className="flex flex-col gap-16">
+              <Intro />
+              <div id="blogs">
+                <BlogsIntro latestPosts={latestPosts} />
+              </div>
+            </div>
+          </section>
           <Skills languages={languages.languages || []} />
           <ProjectsIntro />
           <ContactSection />

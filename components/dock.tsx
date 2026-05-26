@@ -4,8 +4,8 @@ import {
   BookOpenText,
   CircleUserRound,
   Folder as ProjectsIcon,
-  HomeIcon,
   Mail as ContactIcon,
+  Terminal as SkillsIcon,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { startTransition, useEffect, useState } from "react";
@@ -18,18 +18,18 @@ const Dock = () => {
   const routes = [
     {
       id: "/",
-      name: "Home",
-      icon: HomeIcon,
+      name: "Me",
+      icon: CircleUserRound,
     },
     {
-      id: "/blog",
-      name: "Blog",
+      id: "blogs",
+      name: "Blogs",
       icon: BookOpenText,
     },
     {
-      id: "about",
-      name: "About",
-      icon: CircleUserRound,
+      id: "skills",
+      name: "Skills",
+      icon: SkillsIcon,
     },
     {
       id: "projects",
@@ -58,7 +58,7 @@ const Dock = () => {
   useEffect(() => {
     if (pathname !== "/") return;
 
-    const sectionIds = ["intro", "projects", "about", "contact"];
+    const sectionIds = ["intro", "blogs", "skills", "projects", "contact"];
 
     const observerOptions = {
       root: null,
@@ -73,7 +73,7 @@ const Dock = () => {
           startTransition(() => {
             if (id === "intro") {
               setActiveSection("/");
-            } else {
+            } else if (window.scrollY >= 100) {
               setActiveSection(id);
             }
           });
@@ -93,7 +93,18 @@ const Dock = () => {
       }
     });
 
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      if (window.scrollY < 100) {
+        setActiveSection("/");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [pathname]);
 
   const handleClick = (id: string) => {
