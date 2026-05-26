@@ -6,15 +6,23 @@ import { code as codePlugin } from "@streamdown/code";
 import remarkBreaks from "remark-breaks";
 import { defaultRemarkPlugins, Streamdown } from "streamdown";
 
+import SocialShare from "@/components/blog/social-share";
 import { JetBrainsMono } from "@/fonts";
 import { cn } from "@/lib/utils";
 
 interface BlogPreviewProps {
   content: string;
   className?: string;
+  title?: string;
+  excerpt?: string;
 }
 
-export function BlogPreview({ content, className }: BlogPreviewProps) {
+export function BlogPreview({
+  content,
+  className,
+  title,
+  excerpt,
+}: BlogPreviewProps) {
   return (
     <article
       className={cn(
@@ -31,6 +39,8 @@ export function BlogPreview({ content, className }: BlogPreviewProps) {
       >
         {content}
       </Streamdown>
+
+      {title && excerpt && <SocialShare title={title} excerpt={excerpt} />}
     </article>
   );
 }

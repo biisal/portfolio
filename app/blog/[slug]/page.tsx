@@ -3,10 +3,11 @@ import "@/app/globals.css";
 import { Metadata } from "next";
 import Link from "next/link";
 
+import BlogPagination from "@/components/blog/blog-pagination";
 import { BlogPreview } from "@/components/blog/blog-preview";
 import { ViewCounter } from "@/components/blog/view-counter";
 import { JetBrainsMono } from "@/fonts";
-import { getBlogPost } from "@/lib/actions/blogs";
+import { getBlogPost, getPublishedBlogPosts } from "@/lib/actions/blogs";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -64,10 +65,31 @@ export default async function Post({
 }) {
   const { slug } = await params;
   const post = await getBlogPost(slug);
+
+  let prevPost = null;
+  let nextPost = null;
+
+  if (post) {
+    try {
+      const allPosts = await getPublishedBlogPosts();
+      const currentIndex = allPosts.findIndex((p) => p.id === post.id);
+      if (currentIndex !== -1) {
+        if (currentIndex < allPosts.length - 1) {
+          nextPost = allPosts[currentIndex + 1];
+        }
+        if (currentIndex > 0) {
+          prevPost = allPosts[currentIndex - 1];
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch post pagination:", error);
+    }
+  }
+
   return (
     <div
       className={cn(
-        "min-h-screen p-8 md:p-20 text-blog-fg",
+        "min-h-screen p-8 pb-32 md:p-20 md:pb-40 text-blog-fg",
         JetBrainsMono.className,
       )}
     >
@@ -76,7 +98,7 @@ export default async function Post({
           href="/blog"
           className="text-blog-orange hover:underline mb-8 block"
         >
-          ← Back to Blog
+          ← Back to All Blogs
         </Link>
         {!post ? (
           <h1 className="text-4xl font-bold text-blog-red">Post not found</h1>
@@ -107,7 +129,13 @@ export default async function Post({
               {new Date(post.created_at).toLocaleDateString()}
               <ViewCounter slug={post.slug} initialViews={post.views} />
             </div>
-            <BlogPreview content={post.content} />
+            <BlogPreview
+              content={post.content}
+              title={post.title}
+              excerpt={post.excerpt}
+            />
+
+            <BlogPagination prevPost={prevPost} nextPost={nextPost} />
           </article>
         )}
       </div>
