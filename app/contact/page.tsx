@@ -8,7 +8,7 @@ export const metadata = {
     title: "Contact | Avisek Ray (biisal)",
     description:
       "Reach out to Avisek Ray (biisal), a full-stack developer experienced in backend and frontend development with modern frameworks and tools.",
-    url: "https://biisal.codeltix.com/contact",
+    url: "https://codeltix.com/contact",
     siteName: "Avisek Ray Portfolio",
     locale: "en_IN",
     type: "website",

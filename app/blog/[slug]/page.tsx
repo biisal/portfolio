@@ -37,7 +37,7 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      url: `https://biisal.codeltix.com/blog/${slug}`,
+      url: `https://codeltix.com/blog/${slug}`,
       images: [
         {
           url: ogImage,

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Projects | Avisek Ray (biisal)",
     description:
       "Explore a collection of my recent projects, ranging from web applications to backend services and cloud infrastructure.",
-    url: "https://biisal.codeltix.com/projects",
+    url: "https://codeltix.com/projects",
     type: "website",
   },
   twitter: {

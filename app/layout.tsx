@@ -43,12 +43,12 @@ export const metadata: Metadata = {
     "PostgreSQL",
     "Redis",
   ],
-  authors: [{ name: "Avisek Ray", url: "https://biisal.codeltix.com" }],
+  authors: [{ name: "Avisek Ray", url: "https://codeltix.com" }],
   openGraph: {
     title: "Avisek Ray (biisal) | Full-Stack Developer Portfolio",
     description:
       "Portfolio of Avisek Ray (biisal), a full-stack developer skilled in Python, Go, React, and modern cloud infrastructure. Explore projects built with Next.js, Django, FastAPI, and Docker.",
-    url: "https://biisal.codeltix.com",
+    url: "https://codeltix.com",
     siteName: "Avisek Ray Portfolio",
     locale: "en_IN",
     type: "website",

@@ -2,7 +2,7 @@
 
 A modern, full-stack developer portfolio built with Next.js 16, React 19, and Tailwind CSS v4. This project showcases my skills, projects, and thoughts through a clean, dark-themed interface with smooth animations and robust backend integration.
 
-## Live Link [biisal.codeltix.com](https://biisal.codeltix.com)
+## Live Link [codeltix.com](https://codeltix.com)
 
 ![Portfolio Preview](./demo/hero.png)
 
@@ -140,7 +140,7 @@ A modern, full-stack developer portfolio built with Next.js 16, React 19, and Ta
 
 **Avisek Ray (biisal)**
 
-- Website: [biisal.codeltix.com](https://biisal.codeltix.com)
+- Website: [codeltix.com](https://codeltix.com)
 - GitHub: [@biisal](https://github.com/biisal)
 - LinkedIn: [Avisek Ray](https://www.linkedin.com/in/biisal)
 - X (Twitter): [@biisal18](https://x.com/biisal18)

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Blog | Avisek Ray (biisal)",
     description:
       "Thoughts, ideas, and code snippets from the void. Exploring full-stack development, cloud infrastructure, and software engineering.",
-    url: "https://biisal.codeltix.com/blog",
+    url: "https://codeltix.com/blog",
     type: "website",
   },
   twitter: {

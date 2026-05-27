@@ -44,7 +44,7 @@ export async function generateMetadata({
       title,
       description,
       type: "website",
-      url: `https://biisal.codeltix.com/project/${slug}`,
+      url: `https://codeltix.com/project/${slug}`,
       images: image
         ? [
             {
