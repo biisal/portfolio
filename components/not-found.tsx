@@ -1,24 +1,45 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+
+import { TerminalPrompt } from "./terminal-prompt";
 
 interface NotFoundProps {
   text?: string;
+  backLink?: string;
+  backText?: string;
 }
-const NotFound = ({ text }: NotFoundProps) => {
+
+const NotFound = ({
+  text = "No such page",
+  backLink = "/#projects",
+  backText = "Back to selected work",
+}: NotFoundProps) => {
   return (
-    <div className="bg-gradient-to-b relative h-screen w-screen from-black via-midnightpurple/30 to-black p-4 ">
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-full">
-        <h1 className="text-7xl text-center w-full">
-          {text || "Page Not Found"}
-        </h1>
+    <div className="pb-28 pt-8 px-8 md:px-20 md:pt-20">
+      <div className="mx-auto max-w-4xl flex flex-col items-start gap-7">
+        <TerminalPrompt />
+        <div className="flex flex-col gap-4">
+          <h1 className="text-5xl font-bold tracking-tight text-blog-orange md:text-6xl">
+            404
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-blog-white/90 md:text-2xl">
+            {text}
+          </p>
+        </div>
+        <div className="max-w-2xl space-y-4 text-base leading-8 text-blog-fg/72 md:text-lg">
+          <p>
+            The path you followed doesn&apos;t exist or may have been moved.
+            Double-check the URL or head back to familiar ground.
+          </p>
+        </div>
+        <Link
+          href={backLink}
+          className="inline-flex items-center justify-center gap-3 rounded-lg  bg-blog-bg  text-sm font-semibold text-blog-white transition hover:border-blog-orange hover:text-blog-orange"
+        >
+          {"<--"} {backText}
+        </Link>
       </div>
-      <div className="h-10 w-full left-0 bg-gradient-to-b from-transparent to-black absolute bottom-20 z-20" />
-      <Image
-        src="/hero5.png"
-        className="h-96 w-auto bottom-20 absolute left-1/2 -translate-x-1/2 z-10"
-        alt="Page Not Found Hero"
-        width={500}
-        height={384}
-      />
     </div>
   );
 };

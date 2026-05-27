@@ -6,6 +6,7 @@ import Link from "next/link";
 import BlogPagination from "@/components/blog/blog-pagination";
 import { BlogPreview } from "@/components/blog/blog-preview";
 import { ViewCounter } from "@/components/blog/view-counter";
+import NotFound from "@/components/not-found";
 import { JetBrainsMono } from "@/fonts";
 import { getBlogPost, getPublishedBlogPosts } from "@/lib/actions/blogs";
 import { cn } from "@/lib/utils";
@@ -66,24 +67,32 @@ export default async function Post({
   const { slug } = await params;
   const post = await getBlogPost(slug);
 
+  if (!post) {
+    return (
+      <NotFound
+        text="No such blog"
+        backLink="/blog"
+        backText="Back to All Blogs"
+      />
+    );
+  }
+
   let prevPost = null;
   let nextPost = null;
 
-  if (post) {
-    try {
-      const allPosts = await getPublishedBlogPosts();
-      const currentIndex = allPosts.findIndex((p) => p.id === post.id);
-      if (currentIndex !== -1) {
-        if (currentIndex < allPosts.length - 1) {
-          nextPost = allPosts[currentIndex + 1];
-        }
-        if (currentIndex > 0) {
-          prevPost = allPosts[currentIndex - 1];
-        }
+  try {
+    const allPosts = await getPublishedBlogPosts();
+    const currentIndex = allPosts.findIndex((p) => p.id === post.id);
+    if (currentIndex !== -1) {
+      if (currentIndex < allPosts.length - 1) {
+        nextPost = allPosts[currentIndex + 1];
       }
-    } catch (error) {
-      console.error("Failed to fetch post pagination:", error);
+      if (currentIndex > 0) {
+        prevPost = allPosts[currentIndex - 1];
+      }
     }
+  } catch (error) {
+    console.error("Failed to fetch post pagination:", error);
   }
 
   return (
@@ -100,44 +109,40 @@ export default async function Post({
         >
           ← Back to All Blogs
         </Link>
-        {!post ? (
-          <h1 className="text-4xl font-bold text-blog-red">Post not found</h1>
-        ) : (
-          <article>
-            {post.coverImage && (
-              <div className="mb-8 relative w-full  aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={post.coverImage}
-                  className="w-full h-full object-cover"
-                  alt={post.title}
-                />
-                <div className="w-full h-full backdrop-blur-sm absolute inset-0" />
+        <article>
+          {post.coverImage && (
+            <div className="mb-8 relative w-full  aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={post.coverImage}
+                className="w-full h-full object-cover"
+                alt={post.title}
+              />
+              <div className="w-full h-full backdrop-blur-sm absolute inset-0" />
 
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={post.coverImage}
-                  alt={post.title}
-                  className="absolute inset-0 mx-auto h-full w-auto object-cover"
-                />
-              </div>
-            )}
-            <h1 className="text-blog-white mb-4 text-4xl font-bold">
-              {post.title}
-            </h1>
-            <div className="text-blog-black mb-8 font-mono flex items-center gap-4 text-sm">
-              {new Date(post.created_at).toLocaleDateString()}
-              <ViewCounter slug={post.slug} initialViews={post.views} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={post.coverImage}
+                alt={post.title}
+                className="absolute inset-0 mx-auto h-full w-auto object-cover"
+              />
             </div>
-            <BlogPreview
-              content={post.content}
-              title={post.title}
-              excerpt={post.excerpt}
-            />
+          )}
+          <h1 className="text-blog-white mb-4 text-4xl font-bold">
+            {post.title}
+          </h1>
+          <div className="text-blog-black mb-8 font-mono flex items-center gap-4 text-sm">
+            {new Date(post.created_at).toLocaleDateString()}
+            <ViewCounter slug={post.slug} initialViews={post.views} />
+          </div>
+          <BlogPreview
+            content={post.content}
+            title={post.title}
+            excerpt={post.excerpt}
+          />
 
-            <BlogPagination prevPost={prevPost} nextPost={nextPost} />
-          </article>
-        )}
+          <BlogPagination prevPost={prevPost} nextPost={nextPost} />
+        </article>
       </div>
     </div>
   );

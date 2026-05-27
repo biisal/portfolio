@@ -72,7 +72,7 @@ export default async function Project({
 }) {
   const { slug } = await params;
   const project = await getProject(slug);
-  if (!project || !project.title) return <NotFound text="Project Not Found" />;
+  if (!project || !project.title) return <NotFound text="No such project" />;
   return (
     <Suspense fallback={<TextLoader />}>
       {" "}
