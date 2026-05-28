@@ -98,7 +98,7 @@ export default async function Post({
   return (
     <div
       className={cn(
-        "min-h-screen p-8 pb-32 md:p-20 md:pb-40 text-blog-fg",
+        "min-h-screen p-4 pb-32 md:p-20 md:pb-40 text-blog-fg",
         JetBrainsMono.className,
       )}
     >
