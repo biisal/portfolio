@@ -1,3 +1,7 @@
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+
+import { auth } from "@/lib/auth";
 import connectToDB from "@/lib/mongo.db";
 import { ProjectInterface } from "@/lib/schema/project.schema";
 
@@ -73,6 +77,21 @@ async function extractAndUploadImg(data: string): Promise<string> {
 }
 
 export async function POST(request: Request) {
+  const { error, success } = await auth.api.userHasPermission({
+    body: {
+      role: "admin",
+      permission: { project: ["create"] },
+    },
+    headers: await headers(),
+  });
+
+  if (!success || error) {
+    return NextResponse.json(
+      { error: error || "Unauthorized" },
+      { status: 401 },
+    );
+  }
+
   const body: ProjectInterface = await request.json();
   const db = await connectToDB();
   body.description = await extractAndUploadImg(body.description);
@@ -82,7 +101,8 @@ export async function POST(request: Request) {
   body.updated_at = new Date();
   body.created_at = new Date();
 
-  const { _id, ...rest } = body; //eslint-disable-line
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { _id, ...rest } = body;
   db.collection("projects").insertOne(rest);
 
   return new Response(JSON.stringify(body), { status: 201 });
