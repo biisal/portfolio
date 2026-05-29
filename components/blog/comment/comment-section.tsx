@@ -145,7 +145,7 @@ export function CommentSection({
             value={content}
             rows={5}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Leave a comment..."
+            placeholder={user ? "Leave a comment..." : "Login to comment..."}
             disabled={isSubmitting || isLoggingOut || !user}
             className="border-2 focus:border-primary border-foreground/30 disabled:border-foreground/30 disabled:opacity-100 rounded-md bg-blog-bg 
             text-blog-fg placeholder:text-blog-fg/30 min-h-24 focus-visible:ring-0 resize-none px-4 py-3"
@@ -181,7 +181,9 @@ export function CommentSection({
       <div className="space-y-7">
         {comments.length === 0 ? (
           <p className="text-blog-fg/50 italic text-sm">
-            No comments yet. Be the first to share your thoughts!
+            {content !== ""
+              ? "Go ahead 😁"
+              : "No one has commented yet! 🥲 That’s common… but you could be the first one to change."}
           </p>
         ) : (
           comments.map((comment) => (
