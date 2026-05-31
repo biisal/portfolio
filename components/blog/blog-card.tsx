@@ -1,10 +1,9 @@
 import { ArrowRight, Eye } from "lucide-react";
 import Link from "next/link";
-import * as React from "react";
 
 import { BlogPost } from "@/.generated/client";
 import { AdminControls } from "@/components/blog/admin-controls";
-
+import { BlogTags } from "@/components/blog/blog-tags";
 interface BlogCardProps {
   post: BlogPost;
   isAdmin?: boolean;
@@ -42,7 +41,6 @@ export function BlogCard({ post, isAdmin }: BlogCardProps) {
         <div className="mb-4 flex flex-wrap items-center gap-4 text-xs font-mono text-blog-black md:text-sm">
           <span>{new Date(post.created_at).toLocaleDateString()}</span>
           <span className="inline-flex items-center gap-2 text-blog-fg opacity-60">
-            <Eye className="h-4 w-4" />
             {(post.views || 0).toLocaleString()} Reads
           </span>
         </div>

@@ -5,7 +5,9 @@ import Link from "next/link";
 
 import BlogPagination from "@/components/blog/blog-pagination";
 import { BlogPreview } from "@/components/blog/blog-preview";
+import { BlogTags } from "@/components/blog/blog-tags";
 import { CommentSection } from "@/components/blog/comment/comment-section";
+import SocialShare from "@/components/blog/social-share";
 import { ViewCounter } from "@/components/blog/view-counter";
 import NotFound from "@/components/not-found";
 import { getBlogPost, getPublishedBlogPosts } from "@/lib/actions/blogs";
@@ -108,6 +110,13 @@ export default async function Post({
           ← Back to All Blogs
         </Link>
         <article>
+          <h1 className="text-blog-white mb-4 text-4xl font-bold">
+            {post.title}
+          </h1>
+          <div className="text-blog-black mb-8 font-mono flex flex-wrap items-center gap-4 text-sm">
+            {new Date(post.created_at).toLocaleDateString()}
+            <ViewCounter slug={post.slug} initialViews={post.views} />
+          </div>
           {post.coverImage && (
             <div className="mb-8 relative w-full  aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -126,18 +135,15 @@ export default async function Post({
               />
             </div>
           )}
-          <h1 className="text-blog-white mb-4 text-4xl font-bold">
-            {post.title}
-          </h1>
-          <div className="text-blog-black mb-8 font-mono flex items-center gap-4 text-sm">
-            {new Date(post.created_at).toLocaleDateString()}
-            <ViewCounter slug={post.slug} initialViews={post.views} />
-          </div>
           <BlogPreview
             content={post.content}
             title={post.title}
             excerpt={post.excerpt}
           />
+          <BlogTags tags={post.tags} className="my-8" />
+          {post.title && post.excerpt && (
+            <SocialShare title={post.title} excerpt={post.excerpt} />
+          )}
 
           <BlogPagination prevPost={prevPost} nextPost={nextPost} />
           <CommentSection

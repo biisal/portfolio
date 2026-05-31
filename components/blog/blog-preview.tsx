@@ -17,12 +17,7 @@ interface BlogPreviewProps {
   excerpt?: string;
 }
 
-export function BlogPreview({
-  content,
-  className,
-  title,
-  excerpt,
-}: BlogPreviewProps) {
+export function BlogPreview({ content, className }: BlogPreviewProps) {
   return (
     <article
       className={cn(
@@ -39,8 +34,6 @@ export function BlogPreview({
       >
         {content}
       </Streamdown>
-
-      {title && excerpt && <SocialShare title={title} excerpt={excerpt} />}
     </article>
   );
 }

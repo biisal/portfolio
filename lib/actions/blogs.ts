@@ -117,3 +117,79 @@ export async function deleteBlogPost(slug: string) {
     return { success: false, error: "Failed to delete blog post" };
   }
 }
+
+export const getPostsByTag = cache(async (tag: string) => {
+  try {
+    let includeDrafts = false;
+    try {
+      const hasPermission = await auth.api.userHasPermission({
+        body: {
+          permission: { blog: ["read"] },
+        },
+        headers: await headers(),
+      });
+      includeDrafts = hasPermission.success;
+    } catch {
+      includeDrafts = false;
+    }
+
+    const decodedTag = decodeURIComponent(tag);
+
+    const where: Prisma.BlogPostWhereInput = {
+      tags: { has: decodedTag },
+    };
+
+    if (!includeDrafts) {
+      where.published = true;
+    }
+
+    return await prisma.blogPost.findMany({
+      where,
+      orderBy: { created_at: "desc" },
+    });
+  } catch (error) {
+    console.error("Error fetching blog posts by tag:", error);
+    return [];
+  }
+});
+
+export const getAllTagsWithCount = cache(async () => {
+  try {
+    let includeDrafts = false;
+    try {
+      const hasPermission = await auth.api.userHasPermission({
+        body: {
+          permission: { blog: ["read"] },
+        },
+        headers: await headers(),
+      });
+      includeDrafts = hasPermission.success;
+    } catch {
+      includeDrafts = false;
+    }
+
+    const where: Prisma.BlogPostWhereInput = includeDrafts
+      ? {}
+      : { published: true };
+
+    const posts = await prisma.blogPost.findMany({
+      where,
+      select: { tags: true },
+    });
+
+    const tagCounts: Record<string, number> = {};
+    posts.forEach((post) => {
+      post.tags.forEach((tag) => {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+      });
+    });
+
+    // Convert to array and sort by count descending, then alphabetically
+    return Object.entries(tagCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    return [];
+  }
+});
