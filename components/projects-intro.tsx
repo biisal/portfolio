@@ -2,22 +2,19 @@ import Link from "next/link";
 
 import { BlogPost } from "@/.generated/client";
 import { BlogCard } from "@/components/blog/blog-card";
-import { prisma } from "@/lib/prisma";
+import { getblogPost } from "@/lib/actions/blogs";
 
 import { BlurFade } from "./ui/blur-fade";
 
 const ProjectsIntro = async () => {
   let projects: BlogPost[] = [];
   try {
-    projects = await prisma.blogPost.findMany({
-      where: { published: true, isProject: true },
-      orderBy: { created_at: "desc" },
-    });
+    projects = await getblogPost("project", 4);
   } catch (error) {
     console.error("Failed to fetch projects:", error);
   }
 
-  if (projects.length === 0) return null;
+  if (!projects || projects.length === 0) return null;
 
   return (
     <section id="projects" className="py-24">

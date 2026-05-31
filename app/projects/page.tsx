@@ -30,8 +30,7 @@ export default async function ProjectsPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const allPosts = await getblogPost();
-  const projects = allPosts.filter((post) => post.isProject);
+  const projects = await getblogPost("project");
 
   return (
     <div className="min-h-screen p-8 md:p-20 text-blog-fg">

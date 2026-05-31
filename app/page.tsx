@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 import Intro from "@/components/intro";
 import ProjectsIntro from "@/components/projects-intro";
 import Skills from "@/components/skills";
-import { getPublishedBlogPosts } from "@/lib/actions/blogs";
+import { getblogPost } from "@/lib/actions/blogs";
 import { getWakatimeStats } from "@/lib/actions/wakatime";
 
 export const revalidate = 600;
@@ -17,7 +17,7 @@ export default async function Home() {
 
   const languages = await getWakatimeStats();
   try {
-    latestPosts = (await getPublishedBlogPosts()).slice(0, 4);
+    latestPosts = await getblogPost("all", 4);
   } catch (error) {
     console.error("Failed to fetch latest posts:", error);
   }

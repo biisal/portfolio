@@ -4,33 +4,44 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { cache } from "react";
 
+import { Prisma } from "@/.generated/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export const getblogPost = cache(async () => {
-  try {
-    let includeDrafts = false;
+export const getblogPost = cache(
+  async (filter: "all" | "project" = "all", limit?: number) => {
     try {
-      const hasPermission = await auth.api.userHasPermission({
-        body: {
-          permission: { blog: ["read"] },
-        },
-        headers: await headers(),
-      });
-      includeDrafts = hasPermission.success;
-    } catch (e) {
-      includeDrafts = false;
-    }
+      let includeDrafts = false;
+      try {
+        const hasPermission = await auth.api.userHasPermission({
+          body: {
+            permission: { blog: ["read"] },
+          },
+          headers: await headers(),
+        });
+        includeDrafts = hasPermission.success;
+      } catch {
+        includeDrafts = false;
+      }
 
-    return await prisma.blogPost.findMany({
-      where: includeDrafts ? {} : { published: true },
-      orderBy: { created_at: "desc" },
-    });
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
-    return [];
-  }
-});
+      const where: Prisma.BlogPostWhereInput = includeDrafts
+        ? {}
+        : { published: true };
+      if (filter === "project") {
+        where.isProject = true;
+      }
+
+      return await prisma.blogPost.findMany({
+        where,
+        orderBy: { created_at: "desc" },
+        ...(limit ? { take: limit } : {}),
+      });
+    } catch (error) {
+      console.error("Error fetching blog posts:", error);
+      return [];
+    }
+  },
+);
 
 export const getPublishedBlogPosts = cache(async () => {
   try {
