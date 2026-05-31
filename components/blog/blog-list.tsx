@@ -1,11 +1,8 @@
 "use client";
 
-import { Eye } from "lucide-react";
-import Link from "next/link";
 import * as React from "react";
 
 import { BlogPost } from "@/.generated/client";
-import { AdminControls } from "@/components/blog/admin-controls";
 import { BlogCard } from "@/components/blog/blog-card";
 import { type Session } from "@/lib/auth";
 

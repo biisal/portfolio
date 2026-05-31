@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowRight, Eye } from "lucide-react";
 import Link from "next/link";
 
 import { BlogPost } from "@/.generated/client";

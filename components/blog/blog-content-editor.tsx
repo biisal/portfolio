@@ -3,7 +3,7 @@
 import { autocompletion } from "@codemirror/autocomplete";
 import { markdown, markdownKeymap } from "@codemirror/lang-markdown";
 import { oneDark } from "@codemirror/theme-one-dark";
-import { EditorView, keymap, type ViewPlugin } from "@codemirror/view";
+import { EditorView, keymap } from "@codemirror/view";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { ImageIcon, Loader2 } from "lucide-react";
 import { RefObject } from "react";

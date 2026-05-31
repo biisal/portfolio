@@ -140,7 +140,7 @@ const Dock = () => {
   return (
     <div className="">
       <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center rounded-full border border-blog-inactive-border bg-blog-bg/90 px-2 py-2 shadow-lg shadow-black/30 backdrop-blur-md">
-        {routes.map((route, index) => (
+        {routes.map((route) => (
           <div key={route.id} className="relative px-1">
             {isActive(route.id) && (
               <motion.div

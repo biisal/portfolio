@@ -3,6 +3,7 @@
 import "@/styles/streamdown.css";
 
 import { code as codePlugin } from "@streamdown/code";
+import rehypeRaw from "rehype-raw";
 import remarkBreaks from "remark-breaks";
 import { defaultRemarkPlugins, Streamdown } from "streamdown";
 
@@ -34,6 +35,7 @@ export function BlogPreview({
         controls={{ code: false }}
         plugins={{ code: codePlugin }}
         remarkPlugins={[...Object.values(defaultRemarkPlugins), remarkBreaks]}
+        rehypePlugins={[[rehypeRaw]]}
       >
         {content}
       </Streamdown>

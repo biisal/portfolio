@@ -1,6 +1,6 @@
 import { createAccessControl } from "better-auth/plugins/access";
 
-export const statement = {
+const statement = {
   blog: ["read", "create", "share", "update", "delete"],
   project: ["read", "create", "update", "delete"],
   comment: ["read", "create", "update", "delete"],
