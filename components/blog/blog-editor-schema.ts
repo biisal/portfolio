@@ -11,6 +11,8 @@ export const BlogFormSchema = z.object({
   coverImage: z.string().optional(),
   slug: z.string().optional(),
   views: z.number().int().min(0),
+  tags: z.string().optional(),
+  isProject: z.boolean().optional(),
 });
 
 export type BlogFormValues = z.infer<typeof BlogFormSchema>;
@@ -30,6 +32,8 @@ export function getDefaultValues(
     coverImage: initialPost?.coverImage || "",
     slug: initialPost?.slug || "",
     views: initialPost?.views ?? 0,
+    tags: initialPost?.tags?.join(", ") || "",
+    isProject: initialPost?.isProject ?? false,
   };
 }
 

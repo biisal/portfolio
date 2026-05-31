@@ -169,6 +169,54 @@ export function BlogPostDetails({
             </Field>
           )}
         />
+
+        <Controller
+          name="tags"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel className="text-blog-fg" htmlFor="blog-editor-tags">
+                Tags (comma separated)
+              </FieldLabel>
+              <Input
+                {...field}
+                id="blog-editor-tags"
+                aria-invalid={fieldState.invalid}
+                placeholder="project, coding, nextjs"
+                className="mt-2 bg-blog-black border-blog-cyan text-blog-fg"
+                autoComplete="off"
+                value={field.value || ""}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="isProject"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field
+              data-invalid={fieldState.invalid}
+              className="flex flex-row w-fit items-center gap-2"
+            >
+              <input
+                type="checkbox"
+                id="blog-editor-is-project"
+                checked={field.value}
+                onChange={(e) => field.onChange(e.target.checked)}
+                className="w-4 h-4 accent-blog-orange bg-blog-black border-blog-cyan rounded"
+              />
+              <FieldLabel
+                className="text-blog-fg cursor-pointer m-0"
+                htmlFor="blog-editor-is-project"
+              >
+                Is this a Project?
+              </FieldLabel>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
       </FieldGroup>
     </div>
   );

@@ -9,10 +9,18 @@ import { prisma } from "@/lib/prisma";
 
 export const getblogPost = cache(async () => {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-    const includeDrafts = session?.user;
+    let includeDrafts = false;
+    try {
+      const hasPermission = await auth.api.userHasPermission({
+        body: {
+          permission: { blog: ["read"] },
+        },
+        headers: await headers(),
+      });
+      includeDrafts = hasPermission.success;
+    } catch (e) {
+      includeDrafts = false;
+    }
 
     return await prisma.blogPost.findMany({
       where: includeDrafts ? {} : { published: true },
@@ -38,10 +46,19 @@ export const getPublishedBlogPosts = cache(async () => {
 
 export const getBlogPost = cache(async (slug: string) => {
   try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-    const includeDrafts = session?.user;
+    let includeDrafts = false;
+    try {
+      const hasPermission = await auth.api.userHasPermission({
+        body: {
+          role: "admin",
+          permission: { blog: ["create"] },
+        },
+        headers: await headers(),
+      });
+      includeDrafts = hasPermission.success;
+    } catch {
+      includeDrafts = false;
+    }
     return await prisma.blogPost.findFirst({
       where: includeDrafts ? { slug } : { slug, published: true },
     });
@@ -67,11 +84,14 @@ export async function incrementView(slug: string) {
 
 export async function deleteBlogPost(slug: string) {
   try {
-    const session = await auth.api.getSession({
+    const { success } = await auth.api.userHasPermission({
+      body: {
+        role: "admin",
+        permission: { blog: ["create"] },
+      },
       headers: await headers(),
     });
-
-    if (!session) {
+    if (!success) {
       throw new Error("Unauthorized");
     }
 

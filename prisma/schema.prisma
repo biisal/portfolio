@@ -19,25 +19,13 @@ model BlogPost {
   coverImage String?
   published  Boolean   @default(false)
   views      Int       @default(0)
+  tags       String[]  @default([])
+  isProject  Boolean   @default(false)
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   comments   Comment[]
 
   @@index([published, created_at(sort: Desc)])
-}
-
-model Project {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  created_at   DateTime @db.Date
-  description  String
-  excerpt      String
-  link         String
-  slug         String
-  tags         String[]
-  technologies String[]
-  thumbnail    String
-  title        String
-  updated_at   DateTime @db.Date
 }
 
 model User {

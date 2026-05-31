@@ -7,8 +7,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { JetBrainsMono } from "@/fonts";
-import { cn, slugify } from "@/lib/utils";
+import { slugify } from "@/lib/utils";
 
 import { BlogContentEditor } from "./blog-content-editor";
 import {
@@ -40,6 +39,9 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
     useWatch({ control: form.control, name: "coverImage" }) || "";
   const slug = useWatch({ control: form.control, name: "slug" }) || "";
   const views = useWatch({ control: form.control, name: "views" }) ?? 0;
+  const tags = useWatch({ control: form.control, name: "tags" }) || "";
+  const isProject =
+    useWatch({ control: form.control, name: "isProject" }) || false;
 
   const watchedValues: BlogFormValues = {
     title,
@@ -49,6 +51,8 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
     coverImage,
     slug,
     views,
+    tags,
+    isProject,
   };
 
   const { clearDraft } = useBlogDraft({
@@ -85,6 +89,8 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
           published: publish,
           originalSlug: initialPost?.slug,
           views: data.views,
+          tags: data.tags,
+          isProject: data.isProject,
         }),
       });
 
@@ -107,9 +113,7 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
   };
 
   return (
-    <div
-      className={cn("min-h-screen p-8 text-blog-fg", JetBrainsMono.className)}
-    >
+    <div className={"min-h-screen p-8 text-blog-fg"}>
       <div className="max-w-[1800px] mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-blog-orange mb-2">

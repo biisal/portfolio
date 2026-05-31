@@ -8,7 +8,6 @@ import { BlogPreview } from "@/components/blog/blog-preview";
 import { CommentSection } from "@/components/blog/comment/comment-section";
 import { ViewCounter } from "@/components/blog/view-counter";
 import NotFound from "@/components/not-found";
-import { JetBrainsMono } from "@/fonts";
 import { getBlogPost, getPublishedBlogPosts } from "@/lib/actions/blogs";
 import { getCommentsByPostId } from "@/lib/actions/comments";
 import { cn } from "@/lib/utils";
@@ -100,12 +99,7 @@ export default async function Post({
   }
 
   return (
-    <div
-      className={cn(
-        "min-h-screen p-4 pb-32 md:p-20 md:pb-40 text-blog-fg",
-        JetBrainsMono.className,
-      )}
-    >
+    <div className={cn("min-h-screen p-4 pb-32 md:p-20 md:pb-40 text-blog-fg")}>
       <div className="max-w-4xl mx-auto">
         <Link
           href="/blog"

@@ -11,6 +11,7 @@
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
     "prepare": "husky",

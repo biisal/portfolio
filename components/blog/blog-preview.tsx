@@ -7,7 +7,6 @@ import remarkBreaks from "remark-breaks";
 import { defaultRemarkPlugins, Streamdown } from "streamdown";
 
 import SocialShare from "@/components/blog/social-share";
-import { JetBrainsMono } from "@/fonts";
 import { cn } from "@/lib/utils";
 
 interface BlogPreviewProps {
@@ -27,7 +26,6 @@ export function BlogPreview({
     <article
       className={cn(
         "prose prose-invert prose-lg wrap-break-words max-w-none text-blog-fg",
-        JetBrainsMono.className,
         className,
       )}
     >

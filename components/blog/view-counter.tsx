@@ -1,4 +1,3 @@
-import { JetBrainsMono } from "@/fonts";
 import { incrementView } from "@/lib/actions/blogs";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +25,6 @@ export async function ViewCounter({
     <span
       className={cn(
         "text-blog-fg opacity-60 flex items-center gap-1",
-        JetBrainsMono.className,
         className,
       )}
     >

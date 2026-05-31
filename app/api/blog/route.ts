@@ -77,6 +77,13 @@ export async function POST(request: NextRequest) {
         coverImage: result.data.coverImage,
         published: result.data.published || false,
         views: result.data.views ?? 0,
+        tags: result.data.tags
+          ? result.data.tags
+              .split(",")
+              .map((t: string) => t.trim())
+              .filter(Boolean)
+          : [],
+        isProject: result.data.isProject || false,
       },
     });
 
@@ -140,6 +147,13 @@ export async function PUT(request: NextRequest) {
         coverImage: result.data.coverImage,
         published: result.data.published,
         views: result.data.views,
+        tags: result.data.tags
+          ? result.data.tags
+              .split(",")
+              .map((t: string) => t.trim())
+              .filter(Boolean)
+          : [],
+        isProject: result.data.isProject || false,
       },
     });
 

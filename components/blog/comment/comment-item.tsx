@@ -1,6 +1,5 @@
 import { Trash2 } from "lucide-react";
 
-import { JetBrainsMono } from "@/fonts";
 import { cn } from "@/lib/utils";
 
 import { CommentType } from "./types";
@@ -26,12 +25,7 @@ export function CommentItem({
           <span className="text-sm font-medium text-blog-white">
             {comment.user.name}
           </span>
-          <span
-            className={cn(
-              "text-[11px] text-blog-fg/40",
-              JetBrainsMono.className,
-            )}
-          >
+          <span className={cn("text-[11px] text-blog-fg/40")}>
             {new Date(comment.createdAt).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",

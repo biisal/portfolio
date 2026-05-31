@@ -44,6 +44,10 @@ export async function createComment(
       return { success: false, error: "Comment cannot be empty" };
     }
 
+    if (content.length > 2000) {
+      return { success: false, error: "Comment cannot exceed 2000 characters" };
+    }
+
     const comment = await prisma.comment.create({
       data: {
         content,

@@ -151,29 +151,44 @@ export function CommentSection({
             text-blog-fg placeholder:text-blog-fg/30 min-h-24 focus-visible:ring-0 resize-none px-4 py-3"
           />
 
-          <div className="flex justify-end px-4 py-3 border-t border-blog-inactive-border bg-blog-bg">
-            {user ? (
-              <Button
-                onClick={handleSubmit}
-                type="button"
-                disabled={!content.trim() || isSubmitting || isLoggingOut}
-                className="bg-blog-orange text-blog-bg hover:bg-blog-orange/90 h-8 text-sm px-4"
-              >
-                {isSubmitting ? (
-                  <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                ) : null}
-                Post Comment
-              </Button>
-            ) : (
-              <Button
-                onClick={handleLogin}
-                type="button"
-                className="bg-blog-orange text-blog-bg hover:bg-blog-orange/90 h-8 text-sm px-4"
-              >
-                <Github className="mr-2 h-4 w-4" />
-                Login with GitHub
-              </Button>
-            )}
+          <div className="flex items-center justify-between px-4 py-3 border-t border-blog-inactive-border bg-blog-bg">
+            <span
+              className={cn(
+                "text-xs font-mono",
+                content.length > 2000 ? "text-red-500" : "text-blog-fg/50",
+              )}
+            >
+              {content.length}/2000
+            </span>
+            <div>
+              {user ? (
+                <Button
+                  onClick={handleSubmit}
+                  type="button"
+                  disabled={
+                    !content.trim() ||
+                    content.length > 2000 ||
+                    isSubmitting ||
+                    isLoggingOut
+                  }
+                  className="bg-blog-orange text-blog-bg hover:bg-blog-orange/90 h-8 text-sm px-4"
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                  ) : null}
+                  Post Comment
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleLogin}
+                  type="button"
+                  className="bg-blog-orange text-blog-bg hover:bg-blog-orange/90 h-8 text-sm px-4"
+                >
+                  <Github className="mr-2 h-4 w-4" />
+                  Login with GitHub
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       )}
