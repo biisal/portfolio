@@ -15,7 +15,7 @@ export const user = ac.newRole({
 });
 
 export const admin = ac.newRole({
-  blog: ["create", "update", "delete"],
-  project: ["create", "update", "delete"],
+  blog: ["read", "create", "share", "update", "delete"],
+  project: ["read", "create", "update", "delete"],
   comment: ["read", "create", "update", "delete"],
 });
