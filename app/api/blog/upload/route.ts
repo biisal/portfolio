@@ -17,12 +17,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error }, { status: 401 });
     }
 
-    console.log({
-      role: await auth.api.getSession({
-        headers: await headers(),
-      }),
-    });
-
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 

@@ -11,7 +11,7 @@ import { JetBrainsMono } from "@/fonts";
 import { cn } from "@/lib/utils";
 
 const heroImgUrl =
-  "https://res.cloudinary.com/dorxspa9g/image/upload/v1760437739/green-stick_holso5.png";
+  "https://res.cloudinary.com/dorxspa9g/image/upload/v1780802824/blog-content/gtz7sxohubbtnrbjx6be.png";
 
 export const viewport = {
   width: "device-width",

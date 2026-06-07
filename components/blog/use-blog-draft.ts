@@ -16,11 +16,14 @@ export function useBlogDraft({
   initialPost,
   watchedValues,
 }: UseBlogDraftOptions) {
-  const draftStorageKey = `blog-editor-draft:${initialPost?.slug ?? "new"}`;
+  const isEditing = !!initialPost;
+  const draftStorageKey = "blog-editor-draft:new";
   const hasLoadedDraft = useRef(false);
   const draftSaveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (isEditing) return;
+
     const savedDraft = localStorage.getItem(draftStorageKey);
     hasLoadedDraft.current = true;
 
@@ -37,14 +40,16 @@ export function useBlogDraft({
         coverImage: draft.coverImage ?? defaults.coverImage,
         slug: draft.slug ?? defaults.slug,
         views: draft.views ?? defaults.views,
+        tags: draft.tags ?? defaults.tags,
+        isProject: draft.isProject ?? defaults.isProject,
       });
     } catch {
       localStorage.removeItem(draftStorageKey);
     }
-  }, [draftStorageKey, initialPost, form]);
+  }, [draftStorageKey, initialPost, form, isEditing]);
 
   useEffect(() => {
-    if (!hasLoadedDraft.current) return;
+    if (isEditing || !hasLoadedDraft.current) return;
 
     if (draftSaveTimeout.current) {
       clearTimeout(draftSaveTimeout.current);
@@ -59,9 +64,13 @@ export function useBlogDraft({
         clearTimeout(draftSaveTimeout.current);
       }
     };
-  }, [draftStorageKey, watchedValues]);
+  }, [draftStorageKey, watchedValues, isEditing]);
 
-  const clearDraft = () => localStorage.removeItem(draftStorageKey);
+  const clearDraft = () => {
+    if (!isEditing) {
+      localStorage.removeItem(draftStorageKey);
+    }
+  };
 
   return { clearDraft };
 }
