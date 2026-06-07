@@ -68,6 +68,10 @@ export const metadata: Metadata = {
     creator: "@avisekray",
     images: [heroImgUrl],
   },
+  other: {
+    "og:logo":
+      "https://res.cloudinary.com/dorxspa9g/image/upload/v1780805358/profile_sfcjkw.jpg",
+  },
 };
 
 export default function RootLayout({

@@ -59,6 +59,10 @@ export async function generateMetadata({
       description,
       images: [ogImage],
     },
+    other: {
+      "og:logo":
+        "https://res.cloudinary.com/dorxspa9g/image/upload/v1780805358/profile_sfcjkw.jpg",
+    },
   };
 }
 
