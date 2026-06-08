@@ -1,19 +1,43 @@
-import { Mail } from "lucide-react";
+"use client";
+
+import { Check, Mail, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
-import { email, social } from "@/lib/config";
+import { email, phoneNumber, social } from "@/lib/config";
 
 const SocialLinks = () => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(phoneNumber);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="flex flex-col gap-4 border-t border-blog-inactive-border pt-5 text-sm text-blog-fg/60 md:flex-row md:items-center md:justify-between">
-      <Link
-        href={`mailto:${email}`}
-        className="flex items-center gap-2 transition-colors hover:text-blog-white"
-      >
-        <Mail className="h-4 w-4 text-blog-orange" />
-        <span>{email}</span>
-      </Link>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <Link
+          href={`mailto:${email}`}
+          className="flex items-center gap-2 transition-colors hover:text-blog-white"
+        >
+          <Mail className="h-4 w-4 text-blog-orange" />
+          <span>{email}</span>
+        </Link>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-2 transition-colors hover:text-blog-white"
+        >
+          {copied ? (
+            <Check className="h-4 w-4 text-blog-orange" />
+          ) : (
+            <Phone className="h-4 w-4 text-blog-orange" />
+          )}
+          <span>{copied ? "Copied!" : phoneNumber}</span>
+        </button>
+      </div>
       <div className="flex items-center gap-4">
         {social.map(({ label, href, icon }) => (
           <Link

@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 
 import Dock from "@/components/dock";
 import GlobalBackground from "@/components/global-background";
+import { GoogleAnalytics } from "@/components/GoogleServices";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { JetBrainsMono } from "@/fonts";
@@ -81,6 +82,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body className={cn("text-white", JetBrainsMono.className)}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           <GlobalBackground />
