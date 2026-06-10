@@ -7,7 +7,6 @@ import rehypeRaw from "rehype-raw";
 import remarkBreaks from "remark-breaks";
 import { defaultRemarkPlugins, Streamdown } from "streamdown";
 
-import SocialShare from "@/components/blog/social-share";
 import { cn } from "@/lib/utils";
 
 interface BlogPreviewProps {

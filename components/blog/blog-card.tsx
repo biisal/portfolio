@@ -1,9 +1,8 @@
-import { ArrowRight, Eye } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import { BlogPost } from "@/.generated/client";
 import { AdminControls } from "@/components/blog/admin-controls";
-import { BlogTags } from "@/components/blog/blog-tags";
 interface BlogCardProps {
   post: BlogPost;
   isAdmin?: boolean;

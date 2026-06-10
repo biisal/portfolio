@@ -5,6 +5,7 @@ import BlogsIntro from "@/components/blogs-intro";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
 import Intro from "@/components/intro";
+import Opensource from "@/components/opensource";
 import ProjectsIntro from "@/components/projects-intro";
 import Skills from "@/components/skills";
 import { getblogPost } from "@/lib/actions/blogs";
@@ -37,6 +38,7 @@ export default async function Home() {
               </div>
             </div>
           </section>
+          <Opensource />
           <Skills languages={languages.languages || []} />
           <ProjectsIntro />
           <ContactSection />

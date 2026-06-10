@@ -4,6 +4,7 @@ import {
   BookOpenText,
   CircleUserRound,
   Folder as ProjectsIcon,
+  GitPullRequest,
   Mail as ContactIcon,
   Terminal as SkillsIcon,
 } from "lucide-react";
@@ -25,6 +26,11 @@ const Dock = () => {
       id: "blogs",
       name: "Blogs",
       icon: BookOpenText,
+    },
+    {
+      id: "opensource",
+      name: "Open Source",
+      icon: GitPullRequest,
     },
     {
       id: "skills",
@@ -58,7 +64,14 @@ const Dock = () => {
   useEffect(() => {
     if (pathname !== "/") return;
 
-    const sectionIds = ["intro", "blogs", "skills", "projects", "contact"];
+    const sectionIds = [
+      "intro",
+      "blogs",
+      "opensource",
+      "skills",
+      "projects",
+      "contact",
+    ];
 
     const observerOptions = {
       root: null,
