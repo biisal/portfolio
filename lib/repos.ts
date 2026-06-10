@@ -1,6 +1,7 @@
 interface TPr {
   repo: string;
   repoUrl: string;
+  icon?: string;
   prs: {
     title: string;
     prUrl: string;
@@ -11,6 +12,7 @@ export const PULL_REQUESTS: TPr[] = [
   {
     repo: "Picoclaw",
     repoUrl: "https://github.com/sipeed/picoclaw",
+    icon: "https://avatars.githubusercontent.com/u/44034752?s=48&v=4",
     prs: [
       {
         title:
@@ -34,6 +36,7 @@ export const PULL_REQUESTS: TPr[] = [
   },
   {
     repo: "Polar",
+    icon: "https://avatars.githubusercontent.com/u/105373340?s=48&v=4",
     repoUrl: "https://github.com/polarsource/polar",
     prs: [
       {
@@ -47,10 +50,23 @@ export const PULL_REQUESTS: TPr[] = [
   {
     repo: "Crush Agent",
     repoUrl: "https://github.com/charmbracelet/crush",
+    icon: "https://avatars.githubusercontent.com/u/57376114?s=48&v=4",
     prs: [
       {
         title: "Fix: Chinese text not copied correctly to clipboard (#2155)",
         prUrl: "https://github.com/charmbracelet/crush/pull/2171",
+      },
+    ],
+  },
+  {
+    repo: "ai-website-cloner-template",
+    repoUrl: "https://github.com/JCodesMore/ai-website-cloner-template",
+    prs: [
+      {
+        title:
+          "add Docker support with multi-stage production builds and development configuration",
+        prUrl:
+          "https://github.com/JCodesMore/ai-website-cloner-template/pull/16",
       },
     ],
   },

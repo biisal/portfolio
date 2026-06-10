@@ -43,11 +43,15 @@ const Opensource = () => {
             <AccordionItem key={repoData.repo} value={repoData.repo}>
               <AccordionTrigger>
                 <div className="flex items-center gap-3">
+                  {repoData.icon && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={repoData.icon}
+                      alt={repoData.repo}
+                      className="h-6 w-6 rounded-full object-cover shrink-0"
+                    />
+                  )}
                   <span>{repoData.repo}</span>
-                  <span className="text-xs font-normal text-blog-fg/50 font-mono group-hover:text-blog-orange/70 transition-colors ml-1">
-                    {repoData.prs.length}{" "}
-                    {repoData.prs.length === 1 ? "PR" : "PRs"}
-                  </span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
