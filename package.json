@@ -13,7 +13,7 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "format:check": "prettier --check .",
-    "format:fix": "prettier --write .",
+    "format": "prettier --write .",
     "prepare": "husky",
     "lint-staged": "lint-staged",
     "auth:schema": "pnpx @better-auth/cli@latest generate --config ./lib/auth.ts"

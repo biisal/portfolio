@@ -10,6 +10,18 @@ interface TPr {
 
 export const PULL_REQUESTS: TPr[] = [
   {
+    repo: "BuilderIO/agent-native",
+    repoUrl: "",
+    icon: "https://avatars.githubusercontent.com/u/35700027",
+    prs: [
+      {
+        title:
+          "fix: force process exit and unref telemetry timer to fix CLI hangs #1330",
+        prUrl: "https://github.com/BuilderIO/agent-native/pull/1331",
+      },
+    ],
+  },
+  {
     repo: "Picoclaw",
     repoUrl: "https://github.com/sipeed/picoclaw",
     icon: "https://avatars.githubusercontent.com/u/44034752?s=48&v=4",
