@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 import { BlurFade } from "@/components/ui/blur-fade";
-import { AlbertSans } from "@/fonts";
 import { cn } from "@/lib/utils";
 
 interface Language {
@@ -50,26 +49,22 @@ const Skills = ({ languages }: SkillsProps) => {
   return (
     <section
       id="skills"
-      className={cn(
-        "relative min-h-screen w-full overflow-hidden text-white flex items-center",
-        AlbertSans.className,
-      )}
+      className={cn("relative flex w-full flex-col justify-center py-24")}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
-        <div className="flex flex-col gap-24">
+      <h2 className="mb-6 text-4xl font-bold text-blog-white md:text-5xl">
+        <span className="text-blog-orange">Skills</span> & Tools
+      </h2>
+      <div className="z-10 px-4 flex w-full flex-col gap-8">
+        <div className="flex flex-col gap-12">
           <BlurFade delay={0.25} inView>
             <div>
-              <h2 className="text-4xl md:text-6xl font-bold  mb-6">
-                Skills & Tools
-              </h2>
-
-              <ul className="grid grid-cols-1 w-fit  sm:grid-cols-2 gap-x-24 gap-y-3 text-sm md:text-base text-gray-300">
+              <ul className="grid grid-cols-1 w-fit  sm:grid-cols-2 gap-x-24 gap-y-3 text-sm md:text-base text-blog-fg/80">
                 {competencies.map((item, idx) => (
                   <li
                     key={idx}
                     className="flex text-sm font-bold items-center gap-2"
                   >
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary inline-block" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-blog-orange inline-block" />
                     {item}
                   </li>
                 ))}
@@ -78,13 +73,13 @@ const Skills = ({ languages }: SkillsProps) => {
           </BlurFade>
 
           <BlurFade delay={0.35} inView>
-            <div className="flex flex-wrap gap-8 items-center justify-start">
+            <div className="flex  flex-wrap gap-8 max-w-sm items-center justify-start">
               {toolsGrid.map((tool, idx) => (
                 <div
                   key={idx}
                   className="flex flex-col items-center gap-3 group"
                 >
-                  <div className="relative w-8 h-8 md:w-12 md:h-12 transition-transform">
+                  <div className="relative w-8 h-8 md:w-10 md:h-10 transition-transform">
                     <Image
                       src={tool.icon}
                       alt={tool.name}
@@ -92,7 +87,7 @@ const Skills = ({ languages }: SkillsProps) => {
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-xs text-white/80 font-medium group-hover:text-white transition-colors">
+                  <span className="text-xs text-blog-fg/80 font-medium group-hover:text-blog-white transition-colors">
                     {tool.name}
                   </span>
                 </div>
@@ -103,23 +98,23 @@ const Skills = ({ languages }: SkillsProps) => {
           <BlurFade delay={0.45} inView>
             <div className="w-full max-w-md mt-4">
               <div className="flex items-center gap-2 mb-6">
-                <h3 className="text-xl font-bold text-primary uppercase tracking-wider">
+                <h3 className="text-xl font-bold text-blog-orange uppercase tracking-wider">
                   Languages
                 </h3>
-                <span className="text-xs text-gray-500">(Last 7 Days)</span>
+                <span className="text-xs text-blog-fg/55">(Last 7 Days)</span>
               </div>
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-3">
                 {displayLanguages.map((lang, idx) => (
                   <div key={idx} className="w-full">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-white font-medium">
+                      <span className="text-blog-white font-medium">
                         {lang.name}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-blog-fg/80">
                         {lang.percent.toFixed(1)}%
                       </span>
                     </div>
-                    <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden">
+                    <div className="h-1 w-full bg-blog-selection-bg rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${lang.percent}%` }}
@@ -128,7 +123,7 @@ const Skills = ({ languages }: SkillsProps) => {
                           ease: "easeOut",
                           delay: 0.2 + idx * 0.1,
                         }}
-                        className="h-full bg-primary rounded-full"
+                        className="h-full bg-blog-orange rounded-full"
                       />
                     </div>
                   </div>

@@ -1,125 +1,66 @@
 "use client";
-import { Mail, MapPin, Phone } from "lucide-react";
-import Image from "next/image";
+
+import { ArrowRight, FileCode2 } from "lucide-react";
 import Link from "next/link";
 
 import { BlurFade } from "@/components/ui/blur-fade";
-import { HyperText } from "@/components/ui/hyper-text";
-import { JetBrainsMono } from "@/fonts";
-import { email, github, linkedin, phoneNumber, xTwetter } from "@/lib/config";
-import { cn } from "@/lib/utils";
+
+import SocialLinks from "./social-links";
+import { TerminalPrompt } from "./terminal-prompt";
+
 const Intro = () => {
   return (
-    <section
-      id="intro"
-      className="relative flex min-h-screen w-full flex-col  justify-center overflow-hidden text-white"
-    >
-      <div className="grid h-full grid-cols-1 gap-12 md:grid-cols-2">
-        <div className="flex flex-col justify-center gap-6 z-10">
-          <BlurFade delay={0.25} inView>
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-3 w-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-              </span>
-              <span className="text-sm font-medium text-white/80">
-                Open to work
-              </span>
-            </div>
-          </BlurFade>
+    <div className="flex flex-col gap-7">
+      <BlurFade delay={0.25} inView>
+        <TerminalPrompt />
+      </BlurFade>
 
-          <div className="flex flex-col gap-2">
-            <BlurFade delay={0.35} inView>
-              <h2 className="text-xl font-bold text-primary md:text-2xl">
-                Software Engineer :)
-              </h2>
-            </BlurFade>
-            <BlurFade delay={0.45} inView>
-              <HyperText
-                className={cn(
-                  "text-4xl font-bold leading-tight tracking-tight text-white md:text-6xl lg:text-7xl",
-                  JetBrainsMono.className,
-                )}
-                startOnView={true}
-                delay={1000}
-              >
-                Avisek Ray
-              </HyperText>
-            </BlurFade>
-          </div>
-
-          <BlurFade delay={0.55} inView>
-            <div className="mt-8 flex flex-col gap-4 text-sm text-gray-400 md:flex-row md:flex-wrap md:gap-8">
-              <Link
-                href={`mailto:${email}`}
-                className="flex items-center gap-2 hover:text-white transition-colors"
-              >
-                <Mail className="h-4 w-4 text-primary" />
-                <span>{email}</span>
-              </Link>
-
-              <Link
-                href={linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative flex items-center gap-2 hover:text-white transition-colors"
-              >
-                <Image
-                  src="/icons/linkedin.svg"
-                  className="blur-[1.3px]"
-                  alt="Linkedin"
-                  width={24}
-                  height={24}
-                />
-                <span className="blur-[1.2px]">/in/biisal</span>
-              </Link>
-
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" />
-                <span>{phoneNumber}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-primary" />
-                <span>India</span>
-              </div>
-            </div>
-          </BlurFade>
-
-          <BlurFade delay={0.65} inView>
-            <div className="mt-8 flex gap-4">
-              <div className="flex gap-4">
-                <Link
-                  href={github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 hover:bg-white/10 transition-colors"
-                >
-                  <Image
-                    src="/icons/github-dark.svg"
-                    alt="Github"
-                    width={24}
-                    height={24}
-                  />
-                </Link>
-                <a
-                  href={xTwetter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 hover:bg-white/10 transition-colors"
-                >
-                  <Image
-                    src="/icons/x-twitter.svg"
-                    alt="X Twitter"
-                    width={24}
-                    height={24}
-                  />
-                </a>
-              </div>
-            </div>
-          </BlurFade>
+      <BlurFade delay={0.35} inView>
+        <div className="flex max-w-3xl flex-col gap-4">
+          <h1 className="text-5xl font-bold tracking-tight text-blog-orange md:text-6xl">
+            Avisek Ray
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-blog-white/90 md:text-2xl">
+            Database, Backend Design, Frontend Engineering and notes from the
+            terminal.
+          </p>
         </div>
-      </div>
-    </section>
+      </BlurFade>
+
+      <BlurFade delay={0.45} inView>
+        <div className="max-w-2xl space-y-4 text-base leading-8 text-blog-fg/72 md:text-lg">
+          <p className="">
+            I like to make things that help people using my programming skills.
+            Also, I’m a freelancer. My goal is to keep learning, explore new
+            technologies, and contribute to projects that make a real
+            difference.
+          </p>
+        </div>
+      </BlurFade>
+
+      <BlurFade delay={0.55} inView>
+        <div className="flex flex-col gap-3 md:flex-row">
+          <Link
+            href="/blog"
+            className="inline-flex items-center justify-center gap-3 rounded-lg border border-blog-orange bg-blog-orange px-5 py-3 text-sm font-semibold text-blog-bg transition hover:opacity-90"
+          >
+            Read the blog
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/#projects"
+            className="inline-flex items-center justify-center gap-3 rounded-lg border border-blog-inactive-border bg-blog-bg px-5 py-3 text-sm font-semibold text-blog-white transition hover:border-blog-orange hover:text-blog-orange"
+          >
+            Browse selected work
+            <FileCode2 className="h-4 w-4" />
+          </Link>
+        </div>
+      </BlurFade>
+
+      <BlurFade delay={0.65} inView>
+        <SocialLinks />
+      </BlurFade>
+    </div>
   );
 };
 

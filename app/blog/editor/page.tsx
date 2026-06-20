@@ -18,6 +18,10 @@ export default async function BlogEditorPage({
     redirect("/login");
   }
 
+  if (session.user.role !== "admin") {
+    redirect("/");
+  }
+
   const { slug } = await searchParams;
   let initialPost = null;
 

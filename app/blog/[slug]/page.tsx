@@ -3,10 +3,15 @@ import "@/app/globals.css";
 import { Metadata } from "next";
 import Link from "next/link";
 
+import BlogPagination from "@/components/blog/blog-pagination";
 import { BlogPreview } from "@/components/blog/blog-preview";
+import { BlogTags } from "@/components/blog/blog-tags";
+import { CommentSection } from "@/components/blog/comment/comment-section";
+import SocialShare from "@/components/blog/social-share";
 import { ViewCounter } from "@/components/blog/view-counter";
-import { JetBrainsMono } from "@/fonts";
-import { getBlogPost } from "@/lib/actions/blogs";
+import NotFound from "@/components/not-found";
+import { getBlogPost, getPublishedBlogPosts } from "@/lib/actions/blogs";
+import { getCommentsByPostId } from "@/lib/actions/comments";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -36,7 +41,7 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      url: `https://biisal.codeltix.com/blog/${slug}`,
+      url: `https://codeltix.com/blog/${slug}`,
       images: [
         {
           url: ogImage,
@@ -54,6 +59,10 @@ export async function generateMetadata({
       description,
       images: [ogImage],
     },
+    other: {
+      "og:logo":
+        "https://res.cloudinary.com/dorxspa9g/image/upload/v1780805358/profile_sfcjkw.jpg",
+    },
   };
 }
 
@@ -64,52 +73,89 @@ export default async function Post({
 }) {
   const { slug } = await params;
   const post = await getBlogPost(slug);
+
+  if (!post) {
+    return (
+      <NotFound
+        text="No such blog"
+        backLink="/blog"
+        backText="Back to All Blogs"
+      />
+    );
+  }
+
+  const comments = await getCommentsByPostId(post.id);
+
+  let prevPost = null;
+  let nextPost = null;
+
+  try {
+    const allPosts = await getPublishedBlogPosts();
+    const currentIndex = allPosts.findIndex((p) => p.id === post.id);
+    if (currentIndex !== -1) {
+      if (currentIndex < allPosts.length - 1) {
+        nextPost = allPosts[currentIndex + 1];
+      }
+      if (currentIndex > 0) {
+        prevPost = allPosts[currentIndex - 1];
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch post pagination:", error);
+  }
+
   return (
-    <div
-      className={cn(
-        "min-h-screen p-8 md:p-20 text-blog-fg",
-        JetBrainsMono.className,
-      )}
-    >
+    <div className={cn("min-h-screen p-4 pb-32 md:p-20 md:pb-40 text-blog-fg")}>
       <div className="max-w-4xl mx-auto">
         <Link
           href="/blog"
           className="text-blog-orange hover:underline mb-8 block"
         >
-          ← Back to Blog
+          ← Back to All Blogs
         </Link>
-        {!post ? (
-          <h1 className="text-4xl font-bold text-blog-red">Post not found</h1>
-        ) : (
-          <article>
-            {post.coverImage && (
-              <div className="mb-8 relative w-full  aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={post.coverImage}
-                  className="w-full h-full object-cover"
-                  alt={post.title}
-                />
-                <div className="w-full h-full backdrop-blur-sm absolute inset-0" />
+        <article>
+          <h1 className="text-blog-white mb-4 text-4xl font-bold">
+            {post.title}
+          </h1>
+          <div className="text-blog-black mb-8 font-mono flex flex-wrap items-center gap-4 text-sm">
+            {new Date(post.created_at).toLocaleDateString()}
+            <ViewCounter slug={post.slug} initialViews={post.views} />
+          </div>
+          {post.coverImage && (
+            <div className="mb-8 relative w-full  aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={post.coverImage}
+                className="w-full h-full object-cover"
+                alt={post.title}
+              />
+              <div className="w-full h-full backdrop-blur-sm absolute inset-0" />
 
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={post.coverImage}
-                  alt={post.title}
-                  className="absolute inset-0 mx-auto h-full w-auto object-cover"
-                />
-              </div>
-            )}
-            <h1 className="text-blog-white mb-4 text-4xl font-bold">
-              {post.title}
-            </h1>
-            <div className="text-blog-black mb-8 font-mono flex items-center gap-4 text-sm">
-              {new Date(post.created_at).toLocaleDateString()}
-              <ViewCounter slug={post.slug} initialViews={post.views} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={post.coverImage}
+                alt={post.title}
+                className="absolute inset-0 mx-auto h-full w-auto object-cover"
+              />
             </div>
-            <BlogPreview content={post.content} />
-          </article>
-        )}
+          )}
+          <BlogPreview
+            content={post.content}
+            title={post.title}
+            excerpt={post.excerpt}
+          />
+          <BlogTags tags={post.tags} className="my-8" />
+          {post.title && post.excerpt && (
+            <SocialShare title={post.title} excerpt={post.excerpt} />
+          )}
+
+          <BlogPagination prevPost={prevPost} nextPost={nextPost} />
+          <CommentSection
+            postId={post.id}
+            slug={post.slug}
+            comments={comments}
+          />
+        </article>
       </div>
     </div>
   );

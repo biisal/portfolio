@@ -10,33 +10,22 @@ datasource db {
 }
 
 model BlogPost {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   title      String
   excerpt    String
   content    String
-  slug       String   @unique
+  slug       String    @unique
   authorName String
   coverImage String?
-  published  Boolean  @default(false)
-  views      Int      @default(0)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  published  Boolean   @default(false)
+  views      Int       @default(0)
+  tags       String[]  @default([])
+  isProject  Boolean   @default(false)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  comments   Comment[]
 
   @@index([published, created_at(sort: Desc)])
-}
-
-model Project {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  created_at   DateTime @db.Date
-  description  String
-  excerpt      String
-  link         String
-  slug         String
-  tags         String[]
-  technologies String[]
-  thumbnail    String
-  title        String
-  updated_at   DateTime @db.Date
 }
 
 model User {
@@ -49,6 +38,12 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  comments      Comment[]
+
+  role       String?
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
 
   @@unique([email])
   @@map("user")
@@ -64,6 +59,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@index([userId])
@@ -100,4 +97,21 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId    String   @db.ObjectId
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  isDeleted Boolean  @default(false)
+
+  @@index([postId])
+  @@index([userId])
 }

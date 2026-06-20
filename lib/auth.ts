@@ -1,7 +1,8 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { APIError, createAuthMiddleware } from "better-auth/api";
+import { admin } from "better-auth/plugins";
 
+import { ac, admin as adminRole, user } from "./permissions";
 import { prisma } from "./prisma";
 
 export const auth = betterAuth({
@@ -9,23 +10,25 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "mongodb",
   }),
-  emailAndPassword: {
-    enabled: true,
+  plugins: [
+    admin({
+      defaultRole: "user",
+      ac: ac,
+      roles: {
+        user,
+        admin: adminRole,
+      },
+    }),
+  ],
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    },
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
-  },
-  hooks: {
-    before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path.startsWith("/sign-up") || ctx.path.startsWith("/sign-in")) {
-        if (ctx.headers?.get("x-admin-secret") !== process.env.ADMIN_SECRET) {
-          throw new APIError("UNAUTHORIZED", {
-            message: "you are not a good boy",
-          });
-        }
-      }
-    }),
   },
 });
 

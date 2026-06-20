@@ -1,10 +1,7 @@
 import { ZodError } from "zod";
 
 import { formSchema } from "@/lib/schema/contact-form.schema";
-import {
-  telegramBotToken,
-  telegramChatId as telegramChatID,
-} from "@/lib/server-config";
+import { sendTgMessage } from "@/lib/telegram";
 
 export async function POST(request: Request) {
   try {
@@ -25,24 +22,11 @@ export async function POST(request: Request) {
       return new Response("Invalid form data.", { status: 400 });
     }
 
-    const payload = {
-      chat_id: telegramChatID,
-      text: `Name: ${body.name}\nEmail: ${body.email}\nPhone: ${body.whatsapp} (WhatsApp)\nMessage: ${body.message}`,
-    };
+    const payloadText = `Name: ${body.name}\nEmail: ${body.email}\nPhone: ${body.whatsapp} (WhatsApp)\nMessage: ${body.message}`;
 
-    const res = await fetch(
-      `https://api.telegram.org/bot${telegramBotToken}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      },
-    );
+    const success = await sendTgMessage(payloadText);
 
-    if (!res.ok) {
-      const error = await res.text();
-      console.error("Error sending message:", error);
-
+    if (!success) {
       return new Response(
         "Unable to send your message right now. Please try again later.",
         { status: 502 },

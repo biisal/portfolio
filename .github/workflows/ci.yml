@@ -1,9 +1,9 @@
 name: CI
 on:
   push:
-    branches: ["main"]
+    branches: ["blog"]
   pull_request:
-    branches: ["main"]
+    branches: ["blog"]
 jobs:
   install:
     runs-on: ubuntu-latest

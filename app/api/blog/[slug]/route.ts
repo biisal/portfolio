@@ -32,19 +32,24 @@ export async function GET(
   }
 }
 
-// PUT /api/blog/[slug] - Update blog post (requires auth)
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    // Check authentication
-    const session = await auth.api.getSession({
+    const { error, success } = await auth.api.userHasPermission({
+      body: {
+        role: "admin",
+        permission: { blog: ["update"] },
+      },
       headers: await headers(),
     });
 
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!success || error) {
+      return NextResponse.json(
+        { error: error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const { slug } = await params;
@@ -65,19 +70,24 @@ export async function PUT(
   }
 }
 
-// DELETE /api/blog/[slug] - Delete blog post (requires auth)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-    // Check authentication
-    const session = await auth.api.getSession({
+    const { error, success } = await auth.api.userHasPermission({
+      body: {
+        role: "admin",
+        permission: { blog: ["delete"] },
+      },
       headers: await headers(),
     });
 
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!success || error) {
+      return NextResponse.json(
+        { error: error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const { slug } = await params;
