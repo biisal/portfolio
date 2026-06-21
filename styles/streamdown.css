@@ -81,15 +81,17 @@ article [data-code-block-header="true"] {
   color: var(--blog-fg);
 }
 
-/* Custom blockquote styling */
 [data-streamdown="blockquote"] {
-  background-color: rgba(125, 207, 255, 0.03);
-  border-left: 4px solid var(--blog-cyan);
-  color: var(--blog-cyan);
-  font-style: italic;
-  /* padding: 1rem; */
-  border-radius: 0.25rem;
-  /* margin: 1.5rem 0; */
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--color-muted-foreground);
+  font-style: normal;
+  padding: 20px;
+}
+
+[data-streamdown="blockquote"] p:last-child:not(:only-child) {
+  color: var(--color-muted-foreground);
+  opacity: 0.8;
+  font-size: 0.9rem;
 }
 
 [data-streamdown="code-block"] {
