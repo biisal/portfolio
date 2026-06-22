@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
+import { BlogPost } from "@/.generated/client";
 import { BlogPreview } from "@/components/blog/blog-preview";
 
 interface BlogLivePreviewProps {
@@ -48,7 +49,7 @@ export function BlogLivePreview({ title, content }: BlogLivePreviewProps) {
 
         {content ? (
           <>
-            <BlogPreview content={content} />
+            <BlogPreview post={{ title, content } as BlogPost} />
             <div className="h-32" />
           </>
         ) : (
