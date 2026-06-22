@@ -7,23 +7,30 @@ import rehypeRaw from "rehype-raw";
 import remarkBreaks from "remark-breaks";
 import { defaultRemarkPlugins, Streamdown } from "streamdown";
 
+import { BlogPost } from "@/.generated/client";
 import { cn } from "@/lib/utils";
 
+import { BlogTags } from "./blog-tags";
+import { ListenBtn } from "./listen-btn";
+
 interface BlogPreviewProps {
-  content: string;
+  post: BlogPost;
   className?: string;
-  title?: string;
-  excerpt?: string;
 }
 
-export function BlogPreview({ content, className }: BlogPreviewProps) {
+export function BlogPreview({ post, className }: BlogPreviewProps) {
   return (
     <article
       className={cn(
-        "prose prose-invert prose-lg wrap-break-words max-w-none text-blog-fg",
+        "prose relative prose-invert prose-lg wrap-break-words max-w-none text-blog-fg",
         className,
       )}
     >
+      {post.audio && (
+        <div className="sticky top-20 z-40">
+          <ListenBtn url={post.audio} />
+        </div>
+      )}
       <Streamdown
         mode="static"
         controls={{ code: false }}
@@ -31,8 +38,9 @@ export function BlogPreview({ content, className }: BlogPreviewProps) {
         remarkPlugins={[...Object.values(defaultRemarkPlugins), remarkBreaks]}
         rehypePlugins={[[rehypeRaw]]}
       >
-        {content}
+        {post.content}
       </Streamdown>
+      <BlogTags tags={post.tags} className="my-8" />
     </article>
   );
 }

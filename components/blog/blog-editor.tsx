@@ -42,6 +42,7 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
   const tags = useWatch({ control: form.control, name: "tags" }) || "";
   const isProject =
     useWatch({ control: form.control, name: "isProject" }) || false;
+  const audio = useWatch({ control: form.control, name: "audio" }) || "";
 
   const watchedValues: BlogFormValues = {
     title,
@@ -49,6 +50,7 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
     content,
     authorName,
     coverImage,
+    audio,
     slug,
     views,
     tags,
@@ -86,6 +88,7 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
           slug: finalSlug,
           author: { name: data.authorName },
           coverImage: data.coverImage || undefined,
+          audio: data.audio || undefined,
           published: publish,
           originalSlug: initialPost?.slug,
           views: data.views,

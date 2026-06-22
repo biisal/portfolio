@@ -38,6 +38,7 @@ export function useBlogDraft({
         content: draft.content ?? defaults.content,
         authorName: draft.authorName ?? defaults.authorName,
         coverImage: draft.coverImage ?? defaults.coverImage,
+        audio: draft.audio ?? defaults.audio,
         slug: draft.slug ?? defaults.slug,
         views: draft.views ?? defaults.views,
         tags: draft.tags ?? defaults.tags,

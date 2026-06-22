@@ -17,6 +17,7 @@ model BlogPost {
   slug       String    @unique
   authorName String
   coverImage String?
+  audio      String?
   published  Boolean   @default(false)
   views      Int       @default(0)
   tags       String[]  @default([])

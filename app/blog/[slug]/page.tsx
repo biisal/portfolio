@@ -7,6 +7,7 @@ import BlogPagination from "@/components/blog/blog-pagination";
 import { BlogPreview } from "@/components/blog/blog-preview";
 import { BlogTags } from "@/components/blog/blog-tags";
 import { CommentSection } from "@/components/blog/comment/comment-section";
+import { ListenBtn } from "@/components/blog/listen-btn";
 import SocialShare from "@/components/blog/social-share";
 import { ViewCounter } from "@/components/blog/view-counter";
 import NotFound from "@/components/not-found";
@@ -139,12 +140,7 @@ export default async function Post({
               />
             </div>
           )}
-          <BlogPreview
-            content={post.content}
-            title={post.title}
-            excerpt={post.excerpt}
-          />
-          <BlogTags tags={post.tags} className="my-8" />
+          <BlogPreview post={post} />
           {post.title && post.excerpt && (
             <SocialShare title={post.title} excerpt={post.excerpt} />
           )}

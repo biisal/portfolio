@@ -75,6 +75,7 @@ export async function POST(request: NextRequest) {
         slug: result.data.slug,
         authorName: result.data.author.name,
         coverImage: result.data.coverImage,
+        audio: result.data.audio || null,
         published: result.data.published || false,
         views: result.data.views ?? 0,
         tags: result.data.tags
@@ -145,6 +146,7 @@ export async function PUT(request: NextRequest) {
         slug: result.data.slug,
         authorName: result.data.author.name,
         coverImage: result.data.coverImage,
+        audio: result.data.audio || null,
         published: result.data.published,
         views: result.data.views,
         tags: result.data.tags

@@ -121,6 +121,27 @@ export function BlogPostDetails({
         />
 
         <Controller
+          name="audio"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel className="text-blog-fg" htmlFor="blog-editor-audio">
+                Audio URL (optional)
+              </FieldLabel>
+              <Input
+                {...field}
+                id="blog-editor-audio"
+                aria-invalid={fieldState.invalid}
+                placeholder="https://..."
+                className="mt-2 bg-blog-black border-blog-cyan text-blog-fg"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
           name="slug"
           control={control}
           render={({ field, fieldState }) => (
