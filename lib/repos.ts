@@ -68,6 +68,11 @@ export const PULL_REQUESTS: TPr[] = [
         title: "Fix: Chinese text not copied correctly to clipboard (#2155)",
         prUrl: "https://github.com/charmbracelet/crush/pull/2171",
       },
+      {
+        title:
+          "feat: add keybinding and logic to copy verification URL in OAuth dialog #3323",
+        prUrl: "https://github.com/charmbracelet/crush/pull/3324",
+      },
     ],
   },
   {
