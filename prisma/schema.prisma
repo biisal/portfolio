@@ -24,7 +24,6 @@ model BlogPost {
   isProject  Boolean   @default(false)
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
-  comments   Comment[]
 
   @@index([published, created_at(sort: Desc)])
 }
@@ -39,7 +38,6 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  comments      Comment[]
 
   role       String?
   banned     Boolean?  @default(false)
@@ -98,21 +96,4 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
-}
-
-model Comment {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  postId    String   @db.ObjectId
-  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  isDeleted Boolean  @default(false)
-
-  @@index([postId])
-  @@index([userId])
 }

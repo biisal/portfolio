@@ -94,7 +94,7 @@ export default function ContactForm() {
   };
 
   const inputClasses =
-    "w-full rounded-lg border border-blog-selection-bg/50 bg-[#0d1020] px-4 py-3 text-blog-white placeholder:text-blog-fg/35 outline-none transition-colors duration-300 focus:border-blog-orange focus:bg-[#151a29]";
+    "w-full rounded-lg border border-blog-selection-bg/50 bg-blog-black/25 px-4 py-3 text-blog-white placeholder:text-blog-fg/35 outline-none transition-colors duration-300 focus:border-blog-orange focus:bg-blog-black/45";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -155,7 +155,7 @@ export default function ContactForm() {
         )}
       </div>
 
-      <div className="flex flex-col gap-4 rounded-lg border border-blog-selection-bg/50 bg-[#0d1020] p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 rounded-lg border border-blog-selection-bg/50 bg-blog-black/25 p-4 sm:flex-row sm:items-center sm:justify-between">
         <span className="text-sm text-blog-fg/65">
           Verify you&apos;re human
         </span>

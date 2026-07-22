@@ -21,7 +21,7 @@ export function useImageUpload(form: UseFormReturn<BlogFormValues>) {
             : new File(
                 [file],
                 `pasted-image-${Date.now()}.${file.type.split("/")[1] ?? "png"}`,
-                { type: file.type },
+                { type: file.type }
               );
 
         const formData = new FormData();
@@ -59,13 +59,13 @@ export function useImageUpload(form: UseFormReturn<BlogFormValues>) {
       } catch (error) {
         console.error("Image upload error:", error);
         toast.error(
-          error instanceof Error ? error.message : "Failed to upload image",
+          error instanceof Error ? error.message : "Failed to upload image"
         );
       } finally {
         setIsUploading(false);
       }
     },
-    [form],
+    [form]
   );
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ export function useImageUpload(form: UseFormReturn<BlogFormValues>) {
         paste(event, view) {
           const items = Array.from(event.clipboardData?.items ?? []);
           const imageItem = items.find((item) =>
-            item.type.startsWith("image/"),
+            item.type.startsWith("image/")
           );
           if (!imageItem) return false;
 
@@ -94,7 +94,7 @@ export function useImageUpload(form: UseFormReturn<BlogFormValues>) {
           return true;
         },
       }),
-    [uploadImageFile],
+    [uploadImageFile]
   );
 
   const triggerFilePicker = () => imageInputRef.current?.click();

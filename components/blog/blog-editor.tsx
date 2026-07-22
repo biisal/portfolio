@@ -108,7 +108,7 @@ export default function BlogEditor({ initialPost }: BlogEditorProps) {
     } catch (error) {
       console.error("Error saving blog post:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to save blog post",
+        error instanceof Error ? error.message : "Failed to save blog post"
       );
     } finally {
       setIsSaving(false);

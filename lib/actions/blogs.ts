@@ -40,7 +40,7 @@ export const getblogPost = cache(
       console.error("Error fetching blog posts:", error);
       return [];
     }
-  },
+  }
 );
 
 export const getPublishedBlogPosts = cache(async () => {

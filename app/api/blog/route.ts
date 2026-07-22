@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching blog posts:", error);
     return NextResponse.json(
       { error: "Failed to fetch blog posts" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: "Invalid request payload", details: result.error.format() },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     if (existing) {
       return NextResponse.json(
         { error: "A post with this slug already exists" },
-        { status: 409 },
+        { status: 409 }
       );
     }
 
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
     console.error("Error creating blog post:", error);
     return NextResponse.json(
       { error: "Failed to create blog post" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -118,7 +118,7 @@ export async function PUT(request: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: "Invalid request payload", details: result.error.format() },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -132,7 +132,7 @@ export async function PUT(request: NextRequest) {
       if (existing) {
         return NextResponse.json(
           { error: "A post with this slug already exists" },
-          { status: 409 },
+          { status: 409 }
         );
       }
     }
@@ -164,7 +164,7 @@ export async function PUT(request: NextRequest) {
     console.error("Error updating blog post:", error);
     return NextResponse.json(
       { error: "Failed to update blog post" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

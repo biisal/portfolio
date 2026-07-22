@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         const field = firstError?.path?.[0];
         return new Response(
           `Invalid or missing value in "${String(field)}" field.`,
-          { status: 400 },
+          { status: 400 }
         );
       }
       return new Response("Invalid form data.", { status: 400 });
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     if (!success) {
       return new Response(
         "Unable to send your message right now. Please try again later.",
-        { status: 502 },
+        { status: 502 }
       );
     }
 

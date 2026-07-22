@@ -3,6 +3,7 @@ import "./globals.css";
 import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 
+import { BlogThemeSwitcher } from "@/components/blog/blog-theme-switcher";
 import Dock from "@/components/dock";
 import GlobalBackground from "@/components/global-background";
 import { GoogleAnalytics } from "@/components/GoogleServices";
@@ -86,9 +87,21 @@ export default function RootLayout({
         <GoogleAnalytics />
       </head>
       <body className={cn("text-white", JetBrainsMono.className)}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="tokyo-night"
+          storageKey="blog-theme"
+          themes={[
+            "tokyo-night",
+            "catppuccin",
+            "gruber-darker",
+            "monokai-darker",
+            "github-dark",
+          ]}
+        >
           <GlobalBackground />
           <Navbar />
+          <BlogThemeSwitcher />
           <Dock />
           {children}
           <Toaster />

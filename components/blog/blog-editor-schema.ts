@@ -23,7 +23,7 @@ export interface BlogEditorProps {
 }
 
 export function getDefaultValues(
-  initialPost?: BlogPost | null,
+  initialPost?: BlogPost | null
 ): BlogFormValues {
   return {
     title: initialPost?.title || "",

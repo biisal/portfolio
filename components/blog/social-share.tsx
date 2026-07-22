@@ -49,7 +49,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
     {
       name: "X / Twitter",
       href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-        title,
+        title
       )}&url=${encodeURIComponent(shareUrl)}`,
       icon: (
         <Image
@@ -64,9 +64,9 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
     {
       name: "LinkedIn",
       href: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
-        shareUrl,
+        shareUrl
       )}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(
-        excerpt,
+        excerpt
       )}&source=${encodeURIComponent(shareUrl)}`,
       icon: (
         <Image
@@ -81,7 +81,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
     {
       name: "WhatsApp",
       href: `https://api.whatsapp.com/send?text=${encodeURIComponent(
-        title + " - " + excerpt + "\n" + shareUrl,
+        title + " - " + excerpt + "\n" + shareUrl
       )}`,
       icon: (
         <Image
@@ -96,7 +96,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
     {
       name: "Telegram",
       href: `https://t.me/share/url?url=${encodeURIComponent(
-        shareUrl,
+        shareUrl
       )}&text=${encodeURIComponent(title + "\n\n" + excerpt)}`,
       icon: (
         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -107,7 +107,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
     {
       name: "Reddit",
       href: `https://www.reddit.com/submit?url=${encodeURIComponent(
-        shareUrl,
+        shareUrl
       )}&title=${encodeURIComponent(title)}`,
       icon: (
         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">

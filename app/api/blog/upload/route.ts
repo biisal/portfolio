@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     if (!file.type.startsWith("image/")) {
       return NextResponse.json(
         { error: "Only image files are allowed" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
         { error: "File size exceeds 10 MB limit" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     if (!cloudName || !uploadPreset) {
       return NextResponse.json(
         { error: "Cloudinary is not configured" },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       {
         method: "POST",
         body: cloudinaryFormData,
-      },
+      }
     );
 
     if (!response.ok) {
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       console.error("Cloudinary upload failed:", errorText);
       return NextResponse.json(
         { error: "Failed to upload image to Cloudinary" },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     console.error("Error uploading image:", error);
     return NextResponse.json(
       { error: "Failed to upload image" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

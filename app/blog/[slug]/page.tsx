@@ -5,15 +5,12 @@ import Link from "next/link";
 
 import BlogPagination from "@/components/blog/blog-pagination";
 import { BlogPreview } from "@/components/blog/blog-preview";
-import { BlogTags } from "@/components/blog/blog-tags";
-import { CommentSection } from "@/components/blog/comment/comment-section";
-import { ListenBtn } from "@/components/blog/listen-btn";
 import SocialShare from "@/components/blog/social-share";
 import { ViewCounter } from "@/components/blog/view-counter";
 import NotFound from "@/components/not-found";
 import { getBlogPost, getPublishedBlogPosts } from "@/lib/actions/blogs";
-import { getCommentsByPostId } from "@/lib/actions/comments";
 import { cn } from "@/lib/utils";
+import { Comments } from "@/components/blog/comments";
 
 export async function generateMetadata({
   params,
@@ -85,8 +82,6 @@ export default async function Post({
     );
   }
 
-  const comments = await getCommentsByPostId(post.id);
-
   let prevPost = null;
   let nextPost = null;
 
@@ -146,11 +141,7 @@ export default async function Post({
           )}
 
           <BlogPagination prevPost={prevPost} nextPost={nextPost} />
-          <CommentSection
-            postId={post.id}
-            slug={post.slug}
-            comments={comments}
-          />
+          <Comments />
         </article>
       </div>
     </div>

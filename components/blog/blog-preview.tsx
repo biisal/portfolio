@@ -23,7 +23,7 @@ export function BlogPreview({ post, className }: BlogPreviewProps) {
     <article
       className={cn(
         "prose relative prose-invert prose-lg wrap-break-words max-w-none text-blog-fg",
-        className,
+        className
       )}
     >
       {post.audio && (

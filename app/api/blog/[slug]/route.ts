@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   _: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params;
@@ -18,7 +18,7 @@ export async function GET(
     if (!post) {
       return NextResponse.json(
         { error: "Blog post not found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -27,14 +27,14 @@ export async function GET(
     console.error("Error fetching blog post:", error);
     return NextResponse.json(
       { error: "Failed to fetch blog post" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { error, success } = await auth.api.userHasPermission({
@@ -48,7 +48,7 @@ export async function PUT(
     if (!success || error) {
       return NextResponse.json(
         { error: error || "Unauthorized" },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
@@ -65,14 +65,14 @@ export async function PUT(
     console.error("Error updating blog post:", error);
     return NextResponse.json(
       { error: "Failed to update blog post" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { error, success } = await auth.api.userHasPermission({
@@ -86,7 +86,7 @@ export async function DELETE(
     if (!success || error) {
       return NextResponse.json(
         { error: error || "Unauthorized" },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
@@ -101,7 +101,7 @@ export async function DELETE(
     console.error("Error deleting blog post:", error);
     return NextResponse.json(
       { error: "Failed to delete blog post" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

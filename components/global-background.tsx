@@ -11,7 +11,13 @@ const GlobalBackground = () => {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[-1] h-full w-full overflow-hidden bg-blog-bg">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(247,118,142,0.03),transparent_24%),radial-gradient(circle_at_80%_10%,rgba(255,158,100,0.05),transparent_22%),linear-gradient(180deg,#090b17_0%,#090b17_100%)]" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at top left,rgba(247,118,142,0.03),transparent 24%),radial-gradient(circle at 80% 10%,rgba(255,158,100,0.05),transparent 22%),linear-gradient(180deg,var(--blog-bg) 0%,var(--blog-bg) 100%)",
+        }}
+      />
     </div>
   );
 };

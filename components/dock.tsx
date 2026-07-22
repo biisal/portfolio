@@ -29,7 +29,7 @@ const Dock = () => {
     },
     {
       id: "opensource",
-      name: "Open Source",
+      name: "OS",
       icon: GitPullRequest,
     },
     {
@@ -96,7 +96,7 @@ const Dock = () => {
 
     const observer = new IntersectionObserver(
       observerCallback,
-      observerOptions,
+      observerOptions
     );
 
     sectionIds.forEach((id) => {

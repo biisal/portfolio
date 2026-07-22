@@ -25,7 +25,7 @@ export async function ViewCounter({
     <span
       className={cn(
         "text-blog-fg opacity-60 flex items-center gap-1",
-        className,
+        className
       )}
     >
       {views.toLocaleString()} Reads

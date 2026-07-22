@@ -18,7 +18,7 @@ export async function sendTgMessage(text: string) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      },
+      }
     );
     if (!res.ok) {
       console.error("Error sending Telegram message:", await res.text());
