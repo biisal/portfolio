@@ -33,8 +33,8 @@ export default async function BlogIndex() {
     <div className="min-h-screen p-8 md:p-20 text-blog-fg">
       <div className="max-w-4xl mx-auto">
         <header className="mb-16">
-          <h1 className="text-4xl font-bold mb-4 text-blog-orange">Blogs</h1>
-          <p className="text-xl text-blog-fg opacity-80">
+          <h1 className="text-5xl font-bold mb-4 text-blog-orange">Blogs</h1>
+          <p className="text-2xl text-blog-fg opacity-80">
             Things I&apos;ve written.
             <br />
             <span className="text-xs text-muted-foreground blur-[1px] hover:blur-none transition-all duration-300">

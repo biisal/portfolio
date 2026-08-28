@@ -4,7 +4,7 @@
 @source "../node_modules/@streamdown/code/dist/*.js";
 @source "../node_modules/@streamdown/mermaid/dist/*.js";
 
-@custom-variant dark (&:is(.dark *), &:is(.tokyo-night *), &:is(.catppuccin *), &:is(.gruber-darker *), &:is(.monokai-darker *), &:is(.github-dark *));
+@custom-variant dark (&:is(.dark *), &:is(.tokyo-night *), &:is(.catppuccin *), &:is(.gruber-darker *), &:is(.monokai-darker *), &:is(.github-dark *), &:is(.gruvbox-dark *));
 
 @theme inline {
   /* Border Radius */
@@ -159,7 +159,7 @@
   --blog-white: #c0caf5;
   --blog-selection-bg: #28344a;
   --blog-active-border: #ff9e64;
-  --blog-inactive-border: #090b17;
+  --blog-inactive-border: #565c7a;
 }
 
 /* Catppuccin Mocha Theme */
@@ -204,6 +204,50 @@
   --blog-selection-bg: #45475a;
   --blog-active-border: #89b4fa;
   --blog-inactive-border: #313244;
+}
+
+/* Gruvbox Dark Theme */
+.gruvbox-dark {
+  --background: #282828;
+  --foreground: #ebdbb2;
+  --card: #3c3836;
+  --card-foreground: #ebdbb2;
+  --popover: #3c3836;
+  --popover-foreground: #ebdbb2;
+  --primary: #d65d0e;
+  --primary-foreground: #282828;
+  --secondary: #504945;
+  --secondary-foreground: #ebdbb2;
+  --muted: #504945;
+  --muted-foreground: #928374;
+  --accent: #98971a;
+  --accent-foreground: #282828;
+  --destructive: #cc241d;
+  --destructive-foreground: #282828;
+  --border: #504945;
+  --input: #504945;
+  --ring: #d65d0e;
+  --chart-1: #d65d0e;
+  --chart-2: #98971a;
+  --chart-3: #d79921;
+  --chart-4: #b16286;
+  --chart-5: #cc241d;
+  --midnightpurple: #b16286;
+  --blog-bg: #282828;
+  --blog-fg: #ebdbb2;
+  --blog-black: #3c3836;
+  --blog-red: #cc241d;
+  --blog-green: #98971a;
+  --blog-green-light: #689d6a;
+  --blog-yellow: #d79921;
+  --blog-orange: #d65d0e;
+  --blog-blue: #458588;
+  --blog-magenta: #b16286;
+  --blog-cyan: #689d6a;
+  --blog-white: #fbf1c7;
+  --blog-selection-bg: #504945;
+  --blog-active-border: #d65d0e;
+  --blog-inactive-border: #504945;
 }
 
 /* Gruber Darker Theme */
@@ -352,10 +396,31 @@
     background: var(--background);
     color: var(--foreground);
   }
+}
 
-  body::-webkit-scrollbar {
-    display: none;
-  }
+/* Custom scrollbar styles for all scrollable elements */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blog-inactive-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--blog-fg);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blog-inactive-border) transparent;
 }
 
 .giscus-header {

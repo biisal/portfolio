@@ -110,11 +110,13 @@ export default async function Post({
           ← Back to All Blogs
         </Link>
         <article>
-          <h1 className="text-blog-white mb-4 text-4xl font-bold">
+          <h1 className="text-blog-white mb-4 text-3xl md:text-5xl">
             {post.title}
           </h1>
-          <div className="text-blog-black mb-8 font-mono flex flex-wrap items-center gap-4 text-sm">
-            {new Date(post.created_at).toLocaleDateString()}
+          <div className="mb-8 font-mono flex flex-wrap items-center gap-4 text-sm">
+            <span className="text-blog-fg/35">
+              {new Date(post.created_at).toLocaleDateString()}
+            </span>
             <ViewCounter slug={post.slug} initialViews={post.views} />
           </div>
           {post.coverImage && (

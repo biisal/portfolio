@@ -97,11 +97,13 @@ const Skills = ({ languages }: SkillsProps) => {
 
           <BlurFade delay={0.45} inView>
             <div className="w-full max-w-md mt-4">
-              <div className="flex items-center gap-2 mb-6">
+              <div className="flex items-start flex-col w-full gap-2 mb-6">
                 <h3 className="text-xl font-bold text-blog-orange uppercase tracking-wider">
                   Languages
                 </h3>
-                <span className="text-xs text-blog-fg/55">(Last 7 Days)</span>
+                <span className="text-xs text-blog-fg/55">
+                  (Last 7 Days) [Excluding Companies project]
+                </span>
               </div>
               <div className="flex flex-col gap-3">
                 {displayLanguages.map((lang, idx) => (

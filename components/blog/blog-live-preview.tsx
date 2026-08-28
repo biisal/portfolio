@@ -41,8 +41,10 @@ export function BlogLivePreview({ title, content }: BlogLivePreviewProps) {
         {title && (
           <>
             <h1 className="text-blog-white text-4xl font-bold mb-4">{title}</h1>
-            <div className="text-blog-black mb-8 font-mono">
-              {new Date().toLocaleDateString()}
+            <div className="mb-8 font-mono">
+              <span className="text-blog-fg/35">
+                {new Date().toLocaleDateString()}
+              </span>
             </div>
           </>
         )}

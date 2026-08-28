@@ -9,7 +9,7 @@ import GlobalBackground from "@/components/global-background";
 import { GoogleAnalytics } from "@/components/GoogleServices";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
-import { JetBrainsMono } from "@/fonts";
+import { SpaceGrotesk } from "@/fonts";
 import { cn } from "@/lib/utils";
 
 const heroImgUrl =
@@ -86,7 +86,7 @@ export default function RootLayout({
       <head>
         <GoogleAnalytics />
       </head>
-      <body className={cn("text-white", JetBrainsMono.className)}>
+      <body className={cn("text-white", SpaceGrotesk.className)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="tokyo-night"
@@ -97,6 +97,7 @@ export default function RootLayout({
             "gruber-darker",
             "monokai-darker",
             "github-dark",
+            "gruvbox-dark",
           ]}
         >
           <GlobalBackground />

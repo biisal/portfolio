@@ -3,7 +3,7 @@
   color: var(--blog-orange);
   border-bottom: 2px solid var(--blog-selection-bg);
   padding-bottom: 0.5rem;
-  font-size: 2.25rem;
+  font-size: 2.75rem !important;
   font-weight: 700;
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -12,7 +12,7 @@
 [data-streamdown="heading-2"] {
   color: var(--blog-orange);
   margin-top: 2rem;
-  font-size: 1.875rem;
+  font-size: 2.25rem !important;
   font-weight: 700;
   margin-bottom: 1rem;
 }
@@ -20,7 +20,7 @@
 [data-streamdown="heading-3"] {
   color: var(--blog-green);
   margin-top: 1.5rem;
-  font-size: 1.5rem;
+  font-size: 1.75rem !important;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
@@ -28,9 +28,20 @@
 [data-streamdown="heading-4"] {
   color: var(--blog-green-light);
   margin-top: 1.5rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem !important;
   font-weight: 600;
   margin-bottom: 0.75rem;
+}
+
+/* Base paragraph & list text */
+article p {
+  font-size: 1.125rem !important;
+  line-height: 1.75 !important;
+}
+
+article li {
+  font-size: 1.125rem !important;
+  line-height: 1.75 !important;
 }
 
 /* Custom link appearance */

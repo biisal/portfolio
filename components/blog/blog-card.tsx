@@ -12,7 +12,11 @@ export function BlogCard({ post, isAdmin }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex flex-col gap-6 rounded-lg border border-blog-inactive-border bg-blog-bg p-6 transition-colors hover:border-blog-orange sm:flex-row w-full"
+      className="group flex flex-col gap-6 rounded-lg border 
+
+			hover:bg-forground/05
+
+			border-blog-inactive-border bg-blog-bg p-6 transition-colors sm:flex-row w-full"
     >
       {post.coverImage && (
         <div className="relative w-full shrink-0 overflow-hidden rounded-lg border border-blog-inactive-border aspect-video sm:w-48">
@@ -25,7 +29,7 @@ export function BlogCard({ post, isAdmin }: BlogCardProps) {
         </div>
       )}
       <div className="flex-1 min-w-0">
-        <h2 className="text-2xl font-bold mb-2 group-hover:text-blog-orange transition-colors text-blog-white flex justify-between items-start">
+        <h2 className="text-2xl md:text-3xl mb-2 group-hover:text-blog-orange transition-colors text-blog-white flex justify-between items-start">
           <span className="flex items-center gap-2">
             {post.title}
             {!post.published && (
@@ -37,20 +41,22 @@ export function BlogCard({ post, isAdmin }: BlogCardProps) {
           {isAdmin && <AdminControls slug={post.slug} />}
         </h2>
 
-        <div className="mb-4 flex flex-wrap items-center gap-4 text-xs font-mono text-blog-black md:text-sm">
-          <span>{new Date(post.created_at).toLocaleDateString()}</span>
+        <div className="mb-4 flex flex-wrap items-center gap-4 text-xs font-mono md:text-sm">
+          <span className="text-blog-fg/35">
+            {new Date(post.created_at).toLocaleDateString()}
+          </span>
           <span className="inline-flex items-center gap-2 text-blog-fg opacity-60">
             {(post.views || 0).toLocaleString()} Reads
           </span>
         </div>
 
-        <p className="max-w-3xl text-base leading-relaxed text-blog-fg md:text-lg">
+        <p className="max-w-3xl text-lg leading-relaxed text-blog-fg md:text-xl">
           {post.excerpt}
         </p>
       </div>
 
       {!isAdmin && (
-        <div className="flex items-start justify-end text-blog-black transition group-hover:text-blog-orange sm:self-start">
+        <div className="flex items-start justify-end text-blog-fg/60 transition group-hover:text-blog-orange sm:self-start">
           <ArrowRight className="h-5 w-5 shrink-0" />
         </div>
       )}

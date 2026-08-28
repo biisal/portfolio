@@ -39,6 +39,11 @@ const themes = [
     name: "GitHub Dark",
     colors: ["#0d1117", "#58a6ff", "#3fb950"],
   },
+  {
+    id: "gruvbox-dark",
+    name: "Gruvbox Dark",
+    colors: ["#282828", "#d65d0e", "#98971a"],
+  },
 ] as const;
 
 export function BlogThemeSwitcher() {
@@ -61,9 +66,8 @@ export function BlogThemeSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="fixed left-4 top-4 z-50 md:left-10 md:top-8 flex cursor-pointer list-none items-center gap-2 rounded-full border border-blog-inactive-border bg-blog-bg/90 px-3.5 py-2.5 text-sm font-medium text-blog-white shadow-lg shadow-black/20 backdrop-blur-md transition-colors hover:border-blog-orange hover:text-blog-orange focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blog-orange">
+        <button className="fixed right-4 top-4 z-50 md:right-10 md:top-8 flex cursor-pointer list-none items-center gap-2 rounded-full border border-blog-inactive-border bg-blog-bg/90 px-3.5 py-2.5 text-sm font-medium text-blog-white shadow-lg shadow-black/20 backdrop-blur-md transition-colors hover:border-blog-orange hover:text-blog-orange focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blog-orange">
           <Palette className="h-4 w-4" aria-hidden="true" />
-          <span className="hidden sm:inline">Theme</span>
           <span className="sr-only">Choose a reading theme</span>
         </button>
       </DropdownMenuTrigger>
