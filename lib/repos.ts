@@ -10,6 +10,18 @@ interface TPr {
 
 export const PULL_REQUESTS: TPr[] = [
   {
+    repo: "pnpm/pnpm",
+    repoUrl: "https://github.com/pnpm/pnpm",
+    icon: "https://avatars.githubusercontent.com/u/21320719?s=200&v=4",
+    prs: [
+      {
+        title:
+          "fix(add): resolve protocol-prefixed selectors per protocol — unblocks jsr: workflow",
+        prUrl: "https://github.com/pnpm/pnpm/pull/14593",
+      },
+    ],
+  },
+  {
     repo: "BuilderIO/agent-native",
     repoUrl: "",
     icon: "https://avatars.githubusercontent.com/u/35700027",

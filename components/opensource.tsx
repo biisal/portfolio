@@ -48,7 +48,7 @@ const Opensource = () => {
                     <img
                       src={repoData.icon}
                       alt={repoData.repo}
-                      className="h-6 w-6 rounded-full object-cover shrink-0"
+                      className="h-6 w-6 object-cover shrink-0"
                     />
                   )}
                   <span>{repoData.repo}</span>
