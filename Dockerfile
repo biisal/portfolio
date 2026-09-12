@@ -1,10 +1,13 @@
 # ============================================
-# Stage 1: Dependencies Installation Stage
+# Stage 1: Base — pnpm + Node.js runtime
 # ============================================
-FROM node:22-alpine AS dependencies
+FROM ghcr.io/pnpm/pnpm:12 AS base
+RUN pnpm runtime set node 24 -g
 
-# Install pnpm globally using npm
-RUN npm install -g pnpm@12.4.1
+# ============================================
+# Stage 2: Dependencies Installation
+# ============================================
+FROM base AS dependencies
 
 WORKDIR /app
 
@@ -12,19 +15,14 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml* ./
 COPY prisma ./prisma
 
-# Approve build scripts for all dependencies
-RUN pnpm approve-builds --all
-
 # Install project dependencies with frozen lockfile for reproducible builds
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 
 # ============================================
-# Stage 2: Build Next.js application in standalone mode
+# Stage 3: Build Next.js application in standalone mode
 # ============================================
-FROM node:22-alpine AS builder
-
-RUN npm install -g pnpm@12.4.1
+FROM base AS builder
 
 WORKDIR /app
 
@@ -40,9 +38,9 @@ ENV NODE_ENV=production
 RUN pnpm run build
 
 # ============================================
-# Stage 3: Run Next.js application
+# Stage 4: Run Next.js application
 # ============================================
-FROM node:22-alpine AS runner
+FROM base AS runner
 
 WORKDIR /app
 
@@ -52,22 +50,13 @@ ENV HOSTNAME="0.0.0.0"
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 # Copy production assets
-COPY --from=builder --chown=node:node /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next && chown node:node .next
-
-# Automatically leverage output traces to reduce image size
-COPY --from=builder --chown=node:node /app/.next/standalone ./
-COPY --from=builder --chown=node:node /app/.next/static ./.next/static
-
-# Switch to non-root user for security best practices
-USER node
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD wget -qO- http://localhost:3000/api/health || exit 1
 
-# Next.js standalone outputs a Node.js server
-CMD ["node", "server.js"]
+CMD ["pnpm", "runtime", "exec", "node", "server.js"]
