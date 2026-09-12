@@ -3,8 +3,8 @@
 # ============================================
 FROM node:22-alpine AS dependencies
 
-# Enable corepack and install latest stable pnpm
-RUN corepack enable && corepack prepare pnpm@12.4.1 --activate
+# Install pnpm globally using npm
+RUN npm install -g pnpm@12.4.1
 
 WORKDIR /app
 
@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
 # ============================================
 FROM node:22-alpine AS builder
 
-RUN corepack enable && corepack prepare pnpm@12.4.1 --activate
+RUN npm install -g pnpm@12.4.1
 
 WORKDIR /app
 
