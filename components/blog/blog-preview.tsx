@@ -11,7 +11,7 @@ import { BlogPost } from "@/.generated/client";
 import { cn } from "@/lib/utils";
 
 import { BlogTags } from "./blog-tags";
-import { ListenBtn } from "./listen-btn";
+import { Player } from "../player";
 
 interface BlogPreviewProps {
   post: BlogPost;
@@ -26,11 +26,7 @@ export function BlogPreview({ post, className }: BlogPreviewProps) {
         className
       )}
     >
-      {post.audio && (
-        <div className="sticky top-20 z-40">
-          <ListenBtn url={post.audio} />
-        </div>
-      )}
+      {post.audio && <Player url={post.audio} className="sticky top-20 z-40" />}
       <Streamdown
         mode="static"
         controls={{ code: false }}

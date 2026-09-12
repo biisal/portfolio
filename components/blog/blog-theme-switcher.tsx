@@ -12,6 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useDistributionFree from "@/lib/hooks/use-distruciton-free";
 
 const themes = [
   {
@@ -50,6 +51,7 @@ export function BlogThemeSwitcher() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { hidden } = useDistributionFree();
 
   const isBlogRoute =
     pathname.startsWith("/blog") || pathname.startsWith("/tags");
@@ -59,7 +61,7 @@ export function BlogThemeSwitcher() {
     setMounted(true);
   }, []);
 
-  if (!isBlogRoute || !mounted) {
+  if (!isBlogRoute || !mounted || hidden) {
     return null;
   }
 
