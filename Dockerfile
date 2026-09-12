@@ -1,7 +1,7 @@
 # ============================================
 # Stage 1: Base — pnpm + Node.js runtime
 # ============================================
-FROM ghcr.io/pnpm/pnpm:12 AS base
+FROM ghcr.io/pnpm/pnpm:11 AS base
 RUN pnpm runtime set node 24 -g
 
 # ============================================
