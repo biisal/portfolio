@@ -34,6 +34,21 @@ export const PULL_REQUESTS: TPr[] = [
     ],
   },
   {
+    repo: "NestJS",
+    repoUrl: "https://github.com/nestjs",
+    icon: "https://avatars.githubusercontent.com/u/28507035?s=200&v=4",
+    prs: [
+      {
+        title: "fix: show schematics as plain list on narrow terminals",
+        prUrl: "https://github.com/nestjs/nest-cli/pull/3548",
+      },
+      {
+        title: "fix: resolve enterprise section text overlap",
+        prUrl: "https://github.com/nestjs/marketing-ui/pull/2",
+      },
+    ],
+  },
+  {
     repo: "Picoclaw",
     repoUrl: "https://github.com/sipeed/picoclaw",
     icon: "https://avatars.githubusercontent.com/u/44034752?s=48&v=4",
