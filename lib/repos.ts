@@ -19,6 +19,11 @@ export const PULL_REQUESTS: TPr[] = [
           "fix(add): resolve protocol-prefixed selectors per protocol — unblocks jsr: workflow",
         prUrl: "https://github.com/pnpm/pnpm/pull/14593",
       },
+      {
+        title:
+          "fix(package-manager): always resolve all dependency groups for lockfile completeness",
+        prUrl: "https://github.com/pnpm/pnpm/pull/14918",
+      },
     ],
   },
   {
