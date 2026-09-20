@@ -39,3 +39,5 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: ["/blog/editor/:path*", "/projects/form/:path*"],
 };
+
+// checking if the commit having varified commit
