@@ -3,15 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "prisma generate",
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "typecheck": "tsc --noEmit",
-    "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
     "format:check": "oxfmt --check .",
     "format": "oxfmt --write .",
     "check": "oxlint --fix && tsc --noEmit",
@@ -76,5 +75,6 @@
     "*.{json,md,css}": [
       "oxfmt --write"
     ]
-  }
+  },
+  "packageManager": "pnpm@12.5.1"
 }
