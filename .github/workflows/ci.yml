@@ -84,7 +84,7 @@ jobs:
       - name: Install if cache missed
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm ci
-      - run: pnpm prisma:generate
+      - run: pnpm db:generate
       - run: pnpm typecheck
   build:
     needs: [format, lint, typecheck]
@@ -115,5 +115,5 @@ jobs:
       - name: Create env file
         run: cat .env.example > .env
       - name: Generate prisma
-        run: pnpm prisma:generate
+        run: pnpm db:generate
       - run: pnpm build
