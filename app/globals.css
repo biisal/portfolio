@@ -8,7 +8,7 @@
 
 @theme inline {
   /* Border Radius */
-  --radius: 0.5rem;
+  --radius: 0.3rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -170,7 +170,7 @@
   --card-foreground: #f5e0dc;
   --popover: #181825;
   --popover-foreground: #f5e0dc;
-  --primary: #89b4fa;
+  --primary: #e64553;
   --primary-foreground: #11111b;
   --secondary: #313244;
   --secondary-foreground: #cdd6f4;
@@ -302,7 +302,7 @@
   --card-foreground: #e6edf3;
   --popover: #161b22;
   --popover-foreground: #e6edf3;
-  --primary: #58a6ff;
+  --primary: #ff9e64;
   --primary-foreground: #0d1117;
   --secondary: #161b22;
   --secondary-foreground: #e6edf3;

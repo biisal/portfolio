@@ -17,7 +17,7 @@ const buttonVariants = cva(
           "flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blog-selection-bg/10 border border-blog-selection-bg/50 text-blog-fg hover:text-blog-orange hover:border-blog-orange transition duration-300 font-sans text-sm",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent/70 hover:text-accent-foreground",
+        ghost: "border-none",
         link: "text-primary underline-offset-4 hover:underline",
         chip: "border-2 border-transparent",
       },
@@ -27,6 +27,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
+        xl: "h-12 rounded-md px-8",
       },
       selected: {
         true: "bg-blog-orange text-blog-bg shadow-[0_0_12px_rgba(255,158,100,0.3)] border-transparent hover:bg-blog-orange/90",

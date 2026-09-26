@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { email, phoneNumber, social } from "@/lib/config";
+import { Button } from "./ui/button";
 
 const SocialLinks = () => {
   const [copied, setCopied] = useState(false);
@@ -40,16 +41,18 @@ const SocialLinks = () => {
       </div>
       <div className="flex items-center gap-4">
         {social.map(({ label, href, icon }) => (
-          <Link
-            key={label}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={label}
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-blog-inactive-border bg-blog-bg transition-colors hover:border-blog-orange hover:bg-blog-orange/6"
-          >
-            <Image src={icon} alt={label} width={22} height={22} />
-          </Link>
+          <Button asChild variant="outline" className="h-12 w-12 p-3">
+            <Link
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="flex items-center justify-center h-full w-full"
+            >
+              <Image src={icon} alt={label} width={22} height={22} />
+            </Link>
+          </Button>
         ))}
       </div>
     </div>

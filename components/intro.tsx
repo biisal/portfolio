@@ -7,6 +7,7 @@ import { BlurFade } from "@/components/ui/blur-fade";
 
 import SocialLinks from "./social-links";
 import { TerminalPrompt } from "./terminal-prompt";
+import { Button } from "./ui/button";
 
 const Intro = () => {
   return (
@@ -40,20 +41,19 @@ const Intro = () => {
 
       <BlurFade delay={0.55} inView>
         <div className="flex flex-col gap-3 md:flex-row">
-          <Link
-            href="/blog"
-            className="inline-flex items-center justify-center gap-3 rounded-lg border border-blog-orange bg-blog-orange px-5 py-3 text-sm font-semibold text-blog-bg transition hover:opacity-90"
-          >
-            Read the blog
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
-            href="/#projects"
-            className="inline-flex items-center justify-center gap-3 rounded-lg border border-blog-inactive-border bg-blog-bg px-5 py-3 text-sm font-semibold text-blog-white transition hover:border-blog-orange hover:text-blog-orange"
-          >
-            Browse selected work
-            <FileCode2 className="h-4 w-4" />
-          </Link>
+          <Button size={"xl"} asChild>
+            <Link href="/blog">
+              Read the blog
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+
+          <Button asChild variant={"outline"} size={"xl"}>
+            <Link href="/#projects">
+              Browse selected work
+              <FileCode2 className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </BlurFade>
 

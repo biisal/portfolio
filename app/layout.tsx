@@ -5,7 +5,6 @@ import { ThemeProvider } from "next-themes";
 
 import { BlogThemeSwitcher } from "@/components/blog/blog-theme-switcher";
 import Dock from "@/components/dock";
-import GlobalBackground from "@/components/global-background";
 import { GoogleAnalytics } from "@/components/GoogleServices";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
@@ -89,7 +88,7 @@ export default function RootLayout({
       <body className={cn("text-white", SpaceGrotesk.className)}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="tokyo-night"
+          defaultTheme="catppuccin"
           storageKey="blog-theme"
           themes={[
             "tokyo-night",
@@ -100,7 +99,7 @@ export default function RootLayout({
             "gruvbox-dark",
           ]}
         >
-          <GlobalBackground />
+          {/*<GlobalBackground />*/}
           <Navbar />
           <BlogThemeSwitcher />
           <Dock />
