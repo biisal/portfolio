@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 
 const ROUTES = [
@@ -137,50 +138,54 @@ const Dock = () => {
   };
 
   return (
-    <motion.div
+    <motion.nav
+      aria-label="Primary"
       initial={{ y: 0 }}
       animate={{ y: visible ? 0 : 100 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 rounded-lg items-center  bg-blog-bg border-foreground/5 border px-2 py-2 shadow-lg shadow-black/30 "
+      className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border/50 bg-background/75 px-2 py-1.5 shadow-xl shadow-black/40 backdrop-blur-xl"
     >
-      {ROUTES.map((route) => (
-        <div
-          key={route.id}
-          className="relative flex flex-col items-center px-1"
-        >
-          <TooltipProvider delayDuration={200}>
-            <Tooltip>
+      <TooltipProvider delayDuration={200}>
+        {ROUTES.map((route) => {
+          const activeItem = isActive(route.id);
+
+          return (
+            <Tooltip key={route.id}>
               <TooltipTrigger asChild>
                 <Button
-                  variant="outline"
-                  className="z-40 text-foreground bg-blog-bg"
+                  variant="ghost"
+                  size="icon"
+                  aria-label={route.name}
+                  aria-current={activeItem ? "true" : undefined}
+                  className={cn(
+                    "relative rounded-full text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+                    activeItem && "text-foreground"
+                  )}
                   onClick={() => handleClick(route.id)}
                 >
                   <route.icon className="h-4 w-4" />
+                  {activeItem && (
+                    <motion.span
+                      layoutId={pathname === "/" ? "dock-dot" : undefined}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary"
+                    />
+                  )}
                 </Button>
               </TooltipTrigger>
               <TooltipContent
                 side="top"
-                className="border border-blog-inactive-border bg-blog-bg/95 text-blog-fg text-xs"
+                className="rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-medium text-foreground shadow-md"
               >
                 {route.name}
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
-          <div className="mt-1 h-1 w-1">
-            {isActive(route.id) && (
-              <motion.div
-                layoutId={pathname === "/" ? "dock-dot" : undefined}
-                className="h-1 w-1 rounded-full bg-foreground"
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-              />
-            )}
-          </div>
-        </div>
-      ))}
-    </motion.div>
+          );
+        })}
+      </TooltipProvider>
+    </motion.nav>
   );
 };
 
