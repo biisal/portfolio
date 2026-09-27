@@ -22,17 +22,21 @@ const Intro = () => {
             Avisek Ray
           </h1>
           <p className="max-w-2xl text-lg leading-relaxed text-blog-white/90 md:text-xl">
-            Database, Backend Design, Frontend Engineering and notes from the
-            terminal.
+            Database, Backend Design, Frontend Engineering.
           </p>
         </div>
       </BlurFade>
 
       <BlurFade delay={0.45} inView>
         <p className="max-w-2xl text-base  text-blog-fg/72 md:text-md">
-          I like to make things that help people using my programming skills.
-          Also, I’m a freelancer. My goal is to keep learning, explore new
-          technologies, and contribute to projects that make a real difference.
+          I’m a Software Engineer at EnhanceAI Art, where I build full-stack
+          systems and AI-powered products.
+          <br />
+          I enjoy learning new technologies but I love to explore how old
+          technologies work.
+          <br />
+          My goal is in my .env
+          <br />
         </p>
       </BlurFade>
 
