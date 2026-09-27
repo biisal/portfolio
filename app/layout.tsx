@@ -1,15 +1,12 @@
 import "./globals.css";
 
 import { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 
-import { BlogThemeSwitcher } from "@/components/blog/blog-theme-switcher";
 import Dock from "@/components/dock";
 import { GoogleAnalytics } from "@/components/GoogleServices";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { SpaceGrotesk } from "@/fonts";
-import { cn } from "@/lib/utils";
 
 const heroImgUrl =
   "https://res.cloudinary.com/dorxspa9g/image/upload/v1780802824/blog-content/gtz7sxohubbtnrbjx6be.png";
@@ -81,31 +78,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark">
       <head>
         <GoogleAnalytics />
       </head>
-      <body className={cn("text-white", SpaceGrotesk.className)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="catppuccin"
-          storageKey="blog-theme"
-          themes={[
-            "tokyo-night",
-            "catppuccin",
-            "gruber-darker",
-            "monokai-darker",
-            "github-dark",
-            "gruvbox-dark",
-          ]}
-        >
-          {/*<GlobalBackground />*/}
-          <Navbar />
-          <BlogThemeSwitcher />
-          <Dock />
-          {children}
-          <Toaster />
-        </ThemeProvider>
+      <body className={SpaceGrotesk.className}>
+        {/*<GlobalBackground />*/}
+        <Navbar />
+        <Dock />
+        {children}
+        <Toaster />
       </body>
     </html>
   );

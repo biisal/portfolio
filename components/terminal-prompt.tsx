@@ -9,11 +9,11 @@ interface TerminalPromptProps {
 export const TerminalPrompt = ({ className }: TerminalPromptProps) => {
   return (
     <p
-      className={`flex text-lg items-center gap-0 text-blog-orange/90 ${className || ""}`}
+      className={`flex text-md items-center gap-0 text-blog-orange/90 ${className || ""}`}
     >
       biisal@<span className="text-blog-white">codeltix-dot-com</span>
       <ChevronRight className="h-4 w-4 ml-2" />
-      <span className="h-5 w-2 bg-blog-white/90 animate-pulse" />
+      <span className="h-5 w-2 bg-foreground/60 animate-pulse" />
     </p>
   );
 };

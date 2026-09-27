@@ -15,7 +15,7 @@ const GlobalBackground = () => {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle at top left,rgba(247,118,142,0.03),transparent 24%),radial-gradient(circle at 80% 10%,rgba(255,158,100,0.05),transparent 22%),linear-gradient(180deg,var(--blog-bg) 0%,var(--blog-bg) 100%)",
+            "radial-gradient(circle at top left,rgba(247,118,142,0.03),transparent 24%),radial-gradient(circle at 80% 10%,rgba(255,158,100,0.05),transparent 22%),linear-gradient(180deg,var(--background) 0%,var(--background) 100%)",
         }}
       />
     </div>

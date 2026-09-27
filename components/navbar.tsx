@@ -19,7 +19,7 @@ const Navbar = () => {
             <BookText className="h-4 w-4" />
           </Link>
         </Button>
-        <Button asChild variant={"outline"}>
+        <Button asChild className="bg-background" variant={"outline"}>
           <Link
             target="_blank"
             href="https://drive.google.com/file/d/1wcR-9LoLmYQQ3lh-m35V7NxV1AdURNda/view?usp=drive_link"
