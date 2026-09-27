@@ -3,9 +3,7 @@
 import "@/styles/streamdown.css";
 
 import { code as codePlugin } from "@streamdown/code";
-import rehypeRaw from "rehype-raw";
-import remarkBreaks from "remark-breaks";
-import { defaultRemarkPlugins, Streamdown } from "streamdown";
+import { Streamdown } from "streamdown";
 
 import { BlogPost } from "@/.generated/client";
 import { cn } from "@/lib/utils";
@@ -29,10 +27,15 @@ export function BlogPreview({ post, className }: BlogPreviewProps) {
       {post.audio && <Player url={post.audio} className="sticky top-20 z-40" />}
       <Streamdown
         mode="static"
-        controls={{ code: false }}
         plugins={{ code: codePlugin }}
-        remarkPlugins={[...Object.values(defaultRemarkPlugins), remarkBreaks]}
-        rehypePlugins={[[rehypeRaw]]}
+        shikiTheme={["gruvbox-dark-hard", "gruvbox-dark-hard"]}
+        lineNumbers={false}
+        controls={{
+          table: false,
+          code: {
+            download: false,
+          },
+        }}
       >
         {post.content}
       </Streamdown>

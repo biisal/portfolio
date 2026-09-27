@@ -107,13 +107,21 @@ article [data-code-block-header="true"] {
 
 [data-streamdown="code-block"] {
   border: none;
-  outline: none;
+  padding: 0;
+  border-radius: 6px;
 }
 [data-streamdown="code-block-header"] {
-  display: none;
-  outline: none;
-  background: none;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-[data-streamdown="inline-code"] {
-  color: var(--primary);
+[data-streamdown="code-block-body"] {
+  padding: 10px;
+  border-radius: 0;
+}
+
+[data-streamdown="table-wrapper"] {
+  padding: 0;
+}
+[data-streamdown="table-header"] {
+  display: none;
 }

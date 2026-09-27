@@ -22,7 +22,7 @@ const ProjectsIntro = async () => {
         <BlurFade delay={0.25} inView>
           <div className="flex items-start justify-between">
             <div className="flex flex-col gap-2">
-              <h2 className="text-4xl md:text-5xl font-bold text-blog-white">
+              <h2 className="text-3xl md:text-5xl font-bold text-blog-white">
                 <span className="text-blog-orange">Selected</span> Work
               </h2>
               <p className="mt-2 text-base text-blog-fg/80 md:text-lg">
@@ -31,7 +31,7 @@ const ProjectsIntro = async () => {
             </div>
             <Link
               href="/projects"
-              className="text-sm font-semibold text-blog-orange transition-colors hover:text-blog-white mt-3"
+              className="text-sm min-w-20 font-semibold text-blog-orange transition-colors hover:text-blog-white mt-3"
             >
               View all
             </Link>
