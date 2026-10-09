@@ -33,6 +33,10 @@ const Skills = ({ languages }: SkillsProps) => {
     { name: "React", icon: "/icons/React-Dark.svg" },
     { name: "FastAPI", icon: "/icons/FastAPI.svg" },
 
+    { name: "NestJS", icon: "/icons/NestJS.svg" },
+    { name: "Turborepo", icon: "/icons/Turborepo.svg" },
+    { name: "Prisma", icon: "/icons/Prisma.svg" },
+
     { name: "PostgreSQL", icon: "/icons/PostgreSQL-Dark.svg" },
     { name: "MongoDB", icon: "/icons/MongoDB.svg" },
     { name: "Redis", icon: "/icons/Redis-Dark.svg" },
