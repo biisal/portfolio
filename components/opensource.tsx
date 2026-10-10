@@ -3,6 +3,7 @@
 import { GitPullRequest } from "lucide-react";
 import Link from "next/link";
 
+import { SectionHeading } from "@/components/section-heading";
 import {
   Accordion,
   AccordionContent,
@@ -16,22 +17,15 @@ const Opensource = () => {
   return (
     <section
       id="opensource"
-      className="relative flex w-full flex-col justify-center py-24"
+      className="relative flex w-full flex-col justify-center py-16"
     >
-      <div className="mb-12">
-        <BlurFade delay={0.25} inView>
-          <div className="flex flex-col gap-2">
-            <h2 className="text-4xl md:text-5xl font-bold text-blog-white">
-              <span className="text-blog-orange">Open Source</span>{" "}
-              Contributions
-            </h2>
-            <p className="mt-2 text-base text-blog-fg/80 md:text-lg">
-              Pull requests and features I&apos;ve contributed to the projects I
-              use and love.
-            </p>
-          </div>
-        </BlurFade>
-      </div>
+      <SectionHeading
+        index="02"
+        label="open source"
+        title="Open source contributions"
+        description="Pull requests and features I've contributed to the projects I use and love."
+        className="mb-8"
+      />
 
       <BlurFade delay={0.3} inView>
         <Accordion

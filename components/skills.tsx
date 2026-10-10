@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
+import { SectionHeading } from "@/components/section-heading";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { cn } from "@/lib/utils";
 
@@ -14,122 +15,143 @@ interface SkillsProps {
   languages: Language[];
 }
 
+interface Tool {
+  name: string;
+  icon: string;
+}
+
+interface ToolGroup {
+  title: string;
+  tools: Tool[];
+}
+
+const competencies = [
+  "Backend development",
+  "Frontend development",
+  "Database architecture",
+  "API design",
+  "System optimization",
+  "Cloud infrastructure",
+];
+
+const toolGroups: ToolGroup[] = [
+  {
+    title: "Languages",
+    tools: [
+      { name: "Python", icon: "/icons/Python-Dark.svg" },
+      { name: "TypeScript", icon: "/icons/TypeScript.svg" },
+      { name: "Go", icon: "/icons/Go.svg" },
+    ],
+  },
+  {
+    title: "Frameworks",
+    tools: [
+      { name: "Next.js", icon: "/icons/NextJS-Dark.svg" },
+      { name: "React", icon: "/icons/React-Dark.svg" },
+      { name: "FastAPI", icon: "/icons/FastAPI.svg" },
+      { name: "NestJS", icon: "/icons/NestJS.svg" },
+    ],
+  },
+  {
+    title: "Data",
+    tools: [
+      { name: "PostgreSQL", icon: "/icons/PostgreSQL-Dark.svg" },
+      { name: "MongoDB", icon: "/icons/MongoDB.svg" },
+      { name: "Redis", icon: "/icons/Redis-Dark.svg" },
+      { name: "Prisma", icon: "/icons/Prisma.svg" },
+    ],
+  },
+  {
+    title: "Infra & tooling",
+    tools: [
+      { name: "Docker", icon: "/icons/Docker.svg" },
+      { name: "AWS", icon: "/icons/AWS-Dark.svg" },
+      { name: "Nginx", icon: "/icons/Nginx.svg" },
+      { name: "Linux", icon: "/icons/Linux-Dark.svg" },
+      { name: "Git", icon: "/icons/Git.svg" },
+      { name: "Turborepo", icon: "/icons/Turborepo.svg" },
+    ],
+  },
+];
+
 const Skills = ({ languages }: SkillsProps) => {
-  const competencies = [
-    "Backend Development",
-    "Frontend Development",
-    "Database Architecture",
-    "API Design",
-    "System Optimization",
-    "Cloud Infrastructure",
-  ];
-
-  const toolsGrid = [
-    { name: "Python", icon: "/icons/Python-Dark.svg" },
-    { name: "TypeScript", icon: "/icons/TypeScript.svg" },
-    { name: "Go", icon: "/icons/Go.svg" },
-
-    { name: "Next.js", icon: "/icons/NextJS-Dark.svg" },
-    { name: "React", icon: "/icons/React-Dark.svg" },
-    { name: "FastAPI", icon: "/icons/FastAPI.svg" },
-
-    { name: "NestJS", icon: "/icons/NestJS.svg" },
-    { name: "Turborepo", icon: "/icons/Turborepo.svg" },
-    { name: "Prisma", icon: "/icons/Prisma.svg" },
-
-    { name: "PostgreSQL", icon: "/icons/PostgreSQL-Dark.svg" },
-    { name: "MongoDB", icon: "/icons/MongoDB.svg" },
-    { name: "Redis", icon: "/icons/Redis-Dark.svg" },
-
-    { name: "Docker", icon: "/icons/Docker.svg" },
-    { name: "Git", icon: "/icons/Git.svg" },
-    { name: "Linux", icon: "/icons/Linux-Dark.svg" },
-    { name: "AWS", icon: "/icons/AWS-Dark.svg" },
-    { name: "Nginx", icon: "/icons/Nginx.svg" },
-  ];
-
   const displayLanguages = languages ? languages.slice(0, 5) : [];
 
   return (
     <section
       id="skills"
-      className={cn("relative flex w-full flex-col justify-center py-24")}
+      className={cn("relative flex w-full flex-col justify-center py-16")}
     >
-      <h2 className="mb-6 text-4xl font-bold text-blog-white md:text-5xl">
-        <span className="text-blog-orange">Skills</span> & Tools
-      </h2>
-      <div className="z-10 px-4 flex w-full flex-col gap-8">
-        <div className="flex flex-col gap-12">
-          <BlurFade delay={0.25} inView>
-            <div>
-              <ul className="grid grid-cols-1 w-fit  sm:grid-cols-2 gap-x-24 gap-y-3 text-sm md:text-base text-blog-fg/80">
-                {competencies.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex text-sm font-bold items-center gap-2"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-blog-orange inline-block" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </BlurFade>
+      <SectionHeading
+        index="03"
+        label="skills"
+        title="Skills & tools"
+        description={competencies.join(" · ")}
+        className="mb-8"
+      />
 
-          <BlurFade delay={0.35} inView>
-            <div className="flex  flex-wrap gap-8 max-w-sm items-center justify-start">
-              {toolsGrid.map((tool, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col items-center gap-3 group"
-                >
-                  <div className="relative w-8 h-8 md:w-10 md:h-10 transition-transform">
-                    <Image
-                      src={tool.icon}
-                      alt={tool.name}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <span className="text-xs text-blog-fg/80 font-medium group-hover:text-blog-white transition-colors">
-                    {tool.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </BlurFade>
-
-          <BlurFade delay={0.45} inView>
-            <div className="w-full max-w-md mt-4">
-              <div className="flex items-start flex-col w-full gap-2 mb-6">
-                <h3 className="text-xl font-bold text-blog-orange uppercase tracking-wider">
-                  Languages
-                </h3>
-                <span className="text-xs text-blog-fg/55">
-                  (Last 7 Days) [Excluding Companies project]
-                </span>
+      <div className="flex w-full flex-col gap-12">
+        <BlurFade delay={0.2} inView>
+          <dl className="divide-y divide-border border-y border-border">
+            {toolGroups.map((group) => (
+              <div
+                key={group.title}
+                className="grid gap-3 py-5 sm:grid-cols-[10rem_1fr]"
+              >
+                <dt className="font-mono text-xs uppercase tracking-[0.18em] text-blog-fg">
+                  {group.title}
+                </dt>
+                <dd>
+                  <ul className="flex flex-wrap gap-x-6 gap-y-3">
+                    {group.tools.map((tool) => (
+                      <li
+                        key={tool.name}
+                        className="flex items-center gap-2 text-sm text-blog-white"
+                      >
+                        <Image
+                          src={tool.icon}
+                          alt=""
+                          width={16}
+                          height={16}
+                          className="h-4 w-4 object-contain"
+                        />
+                        {tool.name}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
               </div>
-              <div className="flex flex-col gap-3">
+            ))}
+          </dl>
+        </BlurFade>
+
+        {displayLanguages.length > 0 ? (
+          <BlurFade delay={0.3} inView>
+            <div className="max-w-md">
+              <h3 className="text-sm text-blog-white">Languages this week</h3>
+              <p className="mb-5 mt-1 text-xs text-blog-fg">
+                Last 7 days via WakaTime, excluding company projects
+              </p>
+              <div className="flex flex-col gap-4">
                 {displayLanguages.map((lang, idx) => (
-                  <div key={idx} className="w-full">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-blog-white font-medium">
-                        {lang.name}
-                      </span>
-                      <span className="text-xs text-blog-fg/80">
+                  <div key={lang.name}>
+                    <div className="mb-2 flex items-center justify-between text-sm">
+                      <span className="text-blog-white">{lang.name}</span>
+                      <span className="font-mono text-xs text-blog-fg">
                         {lang.percent.toFixed(1)}%
                       </span>
                     </div>
-                    <div className="h-1 w-full bg-blog-selection-bg rounded-full overflow-hidden">
+                    <div className="h-1 w-full overflow-hidden rounded-full bg-blog-selection-bg">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${lang.percent}%` }}
+                        viewport={{ once: true }}
                         transition={{
-                          duration: 1,
+                          duration: 0.8,
                           ease: "easeOut",
-                          delay: 0.2 + idx * 0.1,
+                          delay: 0.1 + idx * 0.08,
                         }}
-                        className="h-full bg-blog-orange rounded-full"
+                        className="h-full rounded-full bg-blog-white"
                       />
                     </div>
                   </div>
@@ -137,7 +159,7 @@ const Skills = ({ languages }: SkillsProps) => {
               </div>
             </div>
           </BlurFade>
-        </div>
+        ) : null}
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ import Dock from "@/components/dock";
 import { GoogleAnalytics } from "@/components/GoogleServices";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
-import { SpaceGrotesk } from "@/fonts";
+import { GeistSans, InstrumentSerif, JetBrainsMono } from "@/fonts";
 
 const heroImgUrl =
   "https://res.cloudinary.com/dorxspa9g/image/upload/v1780802824/blog-content/gtz7sxohubbtnrbjx6be.png";
@@ -82,7 +82,9 @@ export default function RootLayout({
       <head>
         <GoogleAnalytics />
       </head>
-      <body className={SpaceGrotesk.className}>
+      <body
+        className={`${GeistSans.className} ${JetBrainsMono.variable} ${InstrumentSerif.variable} antialiased`}
+      >
         {/*<GlobalBackground />*/}
         <Navbar />
         <Dock />

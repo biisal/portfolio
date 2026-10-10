@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 import Intro from "@/components/intro";
 import Opensource from "@/components/opensource";
 import ProjectsIntro from "@/components/projects-intro";
+import { Sidebar } from "@/components/sidebar";
 import Skills from "@/components/skills";
 import { getblogPost } from "@/lib/actions/blogs";
 import { getWakatimeStats } from "@/lib/actions/wakatime";
@@ -25,24 +26,23 @@ export default async function Home() {
 
   return (
     <>
-      <div className="pb-28 pt-8 px-8 md:px-20 md:pt-20">
-        <div className="mx-auto max-w-4xl">
-          <section
-            id="intro"
-            className="relative flex min-h-screen w-full flex-col justify-center py-16 text-blog-fg md:py-20"
-          >
-            <div className="flex flex-col gap-16">
-              <Intro />
-              <div id="blogs">
-                <BlogsIntro latestPosts={latestPosts} />
-              </div>
-            </div>
+      <div className="mx-auto grid max-w-6xl gap-x-24 px-6 md:px-10 lg:grid-cols-[16rem_minmax(0,1fr)]">
+        <Sidebar />
+
+        <main className="pb-32 pt-10 lg:pt-24">
+          <section id="intro" className="pb-16 pt-4 lg:pt-0">
+            <Intro />
           </section>
+
+          <section id="blogs" className="py-16">
+            <BlogsIntro latestPosts={latestPosts} />
+          </section>
+
           <Opensource />
           <Skills languages={languages.languages || []} />
           <ProjectsIntro />
           <ContactSection />
-        </div>
+        </main>
       </div>
       <Footer />
     </>

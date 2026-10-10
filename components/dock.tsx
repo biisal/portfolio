@@ -143,7 +143,7 @@ const Dock = () => {
       initial={{ y: 0 }}
       animate={{ y: visible ? 0 : 100 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border/50 bg-background/75 px-2 py-1.5 shadow-xl shadow-black/40 backdrop-blur-xl"
+      className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border/50 bg-background/75 px-2 py-1.5"
     >
       <TooltipProvider delayDuration={200}>
         {ROUTES.map((route) => {
@@ -177,7 +177,7 @@ const Dock = () => {
               </TooltipTrigger>
               <TooltipContent
                 side="top"
-                className="rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-medium text-foreground shadow-md"
+                className="rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-medium text-foreground"
               >
                 {route.name}
               </TooltipContent>

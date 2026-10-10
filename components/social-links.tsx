@@ -41,9 +41,13 @@ const SocialLinks = () => {
       </div>
       <div className="flex items-center gap-4">
         {social.map(({ label, href, icon }) => (
-          <Button asChild variant="outline" className="h-12 w-12 p-3">
+          <Button
+            key={label}
+            asChild
+            variant="outline"
+            className="h-12 w-12 p-3"
+          >
             <Link
-              key={label}
               href={href}
               target="_blank"
               rel="noopener noreferrer"

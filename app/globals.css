@@ -6,49 +6,51 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #151515;
-  --foreground: #d9cba9;
+  --background: #0e0e0c;
+  --foreground: #e9e6df;
 
-  --card: #3c3836;
-  --card-foreground: #ebdbb2;
+  --card: #151512;
+  --card-foreground: #e9e6df;
 
-  --popover: #3c3836;
-  --popover-foreground: #ebdbb2;
+  --popover: #151512;
+  --popover-foreground: #e9e6df;
 
-  --primary: #dfbb7d;
-  --primary-foreground: #282828;
+  --primary: #e9e6df;
+  --primary-foreground: #0e0e0c;
 
-  --secondary: #504945;
-  --secondary-foreground: #ebdbb2;
+  --secondary: #1a1a17;
+  --secondary-foreground: #e9e6df;
 
-  --muted: #504945;
-  --muted-foreground: #a89984;
+  --muted: #1a1a17;
+  --muted-foreground: #8c8980;
 
-  --accent: #665c54;
-  --accent-foreground: #ebdbb2;
+  --accent: #22221e;
+  --accent-foreground: #e9e6df;
 
-  --destructive: #cc241d;
-  --destructive-foreground: #fb4934;
+  --signal: #e8613c;
 
-  --border: #504945;
-  --input: #504945;
-  --ring: #7c6f64;
+  --destructive: #dc2626;
+  --destructive-foreground: #fecaca;
 
-  --chart-1: #458588;
-  --chart-2: #98971a;
-  --chart-3: #d79921;
-  --chart-4: #b16286;
-  --chart-5: #d65d0e;
+  --border: #2a2a25;
+  --input: #2a2a25;
+  --ring: #57554d;
 
-  --sidebar: #1d2021;
-  --sidebar-foreground: #ebdbb2;
-  --sidebar-primary: #fabd2f;
-  --sidebar-primary-foreground: #282828;
-  --sidebar-accent: #3c3836;
-  --sidebar-accent-foreground: #ebdbb2;
-  --sidebar-border: #504945;
-  --sidebar-ring: #7c6f64;
-  --radius: 0.3rem;
+  --chart-1: #8f8f8f;
+  --chart-2: #737373;
+  --chart-3: #a3a3a3;
+  --chart-4: #525252;
+  --chart-5: #d4d4d4;
+
+  --sidebar: #0b0b0b;
+  --sidebar-foreground: #ededed;
+  --sidebar-primary: #ededed;
+  --sidebar-primary-foreground: #0b0b0b;
+  --sidebar-accent: #1f1f1f;
+  --sidebar-accent-foreground: #ededed;
+  --sidebar-border: #232323;
+  --sidebar-ring: #525252;
+  --radius: 0.5rem;
 }
 
 @theme inline {
@@ -96,6 +98,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-speedbeast: "SpeedBeast", sans-serif;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --color-signal: var(--signal);
 
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
@@ -165,6 +171,17 @@
   body {
     background: var(--background);
     color: var(--foreground);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 

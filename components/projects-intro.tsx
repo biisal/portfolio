@@ -1,7 +1,6 @@
-import Link from "next/link";
-
 import { BlogPost } from "@/.generated/client";
-import { BlogCard } from "@/components/blog/blog-card";
+import { PostRow } from "@/components/post-row";
+import { SectionHeading } from "@/components/section-heading";
 import { getblogPost } from "@/lib/actions/blogs";
 
 import { BlurFade } from "./ui/blur-fade";
@@ -17,35 +16,23 @@ const ProjectsIntro = async () => {
   if (!projects || projects.length === 0) return null;
 
   return (
-    <section id="projects" className="py-24">
-      <div className="mb-12">
-        <BlurFade delay={0.25} inView>
-          <div className="flex items-start justify-between">
-            <div className="flex flex-col gap-2">
-              <h2 className="text-3xl md:text-5xl font-bold text-blog-white">
-                <span className="text-blog-orange">Selected</span> Work
-              </h2>
-              <p className="mt-2 text-base text-blog-fg/80 md:text-lg">
-                A smaller set of things worth opening after the writing.
-              </p>
-            </div>
-            <Link
-              href="/projects"
-              className="text-sm min-w-20 font-semibold text-blog-orange transition-colors hover:text-blog-white mt-3"
-            >
-              View all
-            </Link>
-          </div>
-        </BlurFade>
-      </div>
+    <section id="projects" className="py-16">
+      <SectionHeading
+        index="04"
+        label="work"
+        title="Selected work"
+        description="A smaller set of things worth opening after the writing."
+        href="/projects"
+        className="mb-8"
+      />
 
-      <div className="grid gap-6">
-        {projects.map((post, index) => (
-          <BlurFade key={post.id} delay={0.3 + index * 0.08} inView>
-            <BlogCard post={post} />
-          </BlurFade>
-        ))}
-      </div>
+      <BlurFade delay={0.2} inView>
+        <div className="divide-y divide-border border-y border-border">
+          {projects.map((post) => (
+            <PostRow key={post.id} post={post} />
+          ))}
+        </div>
+      </BlurFade>
     </section>
   );
 };
