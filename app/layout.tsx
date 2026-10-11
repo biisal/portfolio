@@ -4,7 +4,6 @@ import { Metadata } from "next";
 
 import Dock from "@/components/dock";
 import { GoogleAnalytics } from "@/components/GoogleServices";
-import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { HankenGrotesk, InstrumentSerif, JetBrainsMono } from "@/fonts";
 
@@ -87,7 +86,6 @@ export default function RootLayout({
       </head>
       <body className={`${HankenGrotesk.className} antialiased`}>
         {/*<GlobalBackground />*/}
-        <Navbar />
         <Dock />
         {children}
         <Toaster />

@@ -1,4 +1,6 @@
 const phoneNumber = "+91 7029881540";
+const cvUrl =
+  "https://drive.google.com/file/d/1wcR-9LoLmYQQ3lh-m35V7NxV1AdURNda/view?usp=drive_link";
 const email = "biisal.int@gmail.com";
 
 const social = [
@@ -24,4 +26,4 @@ const social = [
   },
 ] as const;
 
-export { email, phoneNumber, social };
+export { cvUrl, email, phoneNumber, social };

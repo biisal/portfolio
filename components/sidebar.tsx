@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { FileText, Mail } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { email, social } from "@/lib/config";
+import { cvUrl, email, social } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 const sections = [
@@ -95,24 +96,42 @@ export const Sidebar = () => {
 
       <div className="flex flex-col gap-4">
         <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-y-1.5">
-          {social.map(({ label, href }) => (
+          <li>
+            <Link
+              href={cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 text-sm text-blog-white transition-colors hover:text-signal"
+            >
+              <FileText className="h-4 w-4 text-signal" />
+              Resume
+            </Link>
+          </li>
+          {social.map(({ label, href, icon }) => (
             <li key={label}>
               <Link
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-sm text-blog-fg transition-colors hover:text-blog-white"
+                className="inline-flex items-center gap-2.5 text-sm text-blog-fg transition-colors hover:text-blog-white"
               >
+                <Image
+                  src={icon}
+                  alt=""
+                  width={16}
+                  height={16}
+                  className="h-4 w-4 object-contain"
+                />
                 {label}
-                <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </li>
           ))}
         </ul>
         <Link
           href={`mailto:${email}`}
-          className="font-mono text-xs text-blog-fg transition-colors hover:text-blog-white"
+          className="inline-flex items-center gap-2.5 font-mono text-xs text-blog-fg transition-colors hover:text-blog-white"
         >
+          <Mail className="h-4 w-4 text-signal" />
           {email}
         </Link>
       </div>
