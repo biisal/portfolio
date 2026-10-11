@@ -36,7 +36,9 @@ export default async function ProjectsPage() {
     <div className="min-h-screen p-8 md:p-20 text-blog-fg">
       <div className="max-w-4xl mx-auto">
         <header className="mb-16">
-          <h1 className="text-4xl font-bold mb-4 text-blog-orange">Projects</h1>
+          <h1 className="font-serif text-5xl font-normal tracking-normal mb-4 text-blog-white md:text-6xl">
+            Projects
+          </h1>
           <p className="text-xl text-blog-fg opacity-80">
             A collection of things I&apos;ve built.
           </p>

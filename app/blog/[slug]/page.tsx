@@ -110,7 +110,7 @@ export default async function Post({
           ← Back to All Blogs
         </Link>
         <article>
-          <h1 className="text-blog-white mb-4 text-3xl md:text-5xl">
+          <h1 className="font-serif font-normal leading-[1.15] tracking-normal text-blog-white mb-4 text-4xl md:text-6xl">
             {post.title}
           </h1>
           <div className="mb-8 font-mono flex flex-wrap items-center gap-4 text-sm">

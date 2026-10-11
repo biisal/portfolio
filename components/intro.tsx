@@ -11,12 +11,15 @@ const Intro = () => {
   return (
     <div className="flex flex-col gap-10">
       <BlurFade delay={0.15} inView>
-        <p className="font-serif text-4xl leading-[1.1] tracking-tight text-blog-white md:text-6xl">
-          I build full-stack systems and AI-powered products,{" "}
-          <span className="text-blog-fg">
-            I enjoy learning new technologies but I love to explore how old
-            technologies work.
-          </span>
+        <p className="font-serif text-4xl leading-[1.2] tracking-normal text-blog-white md:text-6xl md:leading-[1.15]">
+          I build <span className="whitespace-nowrap">full-stack</span> systems
+          and <span className="whitespace-nowrap">AI-powered</span> products.
+        </p>
+        <p className="mt-2 max-w-xl text-lg  text-blog-fg md:text-xl">
+          I enjoy learning new technologies, but I love exploring how the old
+          ones actually work.
+          <br />
+          My goal is in my .env
         </p>
       </BlurFade>
 

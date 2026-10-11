@@ -118,8 +118,8 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
   ];
 
   return (
-    <div className="mt-12 pt-8 border-t border-blog-selection-bg/30">
-      <h3 className="text-xl font-bold text-blog-white mb-4">
+    <div className="mt-12 pt-8 border-t border-border">
+      <h3 className="mb-4 text-lg font-medium tracking-tight text-blog-white">
         Share this post
       </h3>
       <div className="flex flex-wrap gap-4">
@@ -129,7 +129,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blog-selection-bg/10 border border-blog-selection-bg/50 text-blog-fg hover:text-blog-orange hover:border-blog-orange transition duration-300 font-sans text-sm"
+            className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-blog-white transition-colors hover:border-ring hover:bg-accent"
           >
             {link.icon}
             <span>{link.name}</span>
@@ -138,7 +138,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
 
         <button
           onClick={handleOtherShare}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blog-selection-bg/10 border border-blog-selection-bg/50 text-blog-fg hover:text-blog-orange hover:border-blog-orange transition duration-300 font-sans text-sm cursor-pointer"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-blog-white transition-colors hover:border-ring hover:bg-accent"
         >
           {copied ? (
             <Check className="h-4 w-4 text-blog-green" />

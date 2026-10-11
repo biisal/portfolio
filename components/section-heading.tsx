@@ -49,7 +49,7 @@ export const SectionHeading = ({
         <div className="flex flex-col gap-3">
           <h2
             className={cn(
-              "font-serif leading-[1.05] tracking-tight text-blog-white",
+              "font-serif leading-[1.15] tracking-normal text-blog-white",
               size === "lg" ? "text-4xl md:text-5xl" : "text-3xl md:text-4xl"
             )}
           >

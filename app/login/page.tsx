@@ -12,7 +12,9 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-8 text-blog-fg bg-blog-bg">
       <div className="max-w-md w-full flex flex-col items-center gap-8 border border-blog-inactive-border rounded-xl p-10 bg-blog-black/50">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-blog-orange">Welcome Back</h1>
+          <h1 className="font-serif text-4xl font-normal tracking-normal text-blog-white">
+            Welcome Back
+          </h1>
           <p className="text-blog-fg/70">Sign in to manage your content</p>
         </div>
 

@@ -1,5 +1,5 @@
 "use client";
-import { BookText, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
@@ -13,12 +13,6 @@ const Navbar = () => {
   return (
     <div className="fixed top-4 right-4 z-50 md:top-8 md:right-10">
       <div className="flex items-center gap-4">
-        <Button asChild>
-          <Link href="/blog">
-            <span>Open Blog</span>
-            <BookText className="h-4 w-4" />
-          </Link>
-        </Button>
         <Button asChild className="bg-background" variant={"outline"}>
           <Link
             target="_blank"

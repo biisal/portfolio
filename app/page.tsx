@@ -3,6 +3,7 @@ import "./globals.css";
 import { BlogPost } from "@/.generated/client";
 import BlogsIntro from "@/components/blogs-intro";
 import ContactSection from "@/components/contact-section";
+import Experience from "@/components/experience";
 import Footer from "@/components/footer";
 import Intro from "@/components/intro";
 import Opensource from "@/components/opensource";
@@ -38,6 +39,7 @@ export default async function Home() {
             <BlogsIntro latestPosts={latestPosts} />
           </section>
 
+          <Experience />
           <Opensource />
           <Skills languages={languages.languages || []} />
           <ProjectsIntro />

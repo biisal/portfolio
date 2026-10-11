@@ -83,7 +83,7 @@ const Skills = ({ languages }: SkillsProps) => {
       className={cn("relative flex w-full flex-col justify-center py-16")}
     >
       <SectionHeading
-        index="03"
+        index="04"
         label="skills"
         title="Skills & tools"
         description={competencies.join(" · ")}
@@ -130,7 +130,7 @@ const Skills = ({ languages }: SkillsProps) => {
             <div className="max-w-md">
               <h3 className="text-sm text-blog-white">Languages this week</h3>
               <p className="mb-5 mt-1 text-xs text-blog-fg">
-                Last 7 days via WakaTime, excluding company projects
+                (Last 7 Days) [Excluding Companies project]
               </p>
               <div className="flex flex-col gap-4">
                 {displayLanguages.map((lang, idx) => (

@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 const sections = [
   { id: "blogs", label: "Writing" },
+  { id: "experience", label: "Experience" },
   { id: "opensource", label: "Open source" },
   { id: "skills", label: "Skills" },
   { id: "projects", label: "Work" },
@@ -40,7 +41,7 @@ export const Sidebar = () => {
     <aside className="flex flex-col gap-12 pb-4 pt-20 lg:sticky lg:top-0 lg:h-screen lg:justify-between lg:py-24">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <h1 className="font-serif text-6xl leading-[0.92] tracking-tight text-blog-white lg:text-7xl">
+          <h1 className="font-serif text-6xl leading-none tracking-normal text-blog-white lg:text-7xl">
             Avisek
             <br />
             <span className="italic text-signal">Ray</span>

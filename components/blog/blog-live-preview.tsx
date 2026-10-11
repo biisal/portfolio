@@ -32,17 +32,19 @@ export function BlogLivePreview({ title, content }: BlogLivePreviewProps) {
     <div className="lg:sticky lg:top-8 lg:h-[calc(100vh-4rem)]">
       <div
         ref={containerRef}
-        className="bg-blog-bg border border-blog-inactive-border rounded-lg p-6 h-full overflow-y-auto scroll-smooth"
+        className="bg-blog-bg border border-border rounded-lg p-6 h-full overflow-y-auto scroll-smooth"
       >
-        <h2 className="text-2xl font-bold text-blog-orange mb-6">
-          Live Preview
-        </h2>
+        <p className="mb-6 font-mono text-xs uppercase tracking-[0.18em] text-blog-fg">
+          Live preview
+        </p>
 
         {title && (
           <>
-            <h1 className="text-blog-white text-4xl font-bold mb-4">{title}</h1>
-            <div className="mb-8 font-mono">
-              <span className="text-blog-fg/35">
+            <h1 className="mb-4 font-serif text-4xl font-normal leading-[1.15] tracking-normal text-blog-white md:text-5xl">
+              {title}
+            </h1>
+            <div className="mb-8 font-mono text-sm">
+              <span className="text-blog-fg">
                 {new Date().toLocaleDateString()}
               </span>
             </div>

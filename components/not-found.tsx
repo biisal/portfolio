@@ -20,7 +20,7 @@ const NotFound = ({
       <div className="mx-auto max-w-4xl flex flex-col items-start gap-7">
         <TerminalPrompt />
         <div className="flex flex-col gap-4">
-          <h1 className="text-5xl font-bold tracking-tight text-blog-orange md:text-6xl">
+          <h1 className="font-serif text-5xl font-normal tracking-normal text-blog-white md:text-6xl">
             404
           </h1>
           <p className="max-w-2xl text-lg leading-relaxed text-blog-white/90 md:text-2xl">

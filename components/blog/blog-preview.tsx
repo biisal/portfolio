@@ -28,7 +28,7 @@ export function BlogPreview({ post, className }: BlogPreviewProps) {
       <Streamdown
         mode="static"
         plugins={{ code: codePlugin }}
-        shikiTheme={["gruvbox-dark-hard", "gruvbox-dark-hard"]}
+        shikiTheme={["vitesse-dark", "vitesse-dark"]}
         lineNumbers={false}
         controls={{
           table: false,

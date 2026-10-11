@@ -49,7 +49,7 @@ export default async function TagsPage({
           >
             ← Back to All Blogs
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-blog-white">
+          <h1 className="font-serif text-4xl font-normal tracking-normal mb-4 text-blog-white md:text-5xl">
             Tagged:<span className="text-blog-orange">{decodedTag}</span>
           </h1>
           <p className="text-lg text-blog-fg opacity-80">
@@ -61,7 +61,7 @@ export default async function TagsPage({
 
         {!posts || posts.length === 0 ? (
           <div className="text-center py-20 border border-blog-inactive-border rounded-lg bg-blog-bg">
-            <h2 className="text-2xl font-bold text-blog-white mb-2">
+            <h2 className="text-xl font-medium tracking-tight text-blog-white mb-2">
               No posts found
             </h2>
             <p className="text-blog-fg opacity-80">

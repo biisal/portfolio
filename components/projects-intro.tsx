@@ -18,7 +18,7 @@ const ProjectsIntro = async () => {
   return (
     <section id="projects" className="py-16">
       <SectionHeading
-        index="04"
+        index="05"
         label="work"
         title="Selected work"
         description="A smaller set of things worth opening after the writing."

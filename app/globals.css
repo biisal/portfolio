@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0e0e0c;
+  --background: #151515;
   --foreground: #e9e6df;
 
   --card: #151512;
@@ -100,6 +100,7 @@
   --font-speedbeast: "SpeedBeast", sans-serif;
   --font-mono:
     var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: var(--font-hanken-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
   --color-signal: var(--signal);
 

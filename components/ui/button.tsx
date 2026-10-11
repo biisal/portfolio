@@ -13,12 +13,12 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blog-selection-bg/10 border border-blog-selection-bg/50 text-blog-fg hover:text-blog-orange hover:border-blog-orange transition duration-300 font-sans text-sm",
+          "border border-border bg-transparent text-blog-white hover:border-ring hover:bg-accent",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "border-none",
         link: "text-primary underline-offset-4 hover:underline",
-        chip: "border-2 border-transparent",
+        chip: "border border-transparent",
       },
 
       size: {
@@ -31,7 +31,7 @@ const buttonVariants = cva(
       selected: {
         true: "bg-blog-orange text-blog-bg border-transparent hover:bg-blog-orange/90",
         false:
-          "bg-blog-selection-bg/30 text-blog-fg hover:bg-blog-selection-bg/60 hover:text-blog-white border-blog-inactive-border/30",
+          "bg-transparent text-blog-fg border-border hover:border-ring hover:text-blog-white",
       },
     },
     defaultVariants: {

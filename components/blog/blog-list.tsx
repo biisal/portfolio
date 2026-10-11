@@ -39,7 +39,7 @@ export function BlogList({ posts, session }: BlogListProps) {
     <div className="flex flex-col gap-8">
       <BlogSortFilter currentSort={sort} onSortChange={setSort} />
 
-      <div className="grid gap-8">
+      <div className="divide-y divide-border border-y border-border">
         {sortedPosts.map((post) => (
           <div key={post.id} className="w-full">
             <BlogCard post={post} isAdmin={session?.user.role === "admin"} />

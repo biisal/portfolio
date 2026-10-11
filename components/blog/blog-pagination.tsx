@@ -19,17 +19,17 @@ export default function BlogPagination({
   if (!prevPost && !nextPost) return null;
 
   return (
-    <div className="mt-16 pt-12 border-t border-blog-selection-bg/30 grid grid-cols-1 sm:grid-cols-2 gap-8">
+    <div className="mt-16 pt-12 border-t border-border grid grid-cols-1 sm:grid-cols-2 gap-8">
       <div className="flex flex-col items-start">
         {prevPost && (
           <Link
             href={`/blog/${prevPost.slug}`}
             className="group flex flex-col gap-2 items-start max-w-full text-left"
           >
-            <span className="text-xs uppercase tracking-wider text-blog-fg/50 group-hover:text-blog-orange transition-colors">
+            <span className="font-mono text-xs uppercase tracking-[0.18em] text-blog-fg group-hover:text-blog-white transition-colors">
               ← Previous Post
             </span>
-            <span className="text-lg font-bold text-blog-white group-hover:text-blog-orange transition-colors line-clamp-2 leading-snug">
+            <span className="text-lg font-medium tracking-tight text-blog-white transition-colors group-hover:text-signal line-clamp-2 leading-snug">
               {prevPost.title}
             </span>
           </Link>
@@ -42,10 +42,10 @@ export default function BlogPagination({
             href={`/blog/${nextPost.slug}`}
             className="group flex flex-col gap-2 items-end max-w-full text-right"
           >
-            <span className="text-xs uppercase tracking-wider text-blog-fg/50 group-hover:text-blog-orange transition-colors">
+            <span className="font-mono text-xs uppercase tracking-[0.18em] text-blog-fg group-hover:text-blog-white transition-colors">
               Next Post →
             </span>
-            <span className="text-lg font-bold text-blog-white group-hover:text-blog-orange transition-colors line-clamp-2 leading-snug">
+            <span className="text-lg font-medium tracking-tight text-blog-white transition-colors group-hover:text-signal line-clamp-2 leading-snug">
               {nextPost.title}
             </span>
           </Link>

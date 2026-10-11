@@ -1,5 +1,5 @@
 import {
-  Geist,
+  Hanken_Grotesk,
   Instrument_Serif,
   JetBrains_Mono,
   Space_Grotesk,
@@ -9,12 +9,16 @@ export const InstrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
+  display: "swap",
+  fallback: ["Georgia", "Times New Roman", "serif"],
   variable: "--font-instrument-serif",
 });
 
-export const GeistSans = Geist({
+export const HankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
-  variable: "--font-geist",
+  display: "swap",
+  fallback: ["system-ui", "Arial", "sans-serif"],
+  variable: "--font-hanken-grotesk",
 });
 
 // export const orbitron = Orbitron({
@@ -41,6 +45,8 @@ export const GeistSans = Geist({
 export const JetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
   variable: "--font-jetbrains-mono",
 });
 

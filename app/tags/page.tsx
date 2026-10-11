@@ -22,7 +22,7 @@ export default async function TagsIndexPage() {
           >
             ← Back to All Blogs
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-blog-white">
+          <h1 className="font-serif text-5xl font-normal tracking-normal mb-4 text-blog-white md:text-6xl">
             All Tags
           </h1>
           <p className="text-lg text-blog-fg opacity-80">
@@ -39,13 +39,13 @@ export default async function TagsIndexPage() {
                 key={tag.name}
                 variant="outline"
                 asChild
-                className="h-auto py-2.5 px-4 text-blog-fg hover:text-blog-orange border-blog-selection-bg/50 hover:border-blog-orange rounded-lg flex items-center transition-all duration-300 bg-blog-selection-bg/10 relative"
+                className="relative h-auto px-4 py-2.5"
               >
                 <Link href={`/tags/${encodeURIComponent(tag.name)}`}>
                   <span className="font-medium text-blog-white text-base">
                     {tag.name}
                   </span>
-                  <span className="absolute -top-2 -right-2 text-[10px] font-mono opacity-100 bg-blog-selection-bg text-blog-cyan px-1.5 py-0.5 rounded-full font-bold shadow-sm border border-blog-inactive-border/50 flex items-center justify-center min-w-[20px]">
+                  <span className="absolute -top-2 -right-2 text-[10px] font-mono opacity-100 bg-blog-selection-bg text-blog-cyan px-1.5 py-0.5 rounded-full border border-border flex items-center justify-center min-w-[20px]">
                     {tag.count}
                   </span>
                 </Link>

@@ -196,8 +196,8 @@ export default function ContactForm() {
       <Button
         disabled={loading}
         type="submit"
-        size="lg"
-        className="group w-full rounded-lg bg-blog-orange px-8 py-6 font-medium text-blog-bg transition-all duration-300 hover:bg-blog-orange/90 sm:w-auto"
+        size="xl"
+        className="group w-full sm:w-auto"
       >
         {loading ? (
           <>

@@ -29,7 +29,7 @@ export function BlogSortFilter({
             variant="chip"
             selected={isSelected}
             onClick={() => onSortChange(option.value)}
-            className="cursor-pointer select-none font-semibold h-auto px-4 py-1.5 rounded-lg border-2 border-transparent transition-all duration-200"
+            className="h-auto cursor-pointer select-none px-4 py-1.5"
           >
             {option.label}
           </Button>

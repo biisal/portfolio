@@ -6,7 +6,7 @@ import Dock from "@/components/dock";
 import { GoogleAnalytics } from "@/components/GoogleServices";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
-import { GeistSans, InstrumentSerif, JetBrainsMono } from "@/fonts";
+import { HankenGrotesk, InstrumentSerif, JetBrainsMono } from "@/fonts";
 
 const heroImgUrl =
   "https://res.cloudinary.com/dorxspa9g/image/upload/v1780802824/blog-content/gtz7sxohubbtnrbjx6be.png";
@@ -78,13 +78,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html
+      lang="en"
+      className={`dark ${HankenGrotesk.variable} ${InstrumentSerif.variable} ${JetBrainsMono.variable}`}
+    >
       <head>
         <GoogleAnalytics />
       </head>
-      <body
-        className={`${GeistSans.className} ${JetBrainsMono.variable} ${InstrumentSerif.variable} antialiased`}
-      >
+      <body className={`${HankenGrotesk.className} antialiased`}>
         {/*<GlobalBackground />*/}
         <Navbar />
         <Dock />
