@@ -4,7 +4,6 @@ import { BlogPost } from "@/.generated/client";
 import BlogsIntro from "@/components/blogs-intro";
 import ContactSection from "@/components/contact-section";
 import Experience from "@/components/experience";
-import Footer from "@/components/footer";
 import Intro from "@/components/intro";
 import Opensource from "@/components/opensource";
 import ProjectsIntro from "@/components/projects-intro";
@@ -46,7 +45,6 @@ export default async function Home() {
           <ContactSection />
         </main>
       </div>
-      <Footer />
     </>
   );
 }

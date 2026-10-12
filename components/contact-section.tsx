@@ -7,7 +7,7 @@ import { BlurFade } from "./ui/blur-fade";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="relative flex w-full items-center py-16">
+    <section id="contact" className="relative flex w-full items-center pt-16">
       <div className="w-full">
         <SectionHeading
           index="06"
@@ -23,6 +23,15 @@ const ContactSection = () => {
           </BlurFade>
           <BlurFade delay={0.3} inView>
             <ContactForm />
+          </BlurFade>
+          <BlurFade delay={0.4} inView>
+            <div className="mt-8 w-full flex justify-center">
+              <img
+                src="/shiba-lui.png"
+                alt=""
+                className="w-34 absolute right-0"
+              />
+            </div>
           </BlurFade>
         </div>
       </div>
