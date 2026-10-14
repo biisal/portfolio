@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import {
   BookOpenText,
+  Briefcase,
   CircleUserRound,
   Folder as ProjectsIcon,
   GitPullRequest,
@@ -17,20 +18,23 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useScrollSpy } from "@/lib/use-scroll-spy";
 import { Button } from "./ui/button";
 
 const ROUTES = [
   { id: "/", name: "Me", icon: CircleUserRound },
   { id: "blogs", name: "Blogs", icon: BookOpenText },
+  { id: "experience", name: "Experience", icon: Briefcase },
   { id: "opensource", name: "Open Source", icon: GitPullRequest },
   { id: "skills", name: "Skills", icon: SkillsIcon },
   { id: "projects", name: "Projects", icon: ProjectsIcon },
   { id: "contact", name: "Contact", icon: ContactIcon },
 ] as const;
 
-const SECTION_IDS = [
-  "intro",
+/** Home-page sections tracked while scrolling, in page order. */
+const HOME_SECTION_IDS = [
   "blogs",
+  "experience",
   "opensource",
   "skills",
   "projects",
@@ -67,48 +71,19 @@ function useDockVisibility(enabled: boolean) {
 
 /** Tracks which nav item should be highlighted: route-based off the homepage, scroll-based on it. */
 function useActiveSection(pathname: string) {
-  const [active, setActive] = useState("/");
+  const [routeActive, setRouteActive] = useState("/");
 
   // Non-home routes: derive directly from the path.
   useEffect(() => {
     if (pathname !== "/") {
-      setActive(pathname.startsWith("/project") ? "projects" : pathname);
+      setRouteActive(pathname.startsWith("/project") ? "projects" : pathname);
     }
   }, [pathname]);
 
-  // Home route: derive from which section is in view.
-  useEffect(() => {
-    if (pathname !== "/") return;
+  // Home route: derive from the section being read ("" = still at the top).
+  const spy = useScrollSpy(HOME_SECTION_IDS, pathname === "/");
 
-    const handleScroll = () => {
-      if (window.scrollY < 100) setActive("/");
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const id = entry.target.id;
-          if (id === "intro") setActive("/");
-          else if (window.scrollY >= 100) setActive(id);
-        });
-      },
-      { rootMargin: "-30% 0px -50% 0px" }
-    );
-
-    SECTION_IDS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [pathname]);
-
-  return active;
+  return pathname === "/" ? spy || "/" : routeActive;
 }
 
 const Dock = () => {

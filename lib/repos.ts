@@ -108,6 +108,18 @@ export const PULL_REQUESTS: TPr[] = [
     ],
   },
   {
+    repo: "Deepgram Go SDK",
+    repoUrl: "https://github.com/deepgram/deepgram-go-sdk",
+    icon: "https://github.com/deepgram.png?size=48",
+    prs: [
+      {
+        title:
+          "feat: add mandatory instruction rule for agent skill discovery #341",
+        prUrl: "https://github.com/deepgram/deepgram-go-sdk/pull/342",
+      },
+    ],
+  },
+  {
     repo: "ai-website-cloner-template",
     repoUrl: "https://github.com/JCodesMore/ai-website-cloner-template",
     prs: [

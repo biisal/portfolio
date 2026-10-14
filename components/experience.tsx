@@ -19,12 +19,11 @@ const Experience = () => {
           {experience.map((item) => (
             <li
               key={`${item.company}-${item.role}`}
-              className="grid gap-1 py-6 sm:grid-cols-[6.5rem_minmax(0,1fr)] sm:gap-6"
+              className="grid gap-1 py-6 "
             >
               <span className="pt-1 font-mono text-xs text-blog-fg">
                 {item.period}
               </span>
-
               <div className="min-w-0">
                 <h3 className="text-lg font-medium leading-snug tracking-tight text-blog-white md:text-xl">
                   {item.role}
@@ -54,7 +53,7 @@ const Experience = () => {
                     {item.highlights.map((highlight) => (
                       <li key={highlight} className="flex gap-3">
                         <span aria-hidden className="text-blog-fg/60">
-                          —
+                          -
                         </span>
                         <span>{highlight}</span>
                       </li>

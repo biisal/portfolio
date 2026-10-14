@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import ContactForm from "./contact-form";
 import { SectionHeading } from "./section-heading";
 import SocialLinks from "./social-links";
 import { BlurFade } from "./ui/blur-fade";
 
 const ContactSection = () => {
+  const [hovered, setHovered] = useState(false);
   return (
     <section id="contact" className="relative flex w-full items-center pt-16">
       <div className="w-full">
@@ -27,7 +29,9 @@ const ContactSection = () => {
           <BlurFade delay={0.4} inView>
             <div className="mt-8 w-full flex justify-center">
               <img
-                src="/shiba-lui.png"
+                onMouseOver={() => setHovered(Math.random() < 0.5)}
+                onMouseOut={() => setHovered(Math.random() < 0.5)}
+                src={hovered ? "/shiba-lui-angry.png" : "/shiba-lui.png"}
                 alt=""
                 className="w-34 absolute right-0"
               />
