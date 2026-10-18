@@ -10,14 +10,12 @@ const BAI_URL = "https://bai.codeltix.com";
 
 /** Shown fanned out one after another on hover. Add more URLs here. */
 const BAI_IMAGES = [
-  "https://res.cloudinary.com/dorxspa9g/image/upload/v1792298841/b95bf6b8d509752c894039a2fa5ed70e42c36b1df7fdd94985a2e35f0985bbcb_z2gp0i.png",
-  "https://res.cloudinary.com/dorxspa9g/image/upload/v1792297867/bai-rounded_z70yyj.png",
-  "https://res.cloudinary.com/dorxspa9g/image/upload/v1792298324/11e53698fae295ba6966bb3ce973caf290a97e81d2ffcec128cbc801fb8ba4ae_fwdrtf.png",
-  "https://res.cloudinary.com/dorxspa9g/image/upload/v1792298531/992486499008c4cafde1683f29e06c17996f733a5282f591041a00a75e012969_nahczm.png",
+  "https://res.cloudinary.com/dorxspa9g/image/upload/v1792334260/bai-herdr-rounded_mylsrc.png",
 ];
 
 /** Cloudinary trims the transparent margin baked into the screenshots. */
-const trimEdges = (url: string) => url.replace("/upload/", "/upload/e_trim/");
+const trimEdges = (url: string) =>
+  url.replace("/upload/", "/upload/e_trim:50/");
 
 const CARD_W = 460;
 /** Rough card height, used only to keep the fan on screen. */
@@ -107,9 +105,9 @@ const HoverPreview = ({
               className="pointer-events-none fixed left-0 top-0 z-9999 will-change-transform"
             >
               {images.map((src, i) => {
-                const rotate = (i - mid) * 7;
-                const x = i * 64;
-                const y = (i - mid) * -14;
+                const rotate = (i - mid) * 3;
+                const x = i * 56;
+                const y = (i - mid) * -7;
                 return (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -123,7 +121,7 @@ const HoverPreview = ({
                         ? `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(1)`
                         : "translate(0px, 24px) rotate(0deg) scale(0.85)",
                     }}
-                    className={`absolute left-0 top-0 h-auto w-full origin-bottom-left drop-shadow-2xl transition-all duration-300 ease-out ${
+                    className={`absolute left-0 top-0 h-auto w-full origin-bottom-left rounded-sm drop-shadow-[0_16px_32px_rgba(0,0,0,0.55)] transition-all duration-300 ease-out ${
                       open ? "opacity-100" : "opacity-0"
                     }`}
                   />
