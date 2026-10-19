@@ -7,6 +7,7 @@ import Link from "next/link";
 import { cvUrl, email, social } from "@/lib/config";
 import { useScrollSpy } from "@/lib/use-scroll-spy";
 import { cn } from "@/lib/utils";
+import AngryBird from "./angry-bird";
 
 const sections = [
   { id: "blogs", label: "Writing" },
@@ -30,6 +31,7 @@ export const Sidebar = () => {
             Avisek
             <br />
             <span className="italic text-signal">Ray</span>
+            <AngryBird size={52} className="ml-3" />
           </h1>
           <p className="font-mono text-xs leading-6 text-blog-fg">
             Software Engineer
