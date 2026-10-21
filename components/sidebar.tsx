@@ -24,10 +24,10 @@ export const Sidebar = () => {
   const active = useScrollSpy(SECTION_IDS);
 
   return (
-    <aside className="flex flex-col gap-12 pb-4 pt-20 lg:sticky lg:top-0 lg:h-screen lg:justify-between lg:py-24">
-      <div className="flex flex-col gap-8">
+    <aside className="flex flex-col gap-12 pb-4 pt-20 lg:sticky lg:top-0 lg:h-screen lg:justify-between lg:gap-8 lg:py-24 lg:[@media(max-height:800px)]:py-12 lg:[@media(max-height:640px)]:py-8">
+      <div className="flex flex-col gap-8 lg:[@media(max-height:800px)]:gap-5">
         <div className="flex flex-col gap-4">
-          <h1 className="font-serif text-6xl leading-none tracking-normal text-blog-white lg:text-7xl">
+          <h1 className="font-serif text-6xl leading-none tracking-normal text-blog-white lg:text-7xl lg:[@media(max-height:800px)]:text-6xl lg:[@media(max-height:640px)]:text-5xl">
             Avisek
             <br />
             <span className="italic text-signal">Ray</span>
@@ -43,7 +43,10 @@ export const Sidebar = () => {
           </p>
         </div>
 
-        <nav aria-label="Sections" className="hidden lg:block">
+        <nav
+          aria-label="Sections"
+          className="hidden lg:block lg:[@media(max-height:700px)]:hidden"
+        >
           <ul className="flex flex-col border-l border-border">
             {sections.map((section) => {
               const isActive = active === section.id;
@@ -53,7 +56,7 @@ export const Sidebar = () => {
                     href={`#${section.id}`}
                     aria-current={isActive ? "location" : undefined}
                     className={cn(
-                      "-ml-px block border-l py-1.5 pl-4 text-sm transition-colors",
+                      "-ml-px block border-l py-1.5 pl-4 text-sm transition-colors lg:[@media(max-height:640px)]:py-0.5",
                       isActive
                         ? "border-signal text-blog-white"
                         : "border-transparent text-blog-fg hover:border-ring hover:text-blog-white"
@@ -69,7 +72,7 @@ export const Sidebar = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-y-1.5">
+        <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-y-1.5 lg:[@media(max-height:560px)]:flex-row lg:[@media(max-height:560px)]:gap-y-1">
           <li>
             <Link
               href={cvUrl}
