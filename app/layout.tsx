@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { HankenGrotesk, InstrumentSerif, JetBrainsMono } from "@/fonts";
 
 const heroImgUrl =
-  "https://res.cloudinary.com/dorxspa9g/image/upload/v1780802824/blog-content/gtz7sxohubbtnrbjx6be.png";
+  "https://res.cloudinary.com/dorxspa9g/image/upload/v1792387419/og-img-portfolio_wneeqb.png";
 
 export const viewport = {
   width: "device-width",
