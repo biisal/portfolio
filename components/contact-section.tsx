@@ -12,8 +12,6 @@ const ContactSection = () => {
     <section id="contact" className="relative flex w-full items-center pt-16">
       <div className="w-full">
         <SectionHeading
-          index="06"
-          label="get in touch"
           title="Let's work together"
           description="Have a product, system, or backend-heavy build in mind? Send the details and I’ll get back with a practical next step."
           className="mb-8"

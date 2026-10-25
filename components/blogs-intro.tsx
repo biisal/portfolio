@@ -12,13 +12,7 @@ interface BlogsIntroProps {
 const BlogsIntro = ({ latestPosts }: BlogsIntroProps) => {
   return (
     <div>
-      <SectionHeading
-        index="01"
-        label="writing"
-        title="Latest posts"
-        href="/blog"
-        className="mb-8"
-      />
+      <SectionHeading title="Latest posts" href="/blog" className="mb-8" />
 
       <BlurFade delay={0.2} inView>
         <div className="divide-y divide-border border-y border-border">

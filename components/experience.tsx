@@ -7,12 +7,7 @@ const Experience = () => {
 
   return (
     <section id="experience" className="py-16">
-      <SectionHeading
-        index="02"
-        label="experience"
-        title="Where I've worked"
-        className="mb-8"
-      />
+      <SectionHeading title="Where I've worked" className="mb-8" />
 
       <BlurFade delay={0.2} inView>
         <ol className="divide-y divide-border border-y border-border">

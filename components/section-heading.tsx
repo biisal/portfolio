@@ -6,10 +6,6 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
-  /** Two-digit section number, e.g. "02". */
-  index: string;
-  /** Short label shown in the mono row. */
-  label: string;
   title: ReactNode;
   description?: string;
   href?: string;
@@ -19,8 +15,6 @@ interface SectionHeadingProps {
 }
 
 export const SectionHeading = ({
-  index,
-  label,
   title,
   description,
   href,
@@ -31,11 +25,8 @@ export const SectionHeading = ({
   return (
     <BlurFade delay={0.1} inView>
       <div className={cn("flex flex-col gap-5", className)}>
-        <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-blog-fg">
-          <span>{index}</span>
-          <span>{label}</span>
-          <span aria-hidden className="h-px flex-1 bg-border" />
-          {href ? (
+        {href ? (
+          <div className="flex justify-end font-mono text-xs uppercase tracking-[0.18em] text-blog-fg">
             <Link
               href={href}
               className="inline-flex items-center gap-1 transition-colors hover:text-blog-white"
@@ -43,8 +34,8 @@ export const SectionHeading = ({
               {hrefLabel}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
 
         <div className="flex flex-col gap-3">
           <h2

@@ -83,8 +83,6 @@ const Skills = ({ languages }: SkillsProps) => {
       className={cn("relative flex w-full flex-col justify-center py-16")}
     >
       <SectionHeading
-        index="04"
-        label="skills"
         title="Skills & tools"
         description={competencies.join(" · ")}
         className="mb-8"

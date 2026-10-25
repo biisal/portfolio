@@ -31,8 +31,6 @@ const Opensource = () => {
       className="relative flex w-full flex-col justify-center py-16"
     >
       <SectionHeading
-        index="03"
-        label="open source"
         title="Open source contributions"
         description="Pull requests and features I've contributed to the projects I use and love."
         className="mb-6"
