@@ -155,13 +155,24 @@ assert.equal(pingPong(10, -5), 0, "negative width is safe");
   assert.equal(empty.fig.y, FLOOR_Y);
 }
 
+/* ---------- max walking speed ---------- */
+
+{
+  const sim = new Sim([plat("A", 1500), plat("Z", 9000)], 1000);
+  const x0 = sim.fig.x;
+  sim.frame(40); // a huge one-frame scroll
+  const max = (TUNING.maxWalkSpeed * 16) / 1000;
+  assert.ok(sim.fig.x - x0 <= max + 1e-6, "walking speed is capped");
+  assert.ok(sim.fig.x > x0, "but it still walks");
+}
+
 /* ---------- walking, down then back up ---------- */
 
 {
   const sim = new Sim([plat("A", 1500), plat("Z", 5000)], 1000); // A at 500
   assert.equal(sim.fig.platformId, "A");
   const x0 = sim.fig.x;
-  sim.scroll(100); // A -> 400, still in band
+  sim.scroll(100, 4); // A -> 400, still in band
   assert.equal(sim.fig.phase, "walk");
   assert.ok(sim.fig.x > x0, "walks forward when scrolling down");
   assert.equal(sim.fig.facing, 1);
@@ -172,13 +183,13 @@ assert.equal(pingPong(10, -5), 0, "negative width is safe");
   assert.equal(sim.fig.y, sim.vy("A"), "rides its line");
 
   const phase1 = sim.fig.walkPhase;
-  sim.scroll(-60);
+  sim.scroll(-60, 4);
   assert.equal(sim.fig.facing, -1, "turns around when scrolling up");
   assert.ok(sim.fig.x < x0 + 100 * TUNING.walkPerScroll, "walks back");
   assert.notEqual(sim.fig.walkPhase, phase1, "legs keep cycling");
 
   // Walking forwards then back by the same amount returns to the start.
-  sim.scroll(-40);
+  sim.scroll(-40, 4);
   assert.ok(Math.abs(sim.fig.x - x0) < 1e-6, "scroll up retraces the walk");
 }
 
@@ -273,7 +284,7 @@ assert.equal(pingPong(10, -5), 0, "negative width is safe");
   for (let i = 0; i < 400; i++) {
     sim.frame(6);
     if (sim.fig.phase === "crouch") sawCrouch = true;
-    if (sim.fig.phase === "land" && sim.fig.platformId === "D") {
+    if (sim.fig.phase === "land" && (sim.fig.platformId as string) === "D") {
       landedOnD = true;
       assert.ok(Math.abs(sim.fig.y - sim.vy("D")) < 1e-6, "lands on the line");
     }

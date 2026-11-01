@@ -27,6 +27,8 @@ export const TUNING = {
   minPlatformWidth: 60,
   /** Walked px per scrolled px. */
   walkPerScroll: 0.55,
+  /** Top walking speed in px/s, however fast the page is scrolled. */
+  maxWalkSpeed: 260,
   /** Ground px covered by one full gait cycle (two steps). */
   cycleLength: 46,
   /** Inset from platform ends so the figure never stands on the very edge. */
@@ -307,7 +309,8 @@ export function createFigure(env: Env): Figure {
 /** Walk along (or just ride) the platform the figure stands on. */
 function ride(n: Figure, cur: Platform, env: Env, walking: boolean): void {
   if (walking) {
-    const ground = env.dScroll * TUNING.walkPerScroll;
+    const maxStep = (TUNING.maxWalkSpeed * env.dt) / 1000;
+    const ground = clamp(env.dScroll * TUNING.walkPerScroll, -maxStep, maxStep);
     n.s += ground;
     n.walkPhase =
       (n.walkPhase + (Math.abs(ground) / TUNING.cycleLength) * Math.PI * 2) %

@@ -43,7 +43,7 @@ marked with `data-stick-walk`.
   viewport bottom.
 - **Sticky sidebar:** its text does not move with the document, so anything inside
   a `position: sticky | fixed` ancestor is excluded from platforms.
-- **Existing mascot:** `components/angry-bird.tsx` shows the house style: a client
+- **Existing mascot:** the old sidebar mascot (since removed) showed the house style: a client
   component, CSS keyframes in an inline `<style>`, `prefers-reduced-motion`
   respected, decorative so `aria-hidden`.
 - **Testing convention:** pure logic lives in `lib/*.ts` with a sibling
@@ -200,14 +200,14 @@ transform` only on the moving group.
 ## 8. Work plan
 
 - [x] Inspect project, write this plan
-- [ ] `lib/stickman/engine.ts` and `engine.check.ts` (platform thinning, target
+- [x] `lib/stickman/engine.ts` and `engine.check.ts` (platform thinning, target
       picking, ping-pong, jump arc landing exactly, state transitions)
-- [ ] `lib/stickman/pose.ts` and `pose.check.ts` (IK finite and within reach for
+- [x] `lib/stickman/pose.ts` and `pose.check.ts` (IK finite and within reach for
       every phase, blend endpoints)
-- [ ] `lib/stickman/measure.ts`
-- [ ] `components/scroll-stickman.tsx`
-- [ ] Mount in `app/layout.tsx`
-- [ ] Verify: `pnpm typecheck`, `pnpm lint`, `node lib/stickman/*.check.ts`
+- [x] `lib/stickman/measure.ts`
+- [x] `components/scroll-stickman.tsx`
+- [x] Mount in `app/layout.tsx`
+- [x] Verify: `pnpm typecheck`, `pnpm lint`, `node lib/stickman/*.check.ts`
 - [ ] Hand-test in `pnpm dev`: scroll down, scroll up, reverse mid-jump, click
       sidebar/dock anchors, resize, mobile width
 
