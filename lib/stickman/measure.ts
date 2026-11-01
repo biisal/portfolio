@@ -7,7 +7,10 @@
 
 import { makeFloor, type Platform, thinPlatforms, TUNING } from "./engine";
 
-const SELECTOR = "h1, h2, h3, hr, [data-stick-walk], .divide-y > *";
+/** Article bodies (blog posts) get paragraphs, quotes and code blocks to stand on too. */
+const PROSE = ".prose p, .prose blockquote, .prose pre";
+
+const SELECTOR = `h1, h2, h3, hr, [data-stick-walk], .divide-y > *, ${PROSE}`;
 
 /** Stable ids per element, so a re-measure keeps the figure attached to its line. */
 const ids = new WeakMap<Element, string>();
@@ -42,11 +45,27 @@ function isPinned(el: Element): boolean {
   return false;
 }
 
-/** The box around an element's actual text, so the figure walks along the words. */
+/**
+ * The box around the FIRST LINE of an element's text, so the figure stands on
+ * the top of the first line (not the middle of a wrapped block) and walks along
+ * the words that are really there.
+ */
 function textRect(el: Element): DOMRect {
   const range = document.createRange();
   range.selectNodeContents(el);
-  return range.getBoundingClientRect();
+  const rects = Array.from(range.getClientRects()).filter(
+    (r) => r.width > 0 && r.height > 0
+  );
+  if (rects.length === 0) return range.getBoundingClientRect();
+
+  const first = rects[0];
+  // Inline children (links, bold) give several boxes on one line: join them.
+  const line = rects.filter(
+    (r) => Math.abs(r.top - first.top) < first.height * 0.6
+  );
+  const left = Math.min(...line.map((r) => r.left));
+  const right = Math.max(...line.map((r) => r.right));
+  return new DOMRect(left, first.top, right - left, first.height);
 }
 
 export function measurePlatforms(): Measured {
@@ -60,7 +79,10 @@ export function measurePlatforms(): Measured {
   for (const el of document.querySelectorAll(SELECTOR)) {
     if (el.closest("[data-stick-ignore]") || isPinned(el)) continue;
 
-    const isLine = el.tagName === "HR" || el.matches(".divide-y > *");
+    const isLine =
+      el.tagName === "HR" ||
+      el.tagName === "PRE" ||
+      el.matches(".divide-y > *");
     const rect = isLine ? el.getBoundingClientRect() : textRect(el);
     if (rect.width < TUNING.minPlatformWidth) continue;
     if (rect.height === 0 && !isLine) continue;

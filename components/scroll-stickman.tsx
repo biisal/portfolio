@@ -84,6 +84,8 @@ export function ScrollStickman() {
     if (!enabled) return;
 
     let raf = 0;
+    // On a blog post people are reading: text recovers fast.
+    const quick = pathname.startsWith("/blog/");
     let measureRaf = 0;
     let lastTime = 0;
     let lastScrollY = window.scrollY;
@@ -288,7 +290,10 @@ export function ScrollStickman() {
           const el = platformElement(landed);
           // Text breaks around the landing point; a line breaks evenly all over.
           const mode = kind === "line" ? "all" : "local";
-          if (el instanceof HTMLElement && breakText(el, figure.x, mode)) {
+          if (
+            el instanceof HTMLElement &&
+            breakText(el, figure.x, mode, quick)
+          ) {
             sound.play("crack");
           }
         }

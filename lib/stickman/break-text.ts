@@ -13,6 +13,9 @@ const RADIUS = 130;
 const SHATTER = 24;
 const BROKEN_MS = 2400;
 const HEAL_MS = 600;
+/** Reading pages (blog posts): break briefly and recover fast. */
+const QUICK_BROKEN_MS = 500;
+const QUICK_HEAL_MS = 250;
 
 const BROKEN_ATTR = "data-stick-broken";
 
@@ -85,7 +88,8 @@ function restore(s: Split): void {
 export function breakText(
   el: HTMLElement,
   hitX: number,
-  mode: "local" | "all" = "local"
+  mode: "local" | "all" = "local",
+  quick = false
 ): boolean {
   if (el.hasAttribute(BROKEN_ATTR) || !el.isConnected) return false;
 
@@ -158,10 +162,13 @@ export function breakText(
     c.style.opacity = String(opacity);
   });
 
+  const brokenMs = quick ? QUICK_BROKEN_MS : BROKEN_MS;
+  const healMs = quick ? QUICK_HEAL_MS : HEAL_MS;
+
   window.setTimeout(() => {
     // Heal: ease everything back, then swap the original text back in.
     for (const c of chars) {
-      c.style.transition = `transform ${HEAL_MS}ms ease-out, opacity ${HEAL_MS}ms ease-out`;
+      c.style.transition = `transform ${healMs}ms ease-out, opacity ${healMs}ms ease-out`;
       c.style.transform = "";
       c.style.opacity = "1";
       c.style.clipPath = "";
@@ -169,8 +176,8 @@ export function breakText(
     window.setTimeout(() => {
       for (const s of splits) restore(s);
       el.removeAttribute(BROKEN_ATTR);
-    }, HEAL_MS + 50);
-  }, BROKEN_MS);
+    }, healMs + 50);
+  }, brokenMs);
 
   return true;
 }
