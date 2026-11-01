@@ -12,6 +12,7 @@ import {
   step,
   TUNING,
 } from "@/lib/stickman/engine";
+import { isTyping } from "@/lib/is-typing";
 import { breakText } from "@/lib/stickman/break-text";
 import { measurePlatforms, platformElement } from "@/lib/stickman/measure";
 import { computePose, type Limb, type Pt } from "@/lib/stickman/pose";
@@ -20,6 +21,8 @@ import { StickSound } from "@/lib/stickman/sound";
 const MUTE_KEY = "stickman-muted";
 /** Most landing-dust puffs alive at once. */
 const DUST_POOL = 8;
+/** Walking speed while a walk key is held, px/s. */
+const KEY_WALK_SPEED = 220;
 /** Time without scrolling before the figure sits down. */
 const SIT_AFTER_MS = 4000;
 
@@ -84,6 +87,7 @@ export function ScrollStickman() {
     if (!enabled) return;
 
     let raf = 0;
+    const keys = { left: false, right: false };
     // On a blog post people are reading: text recovers fast.
     const quick = pathname.startsWith("/blog/");
     let measureRaf = 0;
@@ -112,12 +116,13 @@ export function ScrollStickman() {
     }[] = [];
     const PUFF_LIFE = 450;
 
-    const makeEnv = (dt: number, dScroll: number): Env => {
+    const makeEnv = (dt: number, dScroll: number, dWalk: number): Env => {
       const floorY = window.innerHeight - TUNING.floorOffset;
       return {
         scrollY: window.scrollY,
         dt,
         dScroll,
+        dWalk,
         velocity,
         floorY,
         floor: platforms.floor,
@@ -264,7 +269,10 @@ export function ScrollStickman() {
       const y = window.scrollY;
       const dScroll = y - lastScrollY;
       lastScrollY = y;
-      if (dScroll !== 0) {
+      const dWalk =
+        (((keys.right ? 1 : 0) - (keys.left ? 1 : 0)) * KEY_WALK_SPEED * dt) /
+        1000;
+      if (dScroll !== 0 || dWalk !== 0) {
         lastScrollAt = now;
         gesture = null; // scrolling interrupts any idle gesture
         window.clearTimeout(idleTimer);
@@ -278,7 +286,7 @@ export function ScrollStickman() {
       // Smooth px/s so one big frame doesn't flip the "fast" mode by itself.
       velocity += ((dScroll / Math.max(dt, 1)) * 1000 - velocity) * 0.35;
 
-      const env = makeEnv(dt, dScroll);
+      const env = makeEnv(dt, dScroll, dWalk);
       const prev = figure;
       figure = prev ? step(prev, env) : createFigure(env);
       if (prev) playSounds(prev, figure);
@@ -307,6 +315,8 @@ export function ScrollStickman() {
         Math.abs(velocity) < 1 &&
         !gesture &&
         sitAmt === sitTarget &&
+        !keys.left &&
+        !keys.right &&
         puffs.length === 0;
       if (settled && now - lastScrollAt > TUNING.idleMs) {
         lastTime = 0; // sleep until the next scroll
@@ -341,6 +351,43 @@ export function ScrollStickman() {
       }
     };
 
+    const keyAction = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return null;
+      switch (e.key) {
+        case "ArrowLeft":
+          return "left";
+        case "ArrowRight":
+          return "right";
+        case "h":
+          return "left";
+        case "l":
+          return "right";
+        default:
+          return null;
+      }
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      const action = keyAction(e);
+      if (!action || isTyping(e.target)) return;
+      keys[action] = true;
+      wake();
+    };
+
+    const onKeyUp = (e: KeyboardEvent) => {
+      const action = keyAction(e);
+      if (action === "left" || action === "right") keys[action] = false;
+    };
+
+    const releaseKeys = () => {
+      keys.left = false;
+      keys.right = false;
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("blur", releaseKeys);
+
     const unlock = () => sound.unlock();
     const gestures = ["pointerdown", "keydown", "touchstart"] as const;
     for (const g of gestures)
@@ -362,6 +409,9 @@ export function ScrollStickman() {
       window.clearTimeout(sitTimer);
       ro.disconnect();
       for (const g of gestures) window.removeEventListener(g, unlock);
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("blur", releaseKeys);
       window.removeEventListener("scroll", wake);
       window.removeEventListener("resize", remeasure);
       document.removeEventListener("visibilitychange", onVisibility);

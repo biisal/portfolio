@@ -39,11 +39,12 @@ class Sim {
     this.fig = createFigure(this.env(0));
   }
 
-  env(dScroll: number, velocity = this.velocity): Env {
+  env(dScroll: number, velocity = this.velocity, dWalk = 0): Env {
     return {
       scrollY: this.scrollY,
       dt: DT,
       dScroll,
+      dWalk,
       velocity,
       floorY: FLOOR_Y,
       floor: this.floor,
@@ -70,6 +71,11 @@ class Sim {
     const v = velocity ?? (delta / DT) * 1000;
     this.velocity = v;
     this.fig = step(this.fig, this.env(delta, v));
+  }
+
+  /** One frame of keyboard walking (no scrolling). */
+  walkKey(dx: number) {
+    this.fig = step(this.fig, this.env(0, 0, dx));
   }
 
   /** Scroll `total` px in steps of about `per`, recording the phase sequence. */
@@ -153,6 +159,31 @@ assert.equal(pingPong(10, -5), 0, "negative width is safe");
   const empty = new Sim([], 0);
   assert.equal(empty.fig.platformId, "floor");
   assert.equal(empty.fig.y, FLOOR_Y);
+}
+
+/* ---------- keyboard walking ---------- */
+
+{
+  const sim = new Sim([plat("A", 1500), plat("Z", 5000)], 1000); // A at 500
+  assert.equal(sim.fig.platformId, "A");
+  const x0 = sim.fig.x;
+  for (let i = 0; i < 20; i++) sim.walkKey(3);
+  assert.ok(Math.abs(sim.fig.x - (x0 + 60)) < 1e-6, "walks right by hand");
+  assert.equal(sim.fig.facing, 1);
+  assert.equal(sim.fig.y, sim.vy("A"), "stays on its line");
+  assert.equal(sim.fig.phase, "walk");
+  assert.ok(sim.fig.walkAmt > 0.9, "legs move while walking by hand");
+
+  const x1 = sim.fig.x;
+  for (let i = 0; i < 10; i++) sim.walkKey(-3);
+  assert.ok(Math.abs(sim.fig.x - (x1 - 30)) < 1e-6, "walks left by hand");
+  assert.equal(sim.fig.facing, -1, "turns to face left");
+
+  for (let i = 0; i < 400; i++) sim.walkKey(-3);
+  assert.equal(sim.fig.x, 100 + TUNING.edgeInset, "stops at the left end");
+  for (let i = 0; i < 400; i++) sim.walkKey(3);
+  assert.equal(sim.fig.x, 500 - TUNING.edgeInset, "stops at the right end");
+  assert.equal(sim.fig.platformId, "A", "never leaves the line by walking");
 }
 
 /* ---------- max walking speed ---------- */

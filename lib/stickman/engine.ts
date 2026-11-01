@@ -110,6 +110,8 @@ export interface Env {
   dt: number;
   /** Scroll distance since the previous step, signed (down is positive). */
   dScroll: number;
+  /** Keyboard walking this step in px along the line, signed (right is positive). */
+  dWalk?: number;
   /** Smoothed scroll speed in px/s, signed. */
   velocity: number;
   /** Viewport y of the floor. */
@@ -316,6 +318,21 @@ function ride(n: Figure, cur: Platform, env: Env, walking: boolean): void {
       (n.walkPhase + (Math.abs(ground) / TUNING.cycleLength) * Math.PI * 2) %
       (Math.PI * 2);
     if (cur.kind === "floor") n.floorWalked += Math.abs(env.dScroll);
+
+    // Walking by hand (arrow keys / hjkl): move along the line, face that way.
+    const dWalk = env.dWalk ?? 0;
+    if (dWalk !== 0) {
+      const [lo, hi] = span(cur);
+      const here = walkX(cur, n.s);
+      const to = clamp(here + dWalk, lo, hi);
+      const moved = Math.abs(to - here);
+      n.facing = dWalk > 0 ? 1 : -1;
+      n.s = sFromX(cur, to, n.facing, n.dir || 1);
+      n.walkPhase =
+        (n.walkPhase + (moved / TUNING.cycleLength) * Math.PI * 2) %
+        (Math.PI * 2);
+      if (cur.kind === "floor") n.floorWalked += moved;
+    }
   }
   const x = walkX(cur, n.s);
   const dx = x - n.x;
@@ -421,8 +438,9 @@ function maybeLeave(n: Figure, cur: Platform, env: Env, moving: boolean): void {
  */
 export function step(f: Figure, env: Env): Figure {
   const n: Figure = { ...f };
-  const moving = Math.abs(env.dScroll) > 0.01;
-  if (moving) n.dir = env.dScroll > 0 ? 1 : -1;
+  const scrolling = Math.abs(env.dScroll) > 0.01;
+  const moving = scrolling || Math.abs(env.dWalk ?? 0) > 0.01;
+  if (scrolling) n.dir = env.dScroll > 0 ? 1 : -1;
   n.walkAmt = approach(f.walkAmt, moving ? 1 : 0, env.dt / TUNING.walkBlendMs);
 
   const speed = Math.abs(env.velocity);

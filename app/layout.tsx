@@ -4,6 +4,7 @@ import { Metadata } from "next";
 
 import Dock from "@/components/dock";
 import { GoogleAnalytics } from "@/components/GoogleServices";
+import { KeyboardScroll } from "@/components/keyboard-scroll";
 import { ScrollStickman } from "@/components/scroll-stickman";
 import { Toaster } from "@/components/ui/sonner";
 import { HankenGrotesk, InstrumentSerif, JetBrainsMono } from "@/fonts";
@@ -89,6 +90,7 @@ export default function RootLayout({
         {/*<GlobalBackground />*/}
         <Dock />
         <ScrollStickman />
+        <KeyboardScroll />
         {children}
         <Toaster />
       </body>
