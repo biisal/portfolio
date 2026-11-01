@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import {
+  approach,
   createFigure,
   type Env,
   type Figure,
@@ -16,6 +17,10 @@ import { computePose, type Limb, type Pt } from "@/lib/stickman/pose";
 import { StickSound } from "@/lib/stickman/sound";
 
 const MUTE_KEY = "stickman-muted";
+/** Most landing-dust puffs alive at once. */
+const DUST_POOL = 8;
+/** Time without scrolling before the figure sits down. */
+const SIT_AFTER_MS = 4000;
 
 /** Pages where the figure stays away. */
 const HIDDEN_ON = ["/login", "/blog/editor", "/api"];
@@ -41,6 +46,7 @@ export function ScrollStickman() {
   const armFar = useRef<SVGPolylineElement>(null);
   const torso = useRef<SVGPolylineElement>(null);
   const head = useRef<SVGCircleElement>(null);
+  const dust = useRef<(SVGCircleElement | null)[]>([]);
 
   const hidden = HIDDEN_ON.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`)
@@ -85,6 +91,23 @@ export function ScrollStickman() {
     let facingVis = 1;
     let platforms = measurePlatforms();
     let figure: Figure | null = null;
+    let gesture: {
+      kind: "look" | "stretch";
+      start: number;
+      dur: number;
+    } | null = null;
+    let idleTimer = 0;
+    let sitTimer = 0;
+    let sitTarget = 0; // 1 once it has been left alone long enough to sit
+    let sitAmt = 0;
+    const puffs: {
+      x: number;
+      docY: number;
+      vx: number;
+      vy: number;
+      age: number;
+    }[] = [];
+    const PUFF_LIFE = 450;
 
     const makeEnv = (dt: number, dScroll: number): Env => {
       const floorY = window.innerHeight - TUNING.floorOffset;
@@ -114,7 +137,74 @@ export function ScrollStickman() {
       }
     };
 
-    const draw = (f: Figure) => {
+    const spawnDust = (x: number, y: number) => {
+      for (let i = 0; i < 5 && puffs.length < DUST_POOL; i++) {
+        const dir = i % 2 ? 1 : -1;
+        puffs.push({
+          x,
+          docY: y + window.scrollY,
+          vx: dir * (20 + Math.random() * 45),
+          vy: -(8 + Math.random() * 22),
+          age: 0,
+        });
+      }
+    };
+
+    const drawDust = (dt: number) => {
+      for (const p of puffs) {
+        p.age += dt;
+        p.x += (p.vx * dt) / 1000;
+        p.docY += (p.vy * dt) / 1000;
+      }
+      for (let i = puffs.length - 1; i >= 0; i--) {
+        if (puffs[i].age >= PUFF_LIFE) puffs.splice(i, 1);
+      }
+      const sy = window.scrollY;
+      dust.current.forEach((c, i) => {
+        if (!c) return;
+        const p = puffs[i];
+        if (!p) {
+          c.setAttribute("opacity", "0");
+          return;
+        }
+        const u = p.age / PUFF_LIFE;
+        c.setAttribute("cx", p.x.toFixed(1));
+        c.setAttribute("cy", (p.docY - sy).toFixed(1));
+        c.setAttribute("r", (2.2 + u * 2.2).toFixed(1));
+        c.setAttribute("opacity", (0.55 * (1 - u)).toFixed(2));
+      });
+    };
+
+    /** Left alone for a while: sit down, bored. */
+    const scheduleSit = () => {
+      if (sitTimer || sitTarget) return;
+      sitTimer = window.setTimeout(() => {
+        sitTimer = 0;
+        if (document.hidden) return;
+        sitTarget = 1;
+        wake();
+      }, SIT_AFTER_MS);
+    };
+
+    const scheduleIdle = () => {
+      if (idleTimer || gesture || sitTarget) return;
+      idleTimer = window.setTimeout(
+        () => {
+          idleTimer = 0;
+          if (document.hidden) return;
+          const kind = Math.random() < 0.5 ? "look" : "stretch";
+          gesture = {
+            kind,
+            start: performance.now(),
+            dur: kind === "look" ? 1600 : 2000,
+          };
+          wake();
+        },
+        3000 + Math.random() * 4000
+      );
+    };
+
+    const draw = (f: Figure, now: number) => {
       const k =
         f.phase === "crouch"
           ? f.t / TUNING.crouchMs
@@ -131,16 +221,25 @@ export function ScrollStickman() {
         vyNorm: (k - 0.5) * 2,
         fall: f.fall,
         lean: Math.min(0.3, (Math.abs(velocity) / 4000) * 0.3),
+        sit: sitAmt,
+        idle: gesture
+          ? { kind: gesture.kind, k: (now - gesture.start) / gesture.dur }
+          : undefined,
       });
 
       // Turn around over a few frames instead of popping.
       facingVis += (f.facing - facingVis) * 0.3;
       if (Math.abs(f.facing - facingVis) < 0.02) facingVis = f.facing;
-      const scale = window.innerWidth < 640 ? 0.8 : 1;
+      const scale = window.innerWidth < 640 ? 1.05 : 1.3;
+
+      // Squash on landing, easing back to normal.
+      const squash = f.phase === "land" ? (1 - Math.min(1, k)) * 0.14 : 0;
+      const sx = facingVis * scale * (1 + squash * 0.6);
+      const sy = scale * (1 - squash);
 
       group.current?.setAttribute(
         "transform",
-        `translate(${f.x.toFixed(1)} ${f.y.toFixed(1)}) scale(${(facingVis * scale).toFixed(3)} ${scale})`
+        `translate(${f.x.toFixed(1)} ${f.y.toFixed(1)}) scale(${sx.toFixed(3)} ${sy.toFixed(3)})`
       );
       legNear.current?.setAttribute("points", pts(pose.legNear));
       legFar.current?.setAttribute("points", pts(pose.legFar));
@@ -162,7 +261,17 @@ export function ScrollStickman() {
       const y = window.scrollY;
       const dScroll = y - lastScrollY;
       lastScrollY = y;
-      if (dScroll !== 0) lastScrollAt = now;
+      if (dScroll !== 0) {
+        lastScrollAt = now;
+        gesture = null; // scrolling interrupts any idle gesture
+        window.clearTimeout(idleTimer);
+        idleTimer = 0;
+        window.clearTimeout(sitTimer);
+        sitTimer = 0;
+        sitTarget = 0; // scrolling gets it back on its feet
+      }
+      sitAmt = approach(sitAmt, sitTarget, dt / (sitTarget ? 700 : 350));
+      if (gesture && now - gesture.start >= gesture.dur) gesture = null;
       // Smooth px/s so one big frame doesn't flip the "fast" mode by itself.
       velocity += ((dScroll / Math.max(dt, 1)) * 1000 - velocity) * 0.35;
 
@@ -170,14 +279,23 @@ export function ScrollStickman() {
       const prev = figure;
       figure = prev ? step(prev, env) : createFigure(env);
       if (prev) playSounds(prev, figure);
-      draw(figure);
+      if (prev?.phase === "air" && figure.phase === "land") {
+        spawnDust(figure.x, figure.y);
+      }
+      draw(figure, now);
+      drawDust(dt);
 
       const settled =
         figure.phase === "walk" &&
         figure.walkAmt === 0 &&
-        Math.abs(velocity) < 1;
+        Math.abs(velocity) < 1 &&
+        !gesture &&
+        sitAmt === sitTarget &&
+        puffs.length === 0;
       if (settled && now - lastScrollAt > TUNING.idleMs) {
         lastTime = 0; // sleep until the next scroll
+        scheduleIdle();
+        scheduleSit();
         return;
       }
       raf = requestAnimationFrame(frame);
@@ -224,6 +342,8 @@ export function ScrollStickman() {
     return () => {
       cancelAnimationFrame(raf);
       cancelAnimationFrame(measureRaf);
+      window.clearTimeout(idleTimer);
+      window.clearTimeout(sitTimer);
       ro.disconnect();
       for (const g of gestures) window.removeEventListener(g, unlock);
       window.removeEventListener("scroll", wake);
@@ -261,28 +381,44 @@ export function ScrollStickman() {
             <polyline ref={torso} fill="none" />
             <polyline ref={legNear} fill="none" />
             <polyline ref={armNear} fill="none" />
-            <circle ref={head} r={7} />
+            <circle ref={head} r={5.5} />
           </g>
         </defs>
         <g ref={group}>
           <use
             href="#stickman-shape"
             stroke="var(--background)"
-            style={{ "--far": "var(--background)" } as React.CSSProperties}
+            style={
+              {
+                "--far": "var(--background)",
+              } as React.CSSProperties
+            }
             fill="var(--background)"
-            strokeWidth={7.4}
+            strokeWidth={6.4}
           />
           <use
             href="#stickman-shape"
             style={
               {
-                "--far": "color-mix(in srgb, currentColor 65%, black)",
+                "--far": "currentColor",
               } as React.CSSProperties
             }
             stroke="currentColor"
             fill="currentColor"
-            strokeWidth={4.4}
+            strokeWidth={3.6}
           />
+        </g>
+        <g fill="currentColor">
+          {Array.from({ length: DUST_POOL }, (_, i) => (
+            <circle
+              key={i}
+              ref={(el) => {
+                dust.current[i] = el;
+              }}
+              r={2}
+              opacity={0}
+            />
+          ))}
         </g>
       </svg>
       <button

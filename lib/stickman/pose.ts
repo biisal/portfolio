@@ -34,16 +34,16 @@ export const BODY = {
   thigh: 13,
   shin: 13,
   torso: 18,
-  headR: 6.5,
+  headR: 5.5,
   upper: 10,
   fore: 10,
   /** Hip height when standing: a touch under full leg length so the knees stay soft. */
   standHip: 25,
 } as const;
 
-const STRIDE = 11;
-const LIFT = 6;
-const ARM_SWING = 0.7;
+const STRIDE = 13;
+const LIFT = 7;
+const ARM_SWING = 0.95;
 
 export type PosePhase = "walk" | "crouch" | "air" | "land";
 
@@ -61,6 +61,10 @@ export interface PoseInput {
   fall: boolean;
   /** Extra forward lean in radians, from scroll speed. */
   lean: number;
+  /** A one-off idle gesture, played while standing still. k runs 0..1. */
+  idle?: { kind: "look" | "stretch"; k: number };
+  /** 0 = on its feet, 1 = sitting on the line (bored). Only applies while grounded. */
+  sit?: number;
 }
 
 /* ---------- helpers ---------- */
@@ -200,10 +204,10 @@ const IDLE: Rig = {
   hipDrop: 0,
   lean: 0.03,
   headTilt: 0,
-  footNear: { x: 4, y: 0 },
-  footFar: { x: -4, y: 0 },
-  armNear: [0.1, 0.18],
-  armFar: [-0.08, 0.12],
+  footNear: { x: 6, y: 0 },
+  footFar: { x: -6, y: 0 },
+  armNear: [0.3, 0.25],
+  armFar: [-0.3, 0.25],
 };
 
 const CROUCH: Rig = {
@@ -212,8 +216,8 @@ const CROUCH: Rig = {
   headTilt: -0.1,
   footNear: { x: 6, y: 0 },
   footFar: { x: -6, y: 0 },
-  armNear: [-1.0, 0.5],
-  armFar: [-0.8, 0.5],
+  armNear: [-1.2, 0.4],
+  armFar: [-1.7, 0.3],
 };
 
 /** Going up: reaching overhead, knees tucked. */
@@ -223,8 +227,8 @@ const RISE: Rig = {
   headTilt: -0.1,
   footNear: { x: 7, y: -12 },
   footFar: { x: -5, y: -6 },
-  armNear: [2.6, 0.2],
-  armFar: [2.3, 0.3],
+  armNear: [2.8, 0.15],
+  armFar: [-2.6, -0.15],
 };
 
 /** Coming down: legs reaching for the ground, arms out for balance. */
@@ -247,6 +251,35 @@ const LAND: Rig = {
   armNear: [0.8, 0.5],
   armFar: [0.3, 0.5],
 };
+
+/**
+ * Chilling: leaning back on one propped-up arm, knees up, feet out in front,
+ * the other hand resting on a knee, head up.
+ */
+const SIT: Rig = {
+  hipDrop: 22,
+  lean: -0.75,
+  headTilt: 0.65,
+  footNear: { x: 19, y: 0 },
+  footFar: { x: 15, y: 0 },
+  armNear: [-0.9, 0.4],
+  armFar: [1.45, 0.1],
+};
+
+const STRETCH: Rig = {
+  hipDrop: 0,
+  lean: -0.12,
+  headTilt: -0.3,
+  footNear: { x: 4, y: 0 },
+  footFar: { x: -4, y: 0 },
+  armNear: [2.9, 0.1],
+  armFar: [2.7, 0.1],
+};
+
+/** Standing, head swinging left then right. */
+function lookRig(k: number): Rig {
+  return { ...IDLE, headTilt: 0.7 * Math.sin(k * Math.PI * 2) };
+}
 
 function walkRig(phase: number, lean: number): Rig {
   const sA = Math.sin(phase);
@@ -313,7 +346,16 @@ export function computePose(input: PoseInput): Pose {
     case "land":
       return blendPose(build(LAND), ground, easeOut(k));
 
-    default:
-      return ground;
+    default: {
+      const sit = easeOut(fin(input.sit ?? 0));
+      let out = ground;
+      if (input.idle) {
+        const gk = clamp01(fin(input.idle.k));
+        const w = Math.sin(gk * Math.PI) * (1 - walkAmt) * (1 - sit);
+        const rig = input.idle.kind === "stretch" ? STRETCH : lookRig(gk);
+        out = blendPose(ground, build(rig), w);
+      }
+      return sit > 0 ? blendPose(out, build(SIT), sit) : out;
+    }
   }
 }

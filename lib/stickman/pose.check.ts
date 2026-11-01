@@ -241,4 +241,37 @@ const input = (over: Partial<PoseInput> = {}): PoseInput => ({
   }
 }
 
+{
+  // Idle gestures: finite everywhere, and exactly the idle pose at both ends.
+  const base = input({ phase: "walk", walkAmt: 0 });
+  const rest = computePose(base);
+  for (const kind of ["look", "stretch"] as const) {
+    for (let i = 0; i <= 20; i++) {
+      const p = computePose({ ...base, idle: { kind, k: i / 20 } });
+      assert.ok(finite(p), `idle ${kind} finite @${i}`);
+    }
+    for (const k of [0, 1]) {
+      const p = computePose({ ...base, idle: { kind, k } });
+      assert.ok(
+        dist(p.head, rest.head) < 1e-6,
+        `idle ${kind} starts/ends at rest`
+      );
+    }
+    assert.ok(finite(computePose({ ...base, idle: { kind, k: Number.NaN } })));
+  }
+}
+
+{
+  // Sitting: finite, and the feet stay on the ground while the hip drops.
+  const base = input({ phase: "walk", walkAmt: 0 });
+  for (let i = 0; i <= 10; i++) {
+    const p = computePose({ ...base, sit: i / 10 });
+    assert.ok(finite(p), `sit finite @${i}`);
+  }
+  const sat = computePose({ ...base, sit: 1 });
+  assert.ok(sat.hip.y > computePose(base).hip.y + 10, "hip drops when sitting");
+  assert.ok(Math.abs(sat.legNear[2].y) < 1e-6, "feet on the ground");
+  assert.ok(finite(computePose({ ...base, sit: Number.NaN })));
+}
+
 console.log("pose ok");
