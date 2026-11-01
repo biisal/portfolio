@@ -1,12 +1,24 @@
 "use client";
 
+import { useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { BlurFade } from "@/components/ui/blur-fade";
+import { cn } from "@/lib/utils";
 
 const BAI_URL = "https://bai.codeltix.com";
+
+/** Roles cycled through the intro headline, one fade at a time. */
+const ROLES = [
+  { title: "Fullstack developer", detail: "frontend to database" },
+  { title: "Backend engineer", detail: "APIs, queues and data" },
+  { title: "Open source builder", detail: "sharing what I learn" },
+  { title: "Product tinkerer", detail: "side projects to production" },
+] as const;
+
+const ROTATE_MS = 3200;
 
 /** Shown fanned out one after another on hover. Add more URLs here. */
 const BAI_IMAGES = [
@@ -135,14 +147,57 @@ const HoverPreview = ({
   );
 };
 
+/** Fades one role into the next, keeping both lines the same height. */
+const RotatingRoles = () => {
+  const reduceMotion = useReducedMotion();
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion || paused) return;
+    const id = window.setInterval(
+      () => setIndex((current) => (current + 1) % ROLES.length),
+      ROTATE_MS
+    );
+    return () => window.clearInterval(id);
+  }, [reduceMotion, paused]);
+
+  return (
+    <p
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      className="font-serif text-4xl leading-[1.2] tracking-normal text-blog-white md:text-6xl md:leading-[1.15]"
+    >
+      {(["title", "detail"] as const).map((field) => (
+        <span key={field} className="grid">
+          {ROLES.map((role, i) => {
+            const active = i === index;
+            return (
+              <span
+                key={role.title}
+                aria-hidden={!active}
+                className={cn(
+                  "col-start-1 row-start-1 transition-opacity duration-500 ease-out motion-reduce:transition-none",
+                  field === "detail" &&
+                    "mt-1 text-xl leading-snug italic text-signal md:text-2xl",
+                  active ? "opacity-100" : "opacity-0"
+                )}
+              >
+                {role[field]}
+              </span>
+            );
+          })}
+        </span>
+      ))}
+    </p>
+  );
+};
+
 const Intro = () => {
   return (
     <div className="flex flex-col gap-10">
       <BlurFade delay={0.15} inView>
-        <p className="font-serif text-4xl leading-[1.2] tracking-normal text-blog-white md:text-6xl md:leading-[1.15]">
-          I build <span className="whitespace-nowrap">full-stack</span> systems
-          and <span className="whitespace-nowrap">AI-powered</span> products.
-        </p>
+        <RotatingRoles />
         <p className="mt-4 max-w-xl text-lg text-blog-fg md:text-xl">
           I enjoy learning new technologies, but I love exploring how the old
           ones actually work.
@@ -157,7 +212,7 @@ const Intro = () => {
           <HoverPreview href={BAI_URL} images={BAI_IMAGES}>
             bAI
           </HoverPreview>
-          , a coding harness.
+          , a harness.
         </p>
       </BlurFade>
     </div>
