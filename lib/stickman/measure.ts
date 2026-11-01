@@ -21,6 +21,13 @@ function idFor(el: Element): string {
   return id;
 }
 
+const elements = new Map<string, WeakRef<Element>>();
+
+/** The DOM element a platform was measured from, if it still exists. */
+export function platformElement(id: string): Element | null {
+  return elements.get(id)?.deref() ?? null;
+}
+
 export interface Measured {
   platforms: Platform[];
   floor: Platform;
@@ -63,6 +70,7 @@ export function measurePlatforms(): Measured {
       ? rect.top
       : rect.top + rect.height * TUNING.textFootRatio;
 
+    elements.set(idFor(el), new WeakRef(el));
     found.push({
       id: idFor(el),
       kind: isLine ? "line" : "text",

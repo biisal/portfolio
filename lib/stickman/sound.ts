@@ -6,7 +6,7 @@
  * `unlock()`; until then every call is a silent no-op.
  */
 
-export type SoundName = "step" | "jump" | "land" | "fall";
+export type SoundName = "step" | "jump" | "land" | "fall" | "crack";
 
 const MASTER_GAIN = 0.18;
 
@@ -74,6 +74,12 @@ export class StickSound {
       case "land": {
         this.tone(t, 0.18, 130, 45, 0.7, "sine");
         this.burst(t, 0.07, 700, 0.45);
+        break;
+      }
+      case "crack": {
+        this.burst(t, 0.07, 3400, 0.5);
+        this.burst(t + 0.035, 0.06, 2000, 0.4);
+        this.burst(t + 0.09, 0.05, 4200, 0.25);
         break;
       }
       case "fall": {

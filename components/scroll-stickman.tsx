@@ -12,7 +12,8 @@ import {
   step,
   TUNING,
 } from "@/lib/stickman/engine";
-import { measurePlatforms } from "@/lib/stickman/measure";
+import { breakText } from "@/lib/stickman/break-text";
+import { measurePlatforms, platformElement } from "@/lib/stickman/measure";
 import { computePose, type Limb, type Pt } from "@/lib/stickman/pose";
 import { StickSound } from "@/lib/stickman/sound";
 
@@ -281,6 +282,16 @@ export function ScrollStickman() {
       if (prev) playSounds(prev, figure);
       if (prev?.phase === "air" && figure.phase === "land") {
         spawnDust(figure.x, figure.y);
+        const landed = figure.platformId;
+        const kind = platforms.platforms.find((p) => p.id === landed)?.kind;
+        if (kind === "text" || kind === "line") {
+          const el = platformElement(landed);
+          // Text breaks around the landing point; a line breaks evenly all over.
+          const mode = kind === "line" ? "all" : "local";
+          if (el instanceof HTMLElement && breakText(el, figure.x, mode)) {
+            sound.play("crack");
+          }
+        }
       }
       draw(figure, now);
       drawDust(dt);
