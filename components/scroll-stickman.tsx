@@ -388,8 +388,17 @@ export function ScrollStickman() {
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("blur", releaseKeys);
 
+    // Chrome only counts some events as "user activation": click, keydown,
+    // pointerup, touchend (touchstart/pointerdown alone are not enough on
+    // touch). Scroll and wheel never count, so listen for all the valid ones.
     const unlock = () => sound.unlock();
-    const gestures = ["pointerdown", "keydown", "touchstart"] as const;
+    const gestures = [
+      "pointerdown",
+      "pointerup",
+      "click",
+      "keydown",
+      "touchend",
+    ] as const;
     for (const g of gestures)
       window.addEventListener(g, unlock, { passive: true });
 

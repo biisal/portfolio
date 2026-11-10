@@ -10,6 +10,17 @@ interface TPr {
 
 export const PULL_REQUESTS: TPr[] = [
   {
+    repo: "Vercel",
+    repoUrl: "https://github.com/vercel-labs/skills",
+    icon: "https://avatars.githubusercontent.com/u/14985020?s=200&v=4",
+    prs: [
+      {
+        title: "fix: misleading install summary for universal agents",
+        prUrl: "https://github.com/vercel-labs/skills/pull/2271",
+      },
+    ],
+  },
+  {
     repo: "pnpm/pnpm",
     repoUrl: "https://github.com/pnpm/pnpm",
     icon: "https://avatars.githubusercontent.com/u/21320719?s=200&v=4",
@@ -27,18 +38,6 @@ export const PULL_REQUESTS: TPr[] = [
     ],
   },
   {
-    repo: "BuilderIO/agent-native",
-    repoUrl: "",
-    icon: "https://avatars.githubusercontent.com/u/35700027",
-    prs: [
-      {
-        title:
-          "fix: force process exit and unref telemetry timer to fix CLI hangs #1330",
-        prUrl: "https://github.com/BuilderIO/agent-native/pull/1331",
-      },
-    ],
-  },
-  {
     repo: "NestJS",
     repoUrl: "https://github.com/nestjs",
     icon: "https://avatars.githubusercontent.com/u/28507035?s=200&v=4",
@@ -50,6 +49,34 @@ export const PULL_REQUESTS: TPr[] = [
       {
         title: "fix: resolve enterprise section text overlap",
         prUrl: "https://github.com/nestjs/marketing-ui/pull/2",
+      },
+    ],
+  },
+  {
+    repo: "Bit",
+    repoUrl: "https://github.com/teambit/bit",
+    icon: "https://avatars.githubusercontent.com/u/24789812?s=200&v=4",
+    prs: [
+      {
+        title: "Fix: `bit test --env` skipping the `--junit` report",
+        prUrl: "https://github.com/teambit/bit/pull/10902",
+      },
+      {
+        title:
+          "fix(install): handle windows paths and unscoped packages in getPackageNameFromTarget",
+        prUrl: "https://github.com/teambit/bit/pull/10800",
+      },
+    ],
+  },
+  {
+    repo: "BuilderIO/agent-native",
+    repoUrl: "",
+    icon: "https://avatars.githubusercontent.com/u/35700027",
+    prs: [
+      {
+        title:
+          "fix: force process exit and unref telemetry timer to fix CLI hangs #1330",
+        prUrl: "https://github.com/BuilderIO/agent-native/pull/1331",
       },
     ],
   },
