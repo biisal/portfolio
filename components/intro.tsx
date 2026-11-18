@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { BlurFade } from "@/components/ui/blur-fade";
+import { useCleanMode } from "@/lib/clean-mode";
 import { cn } from "@/lib/utils";
 
 const BAI_URL = "https://bai.codeltix.com";
@@ -65,6 +66,7 @@ const HoverPreview = ({
   const frame = useRef<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
+  const clean = useCleanMode();
 
   useEffect(() => setMounted(true), []);
 
@@ -108,7 +110,7 @@ const HoverPreview = ({
     >
       {children}
       <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-      {mounted
+      {mounted && !clean
         ? createPortal(
             <span
               ref={preview}
@@ -152,15 +154,17 @@ const RotatingRoles = () => {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const clean = useCleanMode();
 
   useEffect(() => {
-    if (reduceMotion || paused) return;
+    if (clean) setIndex(0);
+    if (reduceMotion || paused || clean) return;
     const id = window.setInterval(
       () => setIndex((current) => (current + 1) % ROLES.length),
       ROTATE_MS
     );
     return () => window.clearInterval(id);
-  }, [reduceMotion, paused]);
+  }, [reduceMotion, paused, clean]);
 
   return (
     <p

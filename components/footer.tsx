@@ -204,7 +204,7 @@ const Footer = async () => {
   const mobileStart = Math.max(0, totalWeeks - MOBILE_WEEKS);
 
   return (
-    <footer className="mx-auto max-w-6xl px-6 pb-28 pt-8 md:px-10">
+    <footer className="mx-auto max-w-6xl px-6 pb-28 pt-8 md:px-10 clean:max-w-(--clean-page)">
       <div className={cn(labelClass, "flex justify-end")}>
         <Link
           href="#intro"
@@ -216,7 +216,7 @@ const Footer = async () => {
       </div>
 
       {cells.length > 0 ? (
-        <div className="pt-20">
+        <div className="pt-20 clean:hidden">
           <div className="hidden sm:block">
             <ContributionGraph cells={cells} start={0} end={totalWeeks} />
           </div>

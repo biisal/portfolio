@@ -24,7 +24,9 @@ export function BlogPreview({ post, className }: BlogPreviewProps) {
         className
       )}
     >
-      {post.audio && <Player url={post.audio} className="sticky top-20 z-40" />}
+      {post.audio && (
+        <Player url={post.audio} className="sticky top-20  mb-4 z-40" />
+      )}
       <Streamdown
         mode="static"
         plugins={{ code: codePlugin }}

@@ -118,7 +118,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
   ];
 
   return (
-    <div className="mt-12 pt-8 border-t border-border">
+    <div className="mt-12 pt-8 border-t border-border clean:hidden">
       <h3 className="mb-4 text-lg font-medium tracking-tight text-blog-white">
         Share this post
       </h3>

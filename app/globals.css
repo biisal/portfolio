@@ -5,6 +5,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Clean mode (dock toggle, `data-clean` on <html>): style it next to the
+ * markup with `clean:` classes, e.g. `clean:hidden`, `clean:max-w-(--clean-page)`.
+ */
+@custom-variant clean (&:where([data-clean], [data-clean] *));
+
 :root {
   --background: #151515;
   --foreground: #e9e6df;
@@ -233,4 +239,22 @@
   .contrib-blink {
     animation: none;
   }
+}
+
+/* Clean mode: global tokens and the motion switch. Layout lives in `clean:` classes. */
+:root {
+  /* Clean-mode page column, side padding included (42rem of text). */
+  --clean-page: 47rem;
+}
+
+[data-clean] {
+  --muted-foreground: #b4b1a8;
+  scroll-behavior: auto;
+}
+
+[data-clean] *,
+[data-clean] *::before,
+[data-clean] *::after {
+  animation: none !important;
+  transition: none !important;
 }

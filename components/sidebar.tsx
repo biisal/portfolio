@@ -23,13 +23,13 @@ export const Sidebar = () => {
   const active = useScrollSpy(SECTION_IDS);
 
   return (
-    <aside className="flex flex-col gap-12 pb-4 pt-20 lg:sticky lg:top-0 lg:h-screen lg:justify-between lg:gap-8 lg:py-24 lg:[@media(max-height:800px)]:py-12 lg:[@media(max-height:640px)]:py-8">
-      <div className="flex flex-col gap-8 lg:[@media(max-height:800px)]:gap-5">
-        <div className="flex flex-col gap-4">
-          <h1 className="font-serif text-6xl leading-none tracking-normal text-blog-white lg:text-7xl lg:[@media(max-height:800px)]:text-6xl lg:[@media(max-height:640px)]:text-5xl">
+    <aside className="flex flex-col gap-12 pb-4 pt-20 lg:sticky lg:top-0 lg:h-screen lg:justify-between lg:gap-8 lg:py-24 lg:[@media(max-height:800px)]:py-12 lg:[@media(max-height:640px)]:py-8 clean:static clean:h-auto clean:justify-start clean:gap-4 clean:border-b clean:pt-16! clean:pb-8!">
+      <div className="flex flex-col gap-8 lg:[@media(max-height:800px)]:gap-5 clean:gap-3!">
+        <div className="flex flex-col gap-4 clean:gap-3">
+          <h1 className="font-serif text-6xl leading-none tracking-normal text-blog-white lg:text-7xl lg:[@media(max-height:800px)]:text-6xl lg:[@media(max-height:640px)]:text-5xl clean:text-[2.75rem]!">
             Avisek
-            <br />
-            <span className="italic text-signal">Ray</span>
+            <br className="clean:hidden" />
+            <span className="italic text-signal clean:ml-[0.25em]">Ray</span>
           </h1>
           <p className="font-mono text-xs leading-6 text-blog-fg">
             Software Engineer
@@ -43,7 +43,7 @@ export const Sidebar = () => {
 
         <nav
           aria-label="Sections"
-          className="hidden lg:block lg:[@media(max-height:700px)]:hidden"
+          className="hidden lg:block lg:[@media(max-height:700px)]:hidden clean:hidden"
         >
           <ul className="flex flex-col border-l border-border">
             {sections.map((section) => {
@@ -70,7 +70,7 @@ export const Sidebar = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-y-1.5 lg:[@media(max-height:560px)]:flex-row lg:[@media(max-height:560px)]:gap-y-1">
+        <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-y-1.5 lg:[@media(max-height:560px)]:flex-row lg:[@media(max-height:560px)]:gap-y-1 clean:flex-row! clean:gap-x-5! clean:gap-y-2!">
           <li>
             <Link
               href={cvUrl}

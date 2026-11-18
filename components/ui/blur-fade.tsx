@@ -10,6 +10,8 @@ import {
 } from "framer-motion";
 import { useRef } from "react";
 
+import { useCleanMode } from "@/lib/clean-mode";
+
 type MarginType = UseInViewOptions["margin"];
 
 interface BlurFadeProps extends MotionProps {
@@ -43,7 +45,9 @@ export function BlurFade({
 }: BlurFadeProps) {
   const ref = useRef(null);
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
-  const isInView = !inView || inViewResult;
+  const clean = useCleanMode();
+  // Clean mode: content shows at once, no fade or blur.
+  const isInView = clean || !inView || inViewResult;
   const defaultVariants: Variants = {
     hidden: {
       [direction === "left" || direction === "right" ? "x" : "y"]:
@@ -66,11 +70,11 @@ export function BlurFade({
         animate={isInView ? "visible" : "hidden"}
         exit="hidden"
         variants={combinedVariants}
-        transition={{
-          delay: 0.04 + delay,
-          duration,
-          ease: "easeOut",
-        }}
+        transition={
+          clean
+            ? { duration: 0 }
+            : { delay: 0.04 + delay, duration, ease: "easeOut" }
+        }
         className={className}
         {...props}
       >

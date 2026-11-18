@@ -9,8 +9,8 @@ import SocialShare from "@/components/blog/social-share";
 import { ViewCounter } from "@/components/blog/view-counter";
 import NotFound from "@/components/not-found";
 import { getBlogPost, getPublishedBlogPosts } from "@/lib/actions/blogs";
-import { cn } from "@/lib/utils";
 import { Comments } from "@/components/blog/comments";
+import { PageShell } from "@/components/page-shell";
 
 export async function generateMetadata({
   params,
@@ -101,51 +101,49 @@ export default async function Post({
   }
 
   return (
-    <div className={cn("min-h-screen p-4 pb-32 md:p-20 md:pb-40 text-blog-fg")}>
-      <div className="max-w-4xl mx-auto">
-        <Link
-          href="/blog"
-          className="text-blog-orange hover:underline mb-8 block"
-        >
-          ← Back to All Blogs
-        </Link>
-        <article>
-          <h1 className="font-serif font-normal leading-[1.15] tracking-normal text-blog-white mb-4 text-4xl md:text-6xl">
-            {post.title}
-          </h1>
-          <div className="mb-8 font-mono flex flex-wrap items-center gap-4 text-sm">
-            <span className="text-blog-fg/35">
-              {new Date(post.created_at).toLocaleDateString()}
-            </span>
-            <ViewCounter slug={post.slug} initialViews={post.views} />
+    <PageShell className="p-4 pb-32 md:p-20 md:pb-40">
+      <Link
+        href="/blog"
+        className="text-blog-orange hover:underline mb-8 block"
+      >
+        ← Back to All Blogs
+      </Link>
+      <article>
+        <h1 className="font-serif font-normal leading-[1.15] tracking-normal text-blog-white mb-4 text-4xl md:text-6xl clean:text-[2.5rem]">
+          {post.title}
+        </h1>
+        <div className="mb-8 font-mono flex flex-wrap items-center gap-4 text-sm">
+          <span className="text-blog-fg/35">
+            {new Date(post.created_at).toLocaleDateString()}
+          </span>
+          <ViewCounter slug={post.slug} initialViews={post.views} />
+        </div>
+        {post.coverImage && (
+          <div className="mb-8 relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border clean:hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post.coverImage}
+              className="w-full h-full object-cover"
+              alt={post.title}
+            />
+            <div className="w-full h-full backdrop-blur-sm absolute inset-0" />
+
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post.coverImage}
+              alt={post.title}
+              className="absolute inset-0 mx-auto h-full w-auto object-cover"
+            />
           </div>
-          {post.coverImage && (
-            <div className="mb-8 relative w-full  aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={post.coverImage}
-                className="w-full h-full object-cover"
-                alt={post.title}
-              />
-              <div className="w-full h-full backdrop-blur-sm absolute inset-0" />
+        )}
+        <BlogPreview post={post} />
+        {post.title && post.excerpt && (
+          <SocialShare title={post.title} excerpt={post.excerpt} />
+        )}
 
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={post.coverImage}
-                alt={post.title}
-                className="absolute inset-0 mx-auto h-full w-auto object-cover"
-              />
-            </div>
-          )}
-          <BlogPreview post={post} />
-          {post.title && post.excerpt && (
-            <SocialShare title={post.title} excerpt={post.excerpt} />
-          )}
-
-          <BlogPagination prevPost={prevPost} nextPost={nextPost} />
-          <Comments />
-        </article>
-      </div>
-    </div>
+        <BlogPagination prevPost={prevPost} nextPost={nextPost} />
+        <Comments />
+      </article>
+    </PageShell>
   );
 }

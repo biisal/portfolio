@@ -7,6 +7,7 @@ import { GoogleAnalytics } from "@/components/GoogleServices";
 import { KeyboardScroll } from "@/components/keyboard-scroll";
 import { ScrollStickman } from "@/components/scroll-stickman";
 import { Toaster } from "@/components/ui/sonner";
+import { cleanModeScript } from "@/lib/clean-mode";
 import { HankenGrotesk, InstrumentSerif, JetBrainsMono } from "@/fonts";
 
 const heroImgUrl =
@@ -81,9 +82,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`dark ${HankenGrotesk.variable} ${InstrumentSerif.variable} ${JetBrainsMono.variable}`}
     >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: cleanModeScript }} />
         <GoogleAnalytics />
       </head>
       <body className={`${HankenGrotesk.className} antialiased`}>

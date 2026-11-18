@@ -27,10 +27,10 @@ export default async function Home() {
 
   return (
     <>
-      <div className="mx-auto grid max-w-6xl gap-x-24 px-6 md:px-10 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <div className="mx-auto grid max-w-6xl gap-x-24 px-6 md:px-10 lg:grid-cols-[16rem_minmax(0,1fr)] clean:block clean:max-w-(--clean-page)">
         <Sidebar />
 
-        <main className="pb-32 pt-10 lg:pt-24">
+        <main className="pb-32 pt-10 lg:pt-24 clean:pt-10">
           <section id="intro" className="pb-16 pt-4 lg:pt-0">
             <Intro />
           </section>

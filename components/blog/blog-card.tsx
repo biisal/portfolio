@@ -20,7 +20,7 @@ export function BlogCard({ post, isAdmin }: BlogCardProps) {
     <Link href={`/blog/${post.slug}`} className="group block py-6">
       <div className="flex items-start gap-5 sm:gap-6">
         {post.coverImage && (
-          <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-md border border-border sm:h-24 sm:w-40">
+          <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-md border border-border sm:h-24 sm:w-40 clean:hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={post.coverImage}

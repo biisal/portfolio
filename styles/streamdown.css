@@ -159,3 +159,16 @@ article [data-code-block-header="true"] {
 [data-streamdown="table-header"] {
   display: none;
 }
+
+/* Clean mode: calmer heading scale for reading. */
+[data-clean] [data-streamdown="heading-1"] {
+  font-size: 2rem !important;
+}
+
+[data-clean] [data-streamdown="heading-2"] {
+  font-size: 1.75rem !important;
+}
+
+[data-clean] [data-streamdown="heading-3"] {
+  font-size: 1.3rem !important;
+}

@@ -6,6 +6,7 @@ import {
   CircleUserRound,
   Folder as ProjectsIcon,
   GitPullRequest,
+  Glasses,
   Mail as ContactIcon,
   Terminal as SkillsIcon,
 } from "lucide-react";
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/tooltip";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { setCleanMode, useCleanMode } from "@/lib/clean-mode";
 import { cn } from "@/lib/utils";
 import { useScrollSpy } from "@/lib/use-scroll-spy";
 import { Button } from "./ui/button";
@@ -93,6 +95,7 @@ const Dock = () => {
 
   const visible = useDockVisibility(isBlogPage);
   const active = useActiveSection(pathname);
+  const clean = useCleanMode();
 
   const isActive = (routeId: string) =>
     pathname === "/"
@@ -159,6 +162,32 @@ const Dock = () => {
             </Tooltip>
           );
         })}
+
+        <span aria-hidden className="mx-1 h-5 w-px bg-border" />
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Clean reading mode"
+              aria-pressed={clean}
+              className={cn(
+                "rounded-full text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+                clean && "bg-accent text-foreground"
+              )}
+              onClick={() => setCleanMode(!clean)}
+            >
+              <Glasses className="h-4 w-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="top"
+            className="rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-medium text-foreground"
+          >
+            {clean ? "Exit clean mode" : "Clean mode"}
+          </TooltipContent>
+        </Tooltip>
       </TooltipProvider>
     </motion.nav>
   );

@@ -12,6 +12,7 @@ import {
   step,
   TUNING,
 } from "@/lib/stickman/engine";
+import { useCleanMode } from "@/lib/clean-mode";
 import { isTyping } from "@/lib/is-typing";
 import { breakText } from "@/lib/stickman/break-text";
 import { measurePlatforms, platformElement } from "@/lib/stickman/measure";
@@ -42,6 +43,7 @@ export function ScrollStickman() {
   const [enabled, setEnabled] = useState(false);
   const [sound] = useState(() => new StickSound());
   const [muted, setMuted] = useState(false);
+  const clean = useCleanMode();
 
   const group = useRef<SVGGElement>(null);
   const legNear = useRef<SVGPolylineElement>(null);
@@ -58,11 +60,11 @@ export function ScrollStickman() {
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setEnabled(!mq.matches && !hidden);
+    const sync = () => setEnabled(!mq.matches && !hidden && !clean);
     sync();
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
-  }, [hidden]);
+  }, [hidden, clean]);
 
   useEffect(() => {
     try {
