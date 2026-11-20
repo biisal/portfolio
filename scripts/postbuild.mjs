@@ -92,9 +92,12 @@ function render({
     `<meta data-prerender name="twitter:image" content="${esc(image)}" />`,
     ld ? jsonLd(ld) : "",
   ].join("\n    ");
-  return stripped
-    .replace("</head>", `    ${head}\n  </head>`)
-    .replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+  return stripped.replace("</head>", `    ${head}\n  </head>`).replace(
+    '<div id="root"></div>',
+    // Visually hidden: crawlers and screen readers get the text, but visitors
+    // never see unstyled content flash before React mounts and replaces it.
+    `<div id="root"><div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">${body}</div></div>`
+  );
 }
 
 function write(route, html) {
