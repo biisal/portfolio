@@ -30,7 +30,7 @@ export interface Pose {
   armFar: Limb;
 }
 
-export const BODY = {
+const BODY = {
   thigh: 13,
   shin: 13,
   torso: 18,
@@ -45,7 +45,7 @@ const STRIDE = 13;
 const LIFT = 7;
 const ARM_SWING = 0.95;
 
-export type PosePhase = "walk" | "crouch" | "air" | "land";
+type PosePhase = "walk" | "crouch" | "air" | "land";
 
 export interface PoseInput {
   phase: PosePhase;
@@ -95,7 +95,7 @@ function lLimb(a: Limb, b: Limb, t: number): Limb {
 }
 
 /** Interpolate every joint. t is clamped to 0..1, so the ends are exact. */
-export function blendPose(a: Pose, b: Pose, t: number): Pose {
+function blendPose(a: Pose, b: Pose, t: number): Pose {
   const k = clamp01(fin(t));
   return {
     head: lp(a.head, b.head, k),
@@ -116,7 +116,7 @@ export function blendPose(a: Pose, b: Pose, t: number): Pose {
  * reach in that direction; the knee always bends forward (+x). Always returns
  * finite points and bones of exactly thigh and shin length.
  */
-export function solveLeg(hip: Pt, target: Pt): Limb {
+function solveLeg(hip: Pt, target: Pt): Limb {
   const l1 = BODY.thigh;
   const l2 = BODY.shin;
 
@@ -145,7 +145,7 @@ export function solveLeg(hip: Pt, target: Pt): Limb {
  * positive swinging forward: 0 hangs, PI/2 points ahead, PI is straight up.
  * `bend` is added for the forearm.
  */
-export function solveArm(shoulder: Pt, angle: number, bend: number): Limb {
+function solveArm(shoulder: Pt, angle: number, bend: number): Limb {
   const elbow = {
     x: shoulder.x + Math.sin(angle) * BODY.upper,
     y: shoulder.y + Math.cos(angle) * BODY.upper,

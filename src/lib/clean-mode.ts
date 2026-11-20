@@ -5,14 +5,8 @@ import { useSyncExternalStore } from "react";
  * extras, just the content. The flag lives as `data-clean` on <html> so CSS
  * can restyle everything, and in localStorage so it survives reloads.
  */
-export const CLEAN_KEY = "clean-mode";
+const CLEAN_KEY = "clean-mode";
 const EVENT = "clean-mode-change";
-
-/**
- * Inline script for <head>: sets the flag before first paint so a reload in
- * clean mode never flashes the full design.
- */
-export const cleanModeScript = `try{if(localStorage.getItem("${CLEAN_KEY}")==="1")document.documentElement.dataset.clean=""}catch(e){}`;
 
 const read = () =>
   typeof document !== "undefined" &&

@@ -57,7 +57,7 @@ export const TUNING = {
   textFootRatio: 0.14,
 } as const;
 
-export type PlatformKind = "text" | "line" | "floor";
+type PlatformKind = "text" | "line" | "floor";
 
 export interface Platform {
   id: string;
@@ -68,7 +68,7 @@ export interface Platform {
   x2: number;
 }
 
-export type Phase = "walk" | "crouch" | "air" | "land";
+type Phase = "walk" | "crouch" | "air" | "land";
 
 export interface Figure {
   phase: Phase;
@@ -123,15 +123,15 @@ export interface Env {
 
 /* ---------- small maths ---------- */
 
-export function clamp(v: number, lo: number, hi: number): number {
+function clamp(v: number, lo: number, hi: number): number {
   return v < lo ? lo : v > hi ? hi : v;
 }
 
-export function lerp(a: number, b: number, t: number): number {
+function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
 
-export function easeInOut(u: number): number {
+function easeInOut(u: number): number {
   const t = clamp(u, 0, 1);
   return t * t * (3 - 2 * t);
 }
@@ -144,7 +144,7 @@ export function approach(v: number, target: number, amount: number): number {
 }
 
 /** Triangle wave: walks 0 -> width -> 0 -> ... as `s` grows, in either direction. */
-export function pingPong(s: number, width: number): number {
+function pingPong(s: number, width: number): number {
   if (!(width > 0)) return 0;
   const period = width * 2;
   const m = ((s % period) + period) % period;
