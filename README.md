@@ -38,4 +38,4 @@ plus `sitemap.xml`, `robots.txt`, `feed.xml`.
 
 Push to `main`; `.github/workflows/deploy.yml` builds and publishes `dist/`.
 In the repo: Settings → Pages → Source: **GitHub Actions**. For a custom domain, add `public/CNAME`
-and set `SITE_URL` (default `https://biisal.github.io`) for canonical links and the sitemap.
+and set `SITE_URL` (default `https://codeltix.com`) for canonical links and the sitemap.

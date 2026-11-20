@@ -9,7 +9,7 @@ import path from "node:path";
 const DIST = "dist";
 const BLOG = "content/blog";
 const BASE = (process.env.BASE_PATH || "/").replace(/\/$/, ""); // "" or "/portfolio"
-const SITE = (process.env.SITE_URL || "https://biisal.github.io").replace(
+const SITE = (process.env.SITE_URL || "https://codeltix.com").replace(
   /\/$/,
   ""
 );

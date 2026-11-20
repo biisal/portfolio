@@ -1,4 +1,4 @@
-const SITE = "https://biisal.github.io";
+const SITE = "https://codeltix.com";
 
 interface SeoProps {
   title: string;

@@ -11,9 +11,9 @@ concurrency:
   group: pages
   cancel-in-progress: true
 env:
-  # Project site: https://biisal.github.io/portfolio/
-  BASE_PATH: /portfolio/
-  SITE_URL: https://biisal.github.io/portfolio
+  # Served from the custom domain root (public/CNAME)
+  BASE_PATH: /
+  SITE_URL: https://codeltix.com
 jobs:
   build:
     runs-on: ubuntu-latest
