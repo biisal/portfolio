@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/section-heading";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { cn } from "@/lib/utils";
+import { asset } from "@/lib/asset";
 
 interface Language {
   name: string;
@@ -105,7 +106,7 @@ const Skills = ({ languages }: SkillsProps) => {
                         className="flex items-center gap-2 text-sm text-blog-white"
                       >
                         <img
-                          src={tool.icon}
+                          src={asset(tool.icon)}
                           alt=""
                           width={16}
                           height={16}

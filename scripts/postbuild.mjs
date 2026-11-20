@@ -8,6 +8,7 @@ import path from "node:path";
 
 const DIST = "dist";
 const BLOG = "content/blog";
+const BASE = (process.env.BASE_PATH || "/").replace(/\/$/, ""); // "" or "/portfolio"
 const SITE = (process.env.SITE_URL || "https://biisal.github.io").replace(
   /\/$/,
   ""
@@ -54,7 +55,9 @@ const posts = fs
 const tagSet = [...new Set(posts.flatMap((p) => p.tags))];
 
 // ---- template -------------------------------------------------------------
-const template = fs.readFileSync(path.join(DIST, "index.html"), "utf8");
+const template = fs
+  .readFileSync(path.join(DIST, "index.html"), "utf8")
+  .replace('href="/feed.xml"', `href="${BASE}/feed.xml"`);
 fs.writeFileSync(path.join(DIST, "404.html"), template);
 
 // Per-page tags replace the template's generic ones.
@@ -107,7 +110,7 @@ const postList = (list) =>
   `<ul>${list
     .map(
       (p) =>
-        `<li><a href="/blog/${p.slug}">${esc(p.title)}</a> — ${esc(p.excerpt)}</li>`
+        `<li><a href="${BASE}/blog/${p.slug}">${esc(p.title)}</a> — ${esc(p.excerpt)}</li>`
     )
     .join("")}</ul>`;
 
@@ -170,7 +173,8 @@ write(
     description: "Browse all topics and tags from the blog.",
     body: `<main><h1>All Tags</h1><ul>${tagSet
       .map(
-        (t) => `<li><a href="/tags/${encodeURIComponent(t)}">${esc(t)}</a></li>`
+        (t) =>
+          `<li><a href="${BASE}/tags/${encodeURIComponent(t)}">${esc(t)}</a></li>`
       )
       .join("")}</ul></main>`,
   })

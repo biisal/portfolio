@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "vite-migration"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -10,6 +10,10 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: true
+env:
+  # Project site: https://biisal.github.io/portfolio/
+  BASE_PATH: /portfolio/
+  SITE_URL: https://biisal.github.io/portfolio
 jobs:
   build:
     runs-on: ubuntu-latest
