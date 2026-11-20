@@ -14,3 +14,21 @@ export interface BlogPost {
   created_at: Date;
   updated_at: Date;
 }
+
+/** Post metadata as written in `src/data/posts.ts`. */
+export interface PostMeta {
+  slug: string;
+  /** HTML body file inside `content/blog/`. */
+  file: string;
+  title: string;
+  excerpt: string;
+  coverImage: string | null;
+  audio: string | null;
+  authorName?: string;
+  tags: string[];
+  isProject: boolean;
+  published: boolean;
+  /** ISO date strings. */
+  date: string;
+  updated?: string;
+}

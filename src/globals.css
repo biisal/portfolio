@@ -106,9 +106,9 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-sans: "Newsreader Variable", Georgia, "Times New Roman", serif;
-  --font-serif: "Newsreader Variable", Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono);
+  --font-sans: var(--font-newsreader);
+  --font-serif: var(--font-newsreader);
   --color-signal: var(--signal);
 
   --animate-marquee: marquee var(--duration) infinite linear;
@@ -250,4 +250,33 @@
 [data-clean] *::after {
   animation: none !important;
   transition: none !important;
+}
+
+/* Blur/fade-in. `.js` is set by an inline script in <head>, so no-JS visitors see everything. */
+.js .fade {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(-6px);
+}
+.js .fade.in {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition:
+    opacity 0.4s ease-out var(--fade-delay),
+    filter 0.4s ease-out var(--fade-delay),
+    transform 0.4s ease-out var(--fade-delay);
+}
+[data-clean] .fade,
+[data-clean] .fade.in {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .fade { opacity: 1; filter: none; transform: none; }
+}
+@keyframes grow-x {
+  from { width: 0; }
 }

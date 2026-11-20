@@ -1,3 +1,2 @@
-import { useLocation } from "react-router-dom";
-
-export const usePathname = () => useLocation().pathname;
+/** Current pathname. Only call from `client:only` islands (never server-rendered). */
+export const usePathname = () => window.location.pathname.replace(/(.)\/$/, "$1");

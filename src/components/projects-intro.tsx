@@ -1,12 +1,10 @@
 import { PostRow } from "@/components/post-row";
 import { SectionHeading } from "@/components/section-heading";
-import { getPosts } from "@/lib/blogs";
+import type { BlogPost } from "@/lib/types";
 
 import { BlurFade } from "./ui/blur-fade";
 
-const ProjectsIntro = () => {
-  const projects = getPosts("project", 4);
-
+const ProjectsIntro = ({ projects }: { projects: BlogPost[] }) => {
   if (projects.length === 0) return null;
 
   return (

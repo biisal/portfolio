@@ -1,83 +1,27 @@
-import {
-  AnimatePresence,
-  motion,
-  MotionProps,
-  useInView,
-  UseInViewOptions,
-  Variants,
-} from "framer-motion";
-import { useRef } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
-import { useCleanMode } from "@/lib/clean-mode";
+import { cn } from "@/lib/utils";
 
-type MarginType = UseInViewOptions["margin"];
-
-interface BlurFadeProps extends MotionProps {
-  children: React.ReactNode;
+interface BlurFadeProps {
+  children: ReactNode;
   className?: string;
-  variant?: {
-    hidden: { y: number };
-    visible: { y: number };
-  };
-  duration?: number;
   delay?: number;
-  offset?: number;
-  direction?: "up" | "down" | "left" | "right";
+  /** Wait until scrolled into view (handled by the observer script in Base.astro). */
   inView?: boolean;
-  inViewMargin?: MarginType;
-  blur?: string;
 }
 
-export function BlurFade({
-  children,
-  className,
-  variant,
-  duration = 0.4,
-  delay = 0,
-  offset = 6,
-  direction = "down",
-  inView = false,
-  inViewMargin = "-50px",
-  blur = "6px",
-  ...props
-}: BlurFadeProps) {
-  const ref = useRef(null);
-  const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
-  const clean = useCleanMode();
-  // Clean mode: content shows at once, no fade or blur.
-  const isInView = clean || !inView || inViewResult;
-  const defaultVariants: Variants = {
-    hidden: {
-      [direction === "left" || direction === "right" ? "x" : "y"]:
-        direction === "right" || direction === "down" ? -offset : offset,
-      opacity: 0,
-      filter: `blur(${blur})`,
-    },
-    visible: {
-      [direction === "left" || direction === "right" ? "x" : "y"]: 0,
-      opacity: 1,
-      filter: `blur(0px)`,
-    },
-  };
-  const combinedVariants = variant || defaultVariants;
+/**
+ * CSS-only blur/fade-in. Server-rendered, so there is no hydration flicker;
+ * styles live in globals.css (`.fade`) and only apply once JS has run.
+ */
+export function BlurFade({ children, className, delay = 0, inView }: BlurFadeProps) {
   return (
-    <AnimatePresence>
-      <motion.div
-        ref={ref}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        exit="hidden"
-        variants={combinedVariants}
-        transition={
-          clean
-            ? { duration: 0 }
-            : { delay: 0.04 + delay, duration, ease: "easeOut" }
-        }
-        className={className}
-        {...props}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div
+      data-fade={inView ? "view" : "load"}
+      className={cn("fade", className)}
+      style={{ "--fade-delay": `${0.04 + delay}s` } as CSSProperties}
+    >
+      {children}
+    </div>
   );
 }

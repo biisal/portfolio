@@ -11,3 +11,4 @@ dist
 .generated
 .bai_git
 next-env.d.ts
+.astro/

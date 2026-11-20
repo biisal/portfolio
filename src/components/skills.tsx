@@ -1,9 +1,7 @@
-import { motion } from "framer-motion";
 
 import { SectionHeading } from "@/components/section-heading";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { cn } from "@/lib/utils";
-import { asset } from "@/lib/asset";
 
 interface Language {
   name: string;
@@ -106,7 +104,7 @@ const Skills = ({ languages }: SkillsProps) => {
                         className="flex items-center gap-2 text-sm text-blog-white"
                       >
                         <img
-                          src={asset(tool.icon)}
+                          src={tool.icon}
                           alt=""
                           width={16}
                           height={16}
@@ -139,16 +137,12 @@ const Skills = ({ languages }: SkillsProps) => {
                       </span>
                     </div>
                     <div className="h-1 w-full overflow-hidden rounded-full bg-blog-selection-bg">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${lang.percent}%` }}
-                        viewport={{ once: true }}
-                        transition={{
-                          duration: 0.8,
-                          ease: "easeOut",
-                          delay: 0.1 + idx * 0.08,
-                        }}
+                      <div
                         className="h-full rounded-full bg-blog-white"
+                        style={{
+                          width: `${lang.percent}%`,
+                          animation: `grow-x 0.8s ease-out ${0.1 + idx * 0.08}s backwards`,
+                        }}
                       />
                     </div>
                   </div>

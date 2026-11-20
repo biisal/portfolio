@@ -11,6 +11,7 @@
  * Styles for HTML blog posts (`content/blog/*.html`). Sizes follow
  * mrinalxdev.github.io's article layout (Newsreader 1.1875rem/1.8 body).
  * Authoring rule: semantic HTML only, no inline styles, no own <head>/fonts.
+ * Post-specific styling (e.g. diagrams) lives in the post HTML as Tailwind classes.
  * Extras: .lede, .callout, figure > figcaption.
  */
 .html-post {

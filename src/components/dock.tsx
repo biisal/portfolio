@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   BookOpenText,
   Briefcase,
@@ -15,7 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useNavigate } from "react-router-dom";
+
 
 import { usePathname } from "@/lib/use-pathname";
 import { useEffect, useRef, useState } from "react";
@@ -90,7 +89,7 @@ function useActiveSection(pathname: string) {
 }
 
 const Dock = () => {
-  const navigate = useNavigate();
+  const navigate = (to: string) => window.location.assign(to);
   const pathname = usePathname();
   const isBlogPage = pathname.startsWith("/blog");
 
@@ -117,12 +116,10 @@ const Dock = () => {
   };
 
   return (
-    <motion.nav
+    <nav
       aria-label="Primary"
-      initial={{ y: 0 }}
-      animate={{ y: visible ? 0 : 100 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-0.5 rounded-full border border-border/50 bg-background/75 px-2 py-1.5"
+      style={{ translate: `-50% ${visible ? 0 : 100}px` }}
+      className="fixed bottom-4 left-1/2 z-50 flex items-center gap-0.5 rounded-full border border-border/50 bg-background/75 px-2 py-1.5 transition-[translate] duration-300 ease-out"
     >
       <TooltipProvider delayDuration={200}>
         {ROUTES.map((route) => {
@@ -144,13 +141,7 @@ const Dock = () => {
                 >
                   <route.icon className="h-4 w-4" />
                   {activeItem && (
-                    <motion.span
-                      layoutId={pathname === "/" ? "dock-dot" : undefined}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary"
-                    />
+                    <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary" />
                   )}
                 </Button>
               </TooltipTrigger>
@@ -190,7 +181,7 @@ const Dock = () => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-    </motion.nav>
+    </nav>
   );
 };
 

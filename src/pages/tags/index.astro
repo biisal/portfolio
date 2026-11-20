@@ -1,0 +1,9 @@
+---
+import TagsIndexPage from "@/views/tags";
+import Base from "@/layouts/Base.astro";
+import { getAllTagsWithCount } from "@/lib/blogs";
+---
+
+<Base title="Tags | Avisek Ray (biisal)" description="Browse all topics and tags from the blog.">
+  <TagsIndexPage tags={getAllTagsWithCount()} />
+</Base>

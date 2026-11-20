@@ -1,17 +1,3 @@
----
-title: "I fixed the lag in my AI agent!"
-slug: "i-fixed-the-lag-in-my-ai-agent"
-excerpt: "From arrays to strings to segments - how I fixed lag and styling bugs while streaming AI responses in a terminal UI, written in Go."
-authorName: "Avisek"
-coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1790446718/blog-content/duas9w2t6bk4px15qg17.jpg"
-audio: "https://res.cloudinary.com/dorxspa9g/video/upload/v1786291802/output_f08d7o.wav"
-tags: ["project", "go", "bai"]
-isProject: true
-published: true
-date: 2026-08-09T16:16:39.366Z
-updated: 2026-11-20T03:18:23.111Z
----
-
 <p>
   Previously in godo (my old TUI), I was initially using an array to store AI
   responses and user input.
@@ -86,12 +72,12 @@ updated: 2026-11-20T03:18:23.111Z
   But this time, I&#39;ve applied a new approach in my new AI agent TUI (bai)<br />the
   simple approach that fixed the old issues I was having in godo.
 </p>
-<p>
-  <img
-    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1786290608/blog-content/sc7qkxzhx5hmhzuf5sqw.png"
-    alt="message-blocks-diagram"
-  />
-</p>
+<figure class="my-10 font-mono text-[0.9rem] leading-normal text-(--post-text) border border-(--post-muted) p-5" aria-label="Message blocks: processed prefix content, then the active mode block">
+  <div class="grid min-h-44 place-items-center border border-(--post-muted) px-4">prefix content that was already processed</div>
+  <div class="px-1 py-2.5">&lt;ActiveModeColor&gt;</div>
+  <div class="min-h-11 border border-(--post-muted)"></div>
+  <div class="px-1 py-2.5">&lt;ActiveModeColor&gt;</div>
+</figure>
 <p>
   We should change what the last thing we were doing (But not like the first
   one).<br />In this approach, I combined both the string and the array.
@@ -168,12 +154,15 @@ type Content struct {
 	c.active = nil
 }
 </code></pre>
-<p>
-  <img
-    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1786290666/blog-content/zdfsrvtivux1zzjppva3.png"
-    alt="action-to-do-on-event-changing"
-  />
-</p>
+<figure class="my-10 font-mono text-[0.9rem] leading-normal text-(--post-text) flex flex-col sm:grid sm:grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)] sm:grid-rows-[auto_2.75rem_auto_2.75rem_auto] sm:items-center" aria-label="Flow: model started thinking, keep storing in the active builder, model changed from thinking to tool calling, add active content to the prefix builder">
+  <div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-1 sm:row-start-1">model started thinking</div>
+  <span class="grid place-items-center text-[1.4rem] leading-none text-(--post-muted) h-10 sm:col-start-1 sm:row-start-2 sm:h-auto">&darr;</span>
+  <div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-1 sm:row-start-3">keep storing in active builder</div>
+  <span class="grid place-items-center text-[1.4rem] leading-none text-(--post-muted) h-10 sm:col-start-2 sm:row-start-3 sm:h-auto"><span class="sm:hidden">&darr;</span><span class="hidden sm:inline">&rarr;</span></span>
+  <div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-3 sm:row-start-3">model changed from thinking to tool calling</div>
+  <span class="grid place-items-center text-[1.4rem] leading-none text-(--post-muted) h-10 sm:col-start-3 sm:row-start-4 sm:h-auto">&darr;</span>
+  <div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-3 sm:row-start-5">add active content to prefix builder</div>
+</figure>
 <p>Now styling is easy peasy:</p>
 <pre><code class="language-go">func renderSegment(kind broker.EventType, seg *Segment, width int) string {
 	var style lipgloss.Style

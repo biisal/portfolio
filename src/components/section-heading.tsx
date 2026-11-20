@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/link";
 import type { ReactNode } from "react";
 
 import { BlurFade } from "@/components/ui/blur-fade";

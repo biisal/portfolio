@@ -1,0 +1,109 @@
+---
+import "@/globals.css";
+
+import { Font } from "astro:assets";
+import Dock from "@/components/dock";
+import { KeyboardScroll } from "@/components/keyboard-scroll";
+import { ScrollStickman } from "@/components/scroll-stickman";
+import { cleanModeScript } from "@/lib/clean-mode";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: "website" | "article";
+  /** schema.org objects, rendered as JSON-LD. */
+  jsonLd?: object | object[];
+}
+
+const SITE = "https://codeltix.com";
+const DEFAULT_IMG =
+  "https://res.cloudinary.com/dorxspa9g/image/upload/v1792387419/og-img-portfolio_wneeqb.png";
+const {
+  title,
+  description,
+  image = DEFAULT_IMG,
+  type = "website",
+  jsonLd,
+} = Astro.props;
+const path = Astro.url.pathname.replace(/(.)\/$/, "$1");
+const url = `${SITE}${path === "/" ? "" : path}`;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" />
+    <Font cssVariable="--font-newsreader" preload={[{ style: "normal" }]} />
+    <Font cssVariable="--font-plex-mono" preload={[{ weight: 400 }]} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <meta
+      name="keywords"
+      content="biisal, Avisek Ray, Full Stack Developer, Web Developer, Next.js Developer, React Developer, Django Developer, FastAPI Developer, Go Developer, Software Engineer, Portfolio, AWS, Docker, PostgreSQL, Redis"
+    />
+    <meta name="author" content="Avisek Ray" />
+    <meta property="og:site_name" content="Avisek Ray Portfolio" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@avisekray" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <link rel="alternate" type="application/rss+xml" title="Avisek Ray" href="/feed.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {
+      jsonLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
+        />
+      )
+    }
+    <script is:inline set:html={`document.documentElement.classList.add("js");${cleanModeScript}`} />
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-WECNP4P9E6"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-WECNP4P9E6");
+    </script>
+  </head>
+  <body class="font-sans antialiased">
+    <div class="fixed inset-0 z-[-1] bg-blog-bg"></div>
+    <slot />
+    <script is:inline>
+      // Reveal `.fade` blocks: on load, or when scrolled into view.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        },
+        { rootMargin: "0px 0px -50px 0px" }
+      );
+      for (const el of document.querySelectorAll(".fade")) {
+        if (el.dataset.fade === "view") io.observe(el);
+        else requestAnimationFrame(() => el.classList.add("in"));
+      }
+    </script>
+    <Dock client:only="react" />
+    <ScrollStickman client:only="react" />
+    <KeyboardScroll client:only="react" />
+  </body>
+</html>

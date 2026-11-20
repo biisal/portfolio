@@ -1,0 +1,22 @@
+---
+import TagPage from "@/views/tag";
+import Base from "@/layouts/Base.astro";
+import { getAllTagsWithCount, getPostsByTag, summary } from "@/lib/blogs";
+
+export function getStaticPaths() {
+  return getAllTagsWithCount().map(({ name }) => ({
+    params: { tag: name },
+    props: { posts: getPostsByTag(name).map(summary) },
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Base
+  title={`Posts tagged "${tag}" | Avisek Ray (biisal)`}
+  description={`All blog posts and projects associated with the tag: ${tag}`}
+>
+  <TagPage tag={tag!} posts={posts} />
+</Base>

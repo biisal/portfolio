@@ -1,4 +1,3 @@
-import { useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -148,7 +147,7 @@ const HoverPreview = ({
 
 /** Fades one role into the next, keeping both lines the same height. */
 const RotatingRoles = () => {
-  const reduceMotion = useReducedMotion();
+  const [reduceMotion] = useState(() => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const clean = useCleanMode();

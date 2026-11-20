@@ -5,7 +5,7 @@ import { useSyncExternalStore } from "react";
  * extras, just the content. The flag lives as `data-clean` on <html> so CSS
  * can restyle everything, and in localStorage so it survives reloads.
  */
-export const CLEAN_KEY = "clean-mode";
+const CLEAN_KEY = "clean-mode";
 const EVENT = "clean-mode-change";
 
 /**

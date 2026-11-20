@@ -1,0 +1,27 @@
+---
+import Home from "@/views/home";
+import Base from "@/layouts/Base.astro";
+import { getPosts, summary } from "@/lib/blogs";
+import { NAME, SITE, SITE_DESC } from "@/lib/site";
+
+const latestPosts = getPosts("all", 4).map(summary);
+const projects = getPosts("project", 4).map(summary);
+---
+
+<Base
+  title={`${NAME} | Full-Stack Developer Portfolio`}
+  description={SITE_DESC}
+  jsonLd={[
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: "Avisek Ray",
+      alternateName: "biisal",
+      url: SITE,
+      sameAs: ["https://github.com/biisal"],
+    },
+    { "@context": "https://schema.org", "@type": "WebSite", name: NAME, url: SITE },
+  ]}
+>
+  <Home latestPosts={latestPosts} projects={projects} client:load />
+</Base>

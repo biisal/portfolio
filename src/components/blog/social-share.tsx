@@ -1,7 +1,6 @@
 import { Check, Share2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { asset } from "@/lib/asset";
 
 interface SocialShareProps {
   title: string;
@@ -52,7 +51,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
       )}&url=${encodeURIComponent(shareUrl)}`,
       icon: (
         <img
-          src={asset("/icons/x-twitter.svg")}
+          src={"/icons/x-twitter.svg"}
           alt="X / Twitter"
           width={16}
           height={16}
@@ -69,7 +68,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
       )}&source=${encodeURIComponent(shareUrl)}`,
       icon: (
         <img
-          src={asset("/icons/linkedin.svg")}
+          src={"/icons/linkedin.svg"}
           alt="LinkedIn"
           width={16}
           height={16}
@@ -84,7 +83,7 @@ export default function SocialShare({ title, excerpt }: SocialShareProps) {
       )}`,
       icon: (
         <img
-          src={asset("/icons/whatsapp.svg")}
+          src={"/icons/whatsapp.svg"}
           alt="WhatsApp"
           width={16}
           height={16}
