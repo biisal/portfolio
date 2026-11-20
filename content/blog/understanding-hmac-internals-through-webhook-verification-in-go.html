@@ -1,0 +1,39 @@
+---
+title: "Understanding HMAC Internals Through Webhook Verification in Go"
+slug: "understanding-hmac-internals-through-webhook-verification-in-go"
+excerpt: "Exploring how webhook verification works in Go and breaking down the internals of HMAC signatures using only the standard library."
+authorName: "Avisek"
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1779294184/435shots_so_uek1uo.png"
+audio: ""
+tags: []
+isProject: false
+published: true
+date: 2026-05-20T16:25:28.798Z
+updated: 2026-11-20T00:45:19.035Z
+---
+
+<h2>Was exploring how webhooks work internally</h2>
+<p>
+  Go’s standard library is an absolute powerhouse<br />Got to know some
+  important things<br />HMAC: its a way to create or verify a signature
+</p>
+<p>The formula</p>
+<pre><code class="language-bash">HMAC(K,m) = H((K ⊕ opad) || H((K ⊕ ipad) || m))
+</code></pre>
+<p>ipad and opad are fixed padding constants:</p>
+<pre><code class="language-bash">ipad = 0x36
+opad = 0x5c
+</code></pre>
+<ol>
+  <li>
+    At first, we take the key and then we do an XOR with the <code>ipad</code>.
+  </li>
+  <li>then we concatenate the new key with the message.</li>
+  <li>then we make a hash of the full message.</li>
+  <li>
+    after that, we take the original key and we do an XOR with the
+    <code>opad</code>.
+  </li>
+  <li>we concatenate the new key with the hash we got before.</li>
+  <li>then we hash the full combination again.</li>
+</ol>

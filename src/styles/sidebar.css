@@ -1,0 +1,89 @@
+@reference "../globals.css";
+
+/*
+ * Sidebar, written as Tailwind utilities behind semantic class names.
+ * `lg:` = desktop, `short-*:` = short windows (see globals.css),
+ * `clean:` = clean mode (plain static header).
+ */
+
+.sidebar {
+  @apply flex flex-col gap-12 pt-20 pb-4;
+  @apply lg:sticky lg:top-0 lg:h-screen lg:justify-between lg:gap-8 lg:py-24;
+  @apply lg:short-800:py-12 lg:short-640:py-8;
+  @apply clean:static clean:h-auto clean:justify-start clean:gap-4 clean:border-b clean:pt-16! clean:pb-8!;
+}
+
+.sidebar-top {
+  @apply flex flex-col gap-8 lg:short-800:gap-5 clean:gap-3!;
+}
+
+.sidebar-intro {
+  @apply flex flex-col gap-4 clean:gap-3;
+}
+
+.sidebar-name {
+  @apply font-serif text-4xl leading-none tracking-normal text-blog-white;
+  @apply lg:text-5xl lg:short-800:text-4xl lg:short-640:text-3xl clean:text-4xl!;
+
+  em {
+    @apply text-signal italic clean:ml-[0.25em];
+  }
+  br {
+    @apply clean:hidden;
+  }
+}
+
+.sidebar-role {
+  @apply font-mono text-xs leading-6 text-blog-fg;
+}
+
+.sidebar-tagline {
+  @apply max-w-[16rem] text-sm leading-relaxed text-blog-fg;
+}
+
+.sidebar-nav {
+  @apply hidden lg:block lg:short-700:hidden clean:hidden;
+
+  ul {
+    @apply flex flex-col border-l border-border;
+  }
+
+  a {
+    @apply -ml-px block border-l border-transparent py-1.5 pl-4 text-sm text-blog-fg transition-colors lg:short-640:py-0.5;
+    @apply hover:border-ring hover:text-blog-white;
+    @apply aria-[current=location]:border-signal aria-[current=location]:text-blog-white;
+  }
+}
+
+.sidebar-bottom {
+  @apply flex flex-col gap-4;
+}
+
+.sidebar-links {
+  @apply flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-y-1.5 lg:short-560:flex-row lg:short-560:gap-y-1;
+  @apply clean:flex-row! clean:gap-x-5! clean:gap-y-2!;
+}
+
+.sidebar-link {
+  @apply inline-flex items-center gap-2.5 text-sm text-blog-fg transition-colors hover:text-blog-white;
+}
+
+.sidebar-link-primary {
+  @apply text-blog-white hover:text-signal;
+
+  .sidebar-icon {
+    @apply text-signal;
+  }
+}
+
+.sidebar-email {
+  @apply inline-flex items-center gap-2.5 font-mono text-xs text-blog-fg transition-colors hover:text-blog-white;
+
+  .sidebar-icon {
+    @apply text-signal;
+  }
+}
+
+.sidebar-icon {
+  @apply h-4 w-4 object-contain;
+}

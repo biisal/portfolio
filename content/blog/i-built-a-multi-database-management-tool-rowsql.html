@@ -1,0 +1,404 @@
+---
+title: "I built a multi-database management tool - RowSQL"
+slug: "i-built-a-multi-database-management-tool-rowsql"
+excerpt: "I built a web-based database management tool using Go that lets you manage multiple databases from your browser."
+authorName: "Avisek"
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1782060358/blog-content/khjpvbflmmbvhojxcypo.png"
+audio: "https://res.cloudinary.com/dorxspa9g/video/upload/v1782148718/output_ywjgq4.wav"
+tags:
+  ["project", "rowsql", "go", "react", "sql", "postgresql", "sqlite", "mysql"]
+isProject: true
+published: true
+date: 2026-06-21T16:18:58.334Z
+updated: 2026-11-20T02:32:00.967Z
+---
+
+<h3>Why I built RowSQL ?</h3>
+<p>
+  I was building a project where I was using PostgreSQL.<br />After building the
+  application, the time was to build an admin panel... Like always, we do.
+</p>
+<p>
+  Many web-based applications need an admin panel, and most of the time, you
+  don&#39;t even need high functionality... just some CRUD.
+</p>
+<p>
+  I tried many tools that provide admin panels. I messed with many, but I
+  didn&#39;t like any of them 🙂.
+</p>
+<p>
+  Then I thought, what if I build a tool that can be run on the web like an
+  admin panel? I only have to put the DB connection string, and on the web, I
+  can modify all of my data.
+</p>
+<p>
+  You can find the code here :
+  <a href="https://github.com/biisal/rowsql">biisal/rowsql</a><br /><img
+    src="https://github.com/user-attachments/assets/402e7a9f-8765-478d-9ceb-be7d137be4e7"
+    alt="rowsql intro demo"
+  />
+</p>
+<p>So I created RowSQL.</p>
+<hr />
+<h3>What is RowSQL?</h3>
+<p>Now you already have an idea of what RowSQL is.</p>
+<p>
+  RowSQL is a multi-database management tool that can be used to manage SQLite,
+  PostgreSQL, and MySQL databases (well tested with PostgreSQL and SQLite, but
+  not MySQL).
+</p>
+<p>Using RowSQL, you can view all the records in a clear, organized table.</p>
+<p>
+  <img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058238/blog-content/qgl9wmvmz1mafyrcterp.png"
+    alt="rowsql table"
+  />
+</p>
+<p>
+  You can easily view any record and edit or delete data from each column.<br />Can
+  create tables, delete any table, and filter and sort data based on your
+  needs.<br />Also see the history of the operations you performed in RowSQL.
+</p>
+<p>
+  <img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058284/blog-content/k7xmxjhmnlxdv3gzicct.png"
+    alt="rowsql management demo"
+  />
+</p>
+<p>
+  RowSQL is fully raw, so you will get the errors returned by the database.<br />You
+  can also see the raw SQL query that will run when you perform any operation.
+</p>
+<p>
+  <img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058344/blog-content/f9vqg101ynjntlbhv4so.png"
+    alt="rowsql terminal output"
+  />
+</p>
+<p>
+  Then we have a SQL editor which can be used to run raw queries.<br />You can
+  also filter the results you get from your queries.
+</p>
+<p>
+  <img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058385/blog-content/egrlwvhzbu8uztutynjf.png"
+    alt="rowsql sql editor"
+  />
+</p>
+<hr />
+<h3>How RowSQL works?</h3>
+<p>I have used <a href="https://go.dev">Go</a> to build RowSQL.</p>
+<p>Why Go? Because RowSQL is made from the user&#39;s perspective.</p>
+<p>
+  Using Go, we can build a single executable that can be distributed easily
+  across different operating systems.
+</p>
+<p>To communicate with databases, we need a driver.</p>
+<p>Drivers I have used in this app:</p>
+<ul>
+  <li>github.com/jackc/pgx - for PostgreSQL</li>
+  <li>modernc.org/sqlite - for SQLite (no CGO headache)</li>
+  <li>github.com/go-sql-driver/mysql - to connect with MySQL</li>
+</ul>
+<p>
+  I used sqlx as a lightweight extension that is built on top of database/sql.
+  Even though the use of sqlx was very minimal in the project.
+</p>
+<p>
+  In the backend, RowSQL uses the repository pattern, which makes the codebase
+  easier to maintain and test.
+</p>
+<p>
+  Initially, I was only using Go&#39;s standard HTTP library, but then I found
+  something really cool.
+</p>
+<p>
+  There is a package named <a href="https://huma.rocks">huma</a> which makes
+  your API OpenAPI compatible.
+</p>
+<p>
+  <img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058429/blog-content/hhu3bkccjxqjl7bw7qcx.png"
+    alt="rowsql repository pattern diagram"
+  />
+</p>
+<p>For the frontend, I&#39;m using:</p>
+<ul>
+  <li><a href="https://react.dev">React</a></li>
+  <li><a href="https://ui.shadcn.com">Shadcn UI</a> for components</li>
+  <li><a href="https://zod.dev">Zod</a> for validation and types</li>
+  <li>
+    <a href="https://tanstack.com/table/latest">TanStack Table</a> and
+    <a href="https://tanstack.com/query/latest">TanStack Query</a>
+  </li>
+</ul>
+<p>
+  Here, I&#39;m using <a href="https://github.com/hey-api/hey-api">hey-api</a>,
+  which I found in a FastAPI boilerplate code.
+</p>
+<p>
+  hey-api reads your OpenAPI JSON schema and generates type-safe API clients
+  that just works.
+</p>
+<p>
+  So huma is creating the OpenAPI schema, and hey-api is creating the Zod schema
+  and type-safe API clients 🙃
+</p>
+<p>
+  Both are really working great.<br /><img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058478/blog-content/il2yr4adhsnvmwm2xwkc.png"
+    alt="rowsql hey-api tweet"
+  />
+</p>
+<p>
+  Every operation you perform in RowSQL is converted into a raw SQL query by the
+  backend and then executed directly on the database.
+</p>
+<p>
+  One thing I really like about Go is its ability to embed files into a
+  standalone binary.
+</p>
+<p>
+  Because of this, RowSQL can package the frontend React build inside the same
+  binary. You only need to run one executable, and Go serves the React files
+  from the <code>/</code> route.
+</p>
+<p>
+  This makes distribution much simpler because there is no separate frontend
+  deployment required.
+</p>
+<hr />
+<h3>Challenges I faced while building RowSQL</h3>
+<h4>1. Finding the actual row for modification</h4>
+<p>
+  Initially, one of the hardest parts was identifying the exact row which needs
+  to be updated and deleted.
+</p>
+<p>
+  Initially, RowSQL was redirecting to another page containing a form when you
+  clicked any row to edit.
+</p>
+<p>
+  To get the exact values on the edit page, I implemented a very minimal LRU
+  cache system.
+</p>
+<p>
+  While retrieving the values, the system was making a hash and storing the hash
+  and row data in the cache.
+</p>
+<p>
+  So later, we could access the value using the hash. Now, on another page, it
+  was easy to get the row using the hash.
+</p>
+<p>
+  But what if users start RowSQL and open the edit page using their old URL?
+</p>
+<p>In that case, the hash will be invalid.</p>
+<p>
+  For that, I created a fallback method which searches the row using the page
+  number. But still, it&#39;s not reliable.
+</p>
+<p>
+  Later, I upgraded the UI, in which rows can be modified without redirecting to
+  another page. This improved the reliability of modifying or deleting a row.
+</p>
+<blockquote>
+  <p>
+    To reduce the complexity, I have a plan to use ctid (PostgreSQL) and rowid
+    (SQLite) to select the exact row to modify. While MySQL doesn&#39;t provide
+    a hidden row identifier like PostgreSQL ctid or SQLite rowid, for now, I
+    have to keep the current implementation.
+  </p>
+</blockquote>
+<h4>2. Multiple database support</h4>
+<p>
+  Each database works differently. Even though it looks like we are executing
+  the same SQL query, it&#39;s not always the same.
+</p>
+<p>
+  From my observation, SQLite is more flexible with query syntax.<br />On the
+  other hand, we have PostgreSQL and MySQL 😒
+</p>
+<p>
+  The biggest challenge was not just executing queries, but handling the
+  differences between databases.
+</p>
+<p>Things like:</p>
+<ul>
+  <li>Different data types</li>
+  <li>Different SQL syntax</li>
+  <li>Different ways to get table information</li>
+  <li>Different ways to identify rows</li>
+  <li>Different error messages returned by databases</li>
+</ul>
+<p>
+  I had to create a layer that handles these differences so RowSQL can provide a
+  similar experience across different databases.
+</p>
+<h4>3. Naming convention</h4>
+<p>
+  Finding the proper name for every struct was the 2nd hardest thing. I think
+  it&#39;s not fixed yet 😊
+</p>
+<p>
+  There are only two hard things in Computer Science: cache and naming things.
+</p>
+<p>Both got triggered 😂</p>
+<p>
+  <img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058563/blog-content/l1ro6enifkp4ln4cfama.png"
+    alt="rowsql absulate cinema meme"
+  />
+</p>
+<h4>4. Building developer tools</h4>
+<p>Building RowSQL changed my thinking about developer tools.</p>
+<p>
+  Small features like showing database errors, generating queries, and handling
+  different databases require much more thinking than expected.
+</p>
+<p>
+  To make the query builder and UI work seamlessly across different engines, I
+  had to deep research the lists of data types for
+  <strong>all</strong> supported databases. I mapped out the specific types,
+  size requirements, and properties for PostgreSQL, SQLite, and MySQL (which you
+  can see in <code>psql-datatypes.go</code>, <code>sqlite-datatypes.go</code>,
+  and <code>mysql-datatypes.go</code>).
+</p>
+<hr />
+<h3>How to use RowSQL ?</h3>
+<ol>
+  <li>
+    Install RowSQL:<br />If you are using linux/macos you can simply run this
+    command to intall
+  </li>
+</ol>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/biisal/rowsql/refs/heads/main/install | bash
+</code></pre>
+<p>
+  <img
+    src="https://res.cloudinary.com/dorxspa9g/image/upload/v1782058613/blog-content/kpdjhxnmsghe6jwfxaev.png"
+    alt="rowsql installation demo3"
+  />
+</p>
+<p>
+  For windows you can download exe file from
+  <a href="https://github.com/biisal/rowsql/releases"
+    >github.com/biisal/rowsql/releases</a
+  >
+  and run the downloaded exe
+</p>
+<ol start="2">
+  <li>
+    <p>
+      <strong>Start RowSQL</strong>: Type <code>rowsql</code> in your terminal.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>Setup Configuration</strong>: If it&#39;s your first run, RowSQL
+      will ask to create a default configuration file. Type <code>y</code> and
+      press Enter.
+    </p>
+  </li>
+  <li>
+    <p>
+      <strong>Find your config</strong>: The settings are stored in a file
+      named <code>config.json</code> in your home directory:
+    </p>
+    <ul>
+      <li><strong>Unix/Mac</strong>: <code>~/.rowsql/config.json</code></li>
+      <li>
+        <strong>Windows</strong>: <code>%USERPROFILE%\.rowsql\config.json</code>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>
+      <strong>Connect your database</strong>: Open <code>config.json</code> and
+      add your database details. Here is a full example with multiple databases:
+    </p>
+  </li>
+</ol>
+<pre><code class="language-json">{
+  &quot;connections&quot;: [
+   {
+	  &quot;port&quot;: 8000,
+	  &quot;db_string&quot;: &quot;my_local_data.db&quot;
+	},
+	{
+	  &quot;port&quot;: 8081,
+	  &quot;db_string&quot;: &quot;postgres://admin:password@localhost:5432/customers&quot;
+	}
+  ],
+  &quot;disable_auto_update&quot;: false,
+  &quot;max_items_per_page&quot;: 50,
+  &quot;log_file_path&quot;: &quot;/home/user/.rowsql/rowsql.log&quot;
+}
+</code></pre>
+<blockquote>
+  <p>
+    <strong>Note:</strong> If you make changes to your configuration file, you
+    must restart RowSQL for the new settings to take effect.
+  </p>
+</blockquote>
+<ol start="6">
+  <li>
+    <strong>Open in browser</strong>:
+    Visit <code>http://localhost:8000</code> to start managing your data.
+  </li>
+</ol>
+<hr />
+<h3>What I have learned?</h3>
+<h4>Database:</h4>
+<p>
+  As I mentioned earlier, I explored various new technologies while building
+  this, but that&#39;s not the big deal.
+</p>
+<p>
+  I wrote plenty of SQL queries while building this, which helped me understand
+  databases more deeply.
+</p>
+<p>
+  I understand that SQL databases are not that hard... but they can be horrible
+  💀.
+</p>
+<h4>Testing in Go:</h4>
+<p>Before this project, I wasn&#39;t too familiar with testing in Go.</p>
+<p>
+  Before Go, I used to write my backend in Python (sometimes in TypeScript). In
+  Python, we use tools like <code>pytest</code> and <code>unittest</code>.
+</p>
+<p>
+  But in the standard library, <code>testing</code> is more than enough. I wrote
+  many test cases and found that writing tests in Go is really simple.
+</p>
+<p>
+  Testing is very essential when you are working with strings, where a single
+  space can produce a bug.
+</p>
+<p>
+  I found/fixed many bugs while testing.<br />I learned
+  <a href="https://codeltix.com/blog/write-tests-before-actual-function">TDD</a>
+  better.
+</p>
+<hr />
+<h3>Next Plan</h3>
+<p>
+  I&#39;m currently working on writing more test cases and fixing bugs.<br />Alongside
+  that, I&#39;m improving the UI of RowSQL.
+</p>
+<p>
+  Currently, RowSQL doesn&#39;t support relational table management, which will
+  be the next major feature I add.
+</p>
+<hr />
+<p>Most of RowSQL was built through live streams on YouTube.</p>
+<iframe
+  style="width: 100%; aspect-ratio: 16 / 9; border: 0"
+  src="https://www.youtube.com/embed/T2lpB4svquI?si=YFBTAnwYM9ubJNdj"
+  title="YouTube video player"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+>
+</iframe>
+<p>Thanks for reading.. ❤️ leave a comment if you found anything useful.</p>

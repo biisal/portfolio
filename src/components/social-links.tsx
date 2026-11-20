@@ -1,0 +1,62 @@
+import { Check, Mail, Phone } from "lucide-react";
+import { useState } from "react";
+
+import { email, phoneNumber, social } from "@/lib/config";
+import { Button } from "./ui/button";
+
+const SocialLinks = () => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(phoneNumber);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="flex flex-col gap-4 border-t border-blog-inactive-border pt-5 text-sm text-blog-fg/60 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <a
+          href={`mailto:${email}`}
+          className="flex items-center gap-2 transition-colors hover:text-blog-white"
+        >
+          <Mail className="h-4 w-4 text-blog-orange" />
+          <span>{email}</span>
+        </a>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-2 transition-colors hover:text-blog-white"
+        >
+          {copied ? (
+            <Check className="h-4 w-4 text-blog-orange" />
+          ) : (
+            <Phone className="h-4 w-4 text-blog-orange" />
+          )}
+          <span>{copied ? "Copied!" : phoneNumber}</span>
+        </button>
+      </div>
+      <div className="flex items-center gap-4">
+        {social.map(({ label, href, icon }) => (
+          <Button
+            key={label}
+            asChild
+            variant="outline"
+            className="h-12 w-12 p-3"
+          >
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="flex items-center justify-center h-full w-full"
+            >
+              <img src={icon} alt={label} width={22} height={22} />
+            </a>
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default SocialLinks;

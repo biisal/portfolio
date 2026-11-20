@@ -1,0 +1,155 @@
+---
+title: "Is NULL Nothing? 🤔"
+slug: "what-is-null"
+excerpt: "I explored how NULL is implemented in various languages"
+authorName: "Avisek"
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1779774035/null-dog-comp_ooakti.jpg"
+audio: ""
+tags: []
+isProject: false
+published: true
+date: 2026-05-23T17:40:34.342Z
+updated: 2026-11-19T18:18:37.303Z
+---
+
+<h2>
+  while talking about NULL there is nothing better than C to understand it
+</h2>
+<p>in <code>C</code> null is just a macro nothing else</p>
+<h3>what is macro?</h3>
+<p>
+  macro is a preprocessor text substitution<br />and preprocessor is a program
+  that runs before our program passed to the compiler
+</p>
+<p>example macro in C:</p>
+<pre><code class="language-c"># define PI 3.1428
+</code></pre>
+<p>
+  in the statement PI is called <code>macro template</code> and 3.1428 is the
+  <code>macro expansion</code>
+</p>
+<p>in C null is typically defined as</p>
+<pre><code class="language-c"># define NULL ((void*)0)
+</code></pre>
+<p>in some cases</p>
+<pre><code class="language-c"># define NULL 0
+</code></pre>
+<p>
+  NULL expands to 0 (or equivalent),<br />which the compiler converts into a
+  null pointer value.
+</p>
+<p>
+  when we assign NULL to something C&#39;s preprocessor converts that NULL to 0
+  before compilation<br />for compiler null is just 0
+  <a href="https://c-faq.com/null/macro.html">c-faq</a>
+</p>
+<p>normally if we do</p>
+<pre><code class="language-c">(int)4.5
+</code></pre>
+<p>this will convert 4.5 to 4 as int value</p>
+<p>but when we try to convert to a pointer value</p>
+<pre><code class="language-c">((void*)0)
+</code></pre>
+<p>
+  <code>(void*)</code> tells the compiler convert/interpret 0 as a pointer
+  type<br />converting 0 as pointer type produces a special pointer value
+</p>
+<p>if you do:</p>
+<pre><code class="language-c">int main(int argc, char *argv[]) {
+  int *ptr = (void *)0;
+  printf(&quot;%d\n&quot;, *ptr);
+  return 0;
+}
+</code></pre>
+<p>in most OS, you will get an error:</p>
+<pre><code class="language-bash">segmentation fault 
+</code></pre>
+<p>
+  A <code>segmentation fault</code> occurs at runtime when a program tries to
+  <code>access or modify</code> memory that it is not allowed to use.
+</p>
+<h1>NIL in Golang</h1>
+<p>
+  in Golang we get <code>nil</code><br />nil isn&#39;t literally 0 in golang
+</p>
+<p>
+  nil is predeclared identifier in go<br />that means we can use it anywhere in
+  our code without declaring it
+</p>
+<p>
+  nil represent <strong>zero values</strong> of many type<br />if we look at the
+  source code we will see
+</p>
+<pre><code class="language-go">// nil is a predeclared identifier representing the zero value for a
+// pointer, channel, func, interface, map, or slice type.
+var nil Type // Type must be a pointer, channel, func, interface, map, or slice type
+</code></pre>
+<p>
+  Type must be one of pointer, channel, func, interface, map, or slice type<br />you
+  can think of it conceptually:
+</p>
+<ul>
+  <li>no pointer</li>
+  <li>no channel</li>
+  <li>no function</li>
+  <li>etc...</li>
+</ul>
+<p>if you do</p>
+<pre><code class="language-go">var p *int = nil
+</code></pre>
+<p>and try to access it</p>
+<pre><code class="language-go">fmt.Println(*p)
+</code></pre>
+<p>you will get an err</p>
+<pre><code class="language-bash">panic: runtime error: invalid memory address or nil pointer dereference
+[signal SIGSEGV: segmentation violation code=0x2 addr=0x0 pc=0x1005f949c]
+
+</code></pre>
+<p>
+  you can see the address is 0x0 similar to C<br />but as C you can&#39;t access
+  it from your program
+</p>
+<p>but if you do</p>
+<pre><code class="language-go">	var a []int = nil
+	fmt.Println(a)
+</code></pre>
+<p>it will print an empty slice.. here is nothing related 0 address</p>
+<p>also you can append, remove value from the <code>slice</code></p>
+<pre><code class="language-go">	a = append(a, 1)
+	fmt.Println(a)
+</code></pre>
+<p>so nil in Go behaves differently depending on the type using it</p>
+<h1>Let&#39;s see how javascript sees NULL 👀</h1>
+<p>Let&#39;s start with a javascript bug 😂<br />if you execute</p>
+<pre><code class="language-js">typeof null
+</code></pre>
+<p>you will get &quot;object&quot; as result</p>
+<p>
+  early javascript engines stored values in memory using small type tag
+  system<br />The type tag was 0 of <code>object</code> and null was represented
+  as NULL pointer (0x00 in most cases) so null got 0 type tag, hence the typeof
+  null returns &quot;object&quot; as result
+</p>
+<p>
+  unlike Go&#39;s nil null isn&#39;t an identifier, null in javascript a syntax
+  keyword and primitive value
+</p>
+<p>if we do</p>
+<pre><code class="language-js">let user = null;
+</code></pre>
+<p>
+  that means the <code>user</code> exists, but currently no object value is
+  assigned to it.
+</p>
+<p>
+  look at here for more details about null and undefined -&gt;
+  <a
+    href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null"
+    >mdn-null</a
+  >
+</p>
+<h4>
+  So, null isn&#39;t an universal thing.. It depends on the language, runtime,
+  OS, CPU architecture, and memory model.
+</h4>
+<p>Thanks for reading.. ❤️</p>

@@ -1,150 +1,41 @@
-# Avisek Ray (biisal) - Portfolio
+# Portfolio (Vite + React, static)
 
-A modern, full-stack developer portfolio built with Next.js 16, React 19, and Tailwind CSS v4. This project showcases my skills, projects, and thoughts through a clean, dark-themed interface with smooth animations and robust backend integration.
+Static SPA for GitHub Pages. Blogs are HTML files in `content/blog/*.md`.
 
-## Live Link [codeltix.com](https://codeltix.com)
+## Writing a post
 
-![Portfolio Preview](./demo/hero.png)
+Create `content/blog/<slug>.html`:
 
-## 🚀 Tech Stack
+```html
+---
+title: "My post"
+slug: "my-post"
+excerpt: "One-line summary"
+coverImage: ""
+audio: ""
+tags: ["go", "backend"]
+isProject: false
+published: true
+date: 2026-01-01T00:00:00.000Z
+---
 
-- **Framework**: [Next.js 16](https://nextjs.org/) (App Directory)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/) with [Prisma ORM](https://www.prisma.io/)
-- **Authentication**: [Better Auth](https://www.better-auth.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **UI Components**: [Radix UI](https://www.radix-ui.com/) / Shadcn-like Implementation
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Content Management**: Custom Blog & Project System
-- **Integrations**:
-  - Telegram Bot (Contact Form)
-  - Cloudinary (Image Hosting)
-  - Wakatime (Coding Stats)
+<p>Plain semantic HTML body…</p>
+<pre><code class="language-go">fmt.Println("hi")</code></pre>
+```
 
-## ✨ Features
+No inline styles, no own `<head>`/fonts: the site styles everything (`src/styles/html-post.css`).
+Code blocks are highlighted with Shiki. Extras: `.callout`, `<figure>/<figcaption>`.
+`isProject: true` lists it under Projects. `published: false` hides it.
 
-- **Dynamic Content**: CMS-like features for managing Projects and Blog posts.
-- **Admin Dashboard**: Secure admin area for content management.
-- **Interactive UI**: Smooth transitions, scroll animations, and a polished dark mode aesthetic.
-- **Contact Form**: Direct integration with Telegram for instant message delivery.
-- **Real-time Stats**: Live coding statistics via Wakatime API.
-- **SEO Optimized**: Built-in metadata and Open Graph support.
+**SEO:** `scripts/postbuild.mjs` prerenders every route (title, OG/Twitter, canonical, JSON-LD, body text),
+plus `sitemap.xml`, `robots.txt`, `feed.xml`.
 
-## � Screenshots
+## Scripts
 
-### Projects
+`pnpm dev` · `pnpm build` (typecheck + vite build + 404.html/sitemap/robots) · `pnpm preview`
 
-![Projects](./demo/projects.png)
+## Deploy
 
-|            Skills            |           Blog            |
-| :--------------------------: | :-----------------------: |
-| ![Skills](./demo/skills.png) | ![Blog](./demo/blogs.png) |
-
-### Contact
-
-![Contact](./demo/contact.png)
-
-## �🛠️ Getting Started
-
-### Prerequisites
-
-- Node.js (v18+ recommended)
-- MongoDB Database
-- Cloudinary Account
-- Telegram Bot Token (optional, for contact form)
-
-### Installation
-
-1.  **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/biisal/portfolio.git
-    cd portfolio
-    ```
-
-2.  **Install dependencies:**
-
-    ```bash
-    npm install
-    # or
-    pnpm install
-    # or
-    bun install
-    ```
-
-3.  **Environment Setup:**
-
-    Rename `.env.example` to `.env` and fill in your secrets:
-
-    ```bash
-    cp .env.example .env
-    ```
-
-    Required variables:
-    - `DATABASE_URL`: MongoDB connection string
-    - `BETTER_AUTH_SECRET`: Secret for authentication
-    - `ADMIN_SECRET`: Secret header for admin actions
-    - `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_ID`: For contact form
-    - `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`: For images
-
-4.  **Database Setup:**
-
-    Generate Prisma client and push schema:
-
-    ```bash
-    npx prisma generate
-    npx prisma db push
-    ```
-
-5.  **Run Development Server:**
-
-    ```bash
-    npm run dev
-    ```
-
-    Open [http://localhost:3000](http://localhost:3000) to view the site.
-
-## 🛣️ Routes
-
-### Pages
-
-- `/`: Home Page (Intro, About, Skills, etc.)
-- `/projects`: All Projects List
-- `/project/[slug]`: Single Project Details
-- `/blog`: Blog Posts
-- `/contact`: Contact Page
-- `/login`: Admin Login
-
-### Admin Routes (Protected)
-
-- `/blog/editor`: Create/Edit Blog Posts
-- `/projects/form`: Create/Edit Projects
-
-### API Endpoints
-
-- `GET /api/projects`: Fetch all projects
-- `POST /api/projects`: Create a new project (Admin)
-- `GET /api/blog/[slug]`: Get a specific blog post
-- `POST /api/contact`: Send a contact message
-
-## 📂 Project Structure
-
-- `/app`: Next.js App Router pages and API routes.
-- `/components`: Reusable UI components.
-- `/lib`: Utility functions, Prisma client, and configurations.
-- `/prisma`: Database schema.
-- `/public`: Static assets.
-
-## 👤 Author
-
-**Avisek Ray (biisal)**
-
-- Website: [codeltix.com](https://codeltix.com)
-- GitHub: [@biisal](https://github.com/biisal)
-- LinkedIn: [Avisek Ray](https://www.linkedin.com/in/biisal)
-- X (Twitter): [@biisal18](https://x.com/biisal18)
-
-## 📄 License
-
-This project is licensed under the MIT License.
+Push to `main`; `.github/workflows/deploy.yml` builds and publishes `dist/`.
+In the repo: Settings → Pages → Source: **GitHub Actions**. For a custom domain, add `public/CNAME`
+and set `SITE_URL` (default `https://biisal.github.io`) for canonical links and the sitemap.

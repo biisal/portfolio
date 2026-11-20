@@ -1,0 +1,53 @@
+---
+title: "LinkedIn is spamming to your device"
+slug: "linkedin-is-spamming-to-your-device"
+excerpt: "LinkedIn is doing AED brute-force scanning"
+authorName: "Avisek Ray"
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1779347250/1778517767491_ao20ej.jpg"
+audio: ""
+tags: []
+isProject: false
+published: true
+date: 2026-05-11T17:32:31.941Z
+updated: 2026-11-18T23:19:15.334Z
+---
+
+<h3>
+  If you open Developer Tools on LinkedIn, you will see that LinkedIn is making
+  huge requests to your device.
+</h3>
+<p>When I saw it, I thought something was wrong on my side.</p>
+<p>
+  Then I did some research and found that nothing is wrong from my side.
+  LinkedIn is scanning our installed extensions, even without asking us.<br />This
+  is not safe.<br />The tools we use in our browser can reveal highly sensitive
+  information.<br />By running these scans, LinkedIn can deduce your job search
+  status, political views, religious views, health data, etc.
+</p>
+<p>
+  According to European data protection laws, accessing this information is
+  strictly prohibited.<br />Here is how it works:
+  <a href="https://browsergate.eu/how-it-works"
+    >https://browsergate.eu/how-it-works</a
+  ><br />In simple, LinkedIn is doing AED (Active Extension Detection)
+  brute-force scanning. It tries many possible extension IDs using fetch() to
+  check which extensions are installed.<br />Chromium based browser extensions
+  can make some files publicly reachable by websites using the
+  <code>web_accessible_resources</code> setting in
+  <code>manifest.json</code>.<br />Example:
+</p>
+<pre><code class="language-js">{
+ &quot;web_accessible_resources&quot;: [
+  {
+   &quot;resources&quot;: [&quot;icon.png&quot;, &quot;content.js&quot;],
+   &quot;matches&quot;: [&quot;&lt;all_urls&gt;&quot;]
+  }
+ ]
+}
+</code></pre>
+<p>
+  As of February 2026, LinkedIn is scanning <strong>6,167</strong> extensions
+  this way.<br />To check, just open your Developer Tools (most probably with
+  F12 if you are using Chromium) and check the Network tab.<br />Full info :
+  <a href="https://browsergate.eu/">https://browsergate.eu/</a>
+</p>

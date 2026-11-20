@@ -1,0 +1,224 @@
+/* Post-page palette, from mrinalxdev.github.io (dark theme). */
+.post-theme {
+  --post-text: #e0dbd1;
+  --post-muted: #9b9486;
+  --post-line: #2c2823;
+  --post-accent: #b9a98b;
+  --post-code-bg: #221f1b;
+}
+
+/*
+ * Styles for HTML blog posts (`content/blog/*.html`). Sizes follow
+ * mrinalxdev.github.io's article layout (Newsreader 1.1875rem/1.8 body).
+ * Authoring rule: semantic HTML only, no inline styles, no own <head>/fonts.
+ * Extras: .lede, .callout, figure > figcaption.
+ */
+.html-post {
+  font-size: 1.1875rem;
+  line-height: 1.8;
+  font-weight: 400;
+  color: var(--post-text);
+}
+
+@media (max-width: 480px) {
+  .html-post {
+    font-size: 1.125rem;
+  }
+}
+
+.html-post p,
+.html-post li {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.html-post > p,
+.html-post > ul,
+.html-post > ol {
+  margin: 1.6rem 0 0;
+}
+.html-post > :first-child {
+  margin-top: 0;
+}
+
+.html-post h1,
+.html-post h2,
+.html-post h3,
+.html-post h4 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  color: var(--post-text);
+}
+
+.html-post h1 {
+  font-size: clamp(2.1rem, 6vw, 2.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin: 4.5rem 0 1.25rem;
+}
+.html-post h2 {
+  font-size: 2.25rem;
+  line-height: 1.3;
+  margin: 4.5rem 0 1.25rem;
+}
+.html-post h3 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin: 3rem 0 1rem;
+}
+.html-post h4 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin: 2rem 0 0.75rem;
+}
+.html-post h1 + p,
+.html-post h2 + p,
+.html-post h3 + p,
+.html-post h4 + p {
+  margin-top: 0;
+}
+
+.html-post .lede {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--post-muted);
+}
+
+.html-post a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--post-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+.html-post a:hover {
+  color: var(--post-accent);
+  text-decoration-color: var(--post-accent);
+}
+
+.html-post strong {
+  color: var(--post-text);
+  font-weight: 700;
+}
+
+.html-post .bold {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.html-post ul,
+.html-post ol {
+  padding-left: 1.2rem;
+}
+.html-post ul {
+  list-style: disc;
+}
+.html-post ol {
+  list-style: decimal;
+}
+.html-post li {
+  margin-top: 0.55rem;
+  padding-left: 0.25rem;
+}
+.html-post li::marker {
+  color: var(--post-muted);
+}
+
+.html-post code {
+  font-family: var(--font-mono);
+}
+.html-post :not(pre) > code {
+  font-size: 0.85em;
+  background-color: var(--post-code-bg);
+  border-radius: 0.25rem;
+  padding: 0.1em 0.35em;
+  color: var(--post-text);
+}
+
+/* Code blocks: raw <pre> before highlighting, .shiki after */
+.html-post pre {
+  margin: 1.6rem 0 2.5rem;
+  padding: 1.25rem 1.4rem;
+  overflow-x: auto;
+  background-color: var(--post-code-bg) !important;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.75;
+  -webkit-overflow-scrolling: touch;
+}
+.html-post pre code {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--post-text);
+}
+
+.html-post blockquote {
+  margin: 3rem 0;
+  padding: 0 0 0 1.5rem;
+  border-left: 1px solid var(--post-line);
+  font-size: 1.3rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--post-muted);
+}
+
+.html-post table {
+  width: 100%;
+  margin: 1.6rem 0;
+  border-collapse: collapse;
+  border: 1px solid var(--post-line);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.html-post th,
+.html-post td {
+  border: 1px solid var(--post-line);
+  padding: 0.5rem 1rem;
+  text-align: left;
+  color: var(--post-muted);
+}
+.html-post th {
+  background-color: var(--post-code-bg);
+  color: var(--post-text);
+  font-weight: 600;
+}
+
+.html-post img,
+.html-post video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+}
+.html-post figure {
+  margin: 2.5rem 0;
+}
+.html-post figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--post-muted);
+  text-align: center;
+}
+
+.html-post hr {
+  border: 0;
+  border-top: 1px solid var(--post-line);
+  margin: 4rem 0;
+}
+
+.html-post .callout {
+  margin: 1.6rem 0;
+  border: 1px solid var(--post-line);
+  border-left: 2px solid var(--post-accent);
+  background-color: var(--post-code-bg);
+  border-radius: 0.375rem;
+  padding: 1rem 1.25rem;
+}
