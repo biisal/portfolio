@@ -1,0 +1,65 @@
+---
+title: "Done is better than perfect (ft. Gitalink)"
+excerpt: "This project took 1.5 years and a lot of messy learning."
+coverImage: null
+audio: null
+authorName: "Avisek"
+tags: []
+isProject: false
+published: true
+date: "2026-04-08T17:38:01.117Z"
+updated: "2026-11-19T13:15:04.149Z"
+---
+
+# This porject took 1.5 years to be depoloyed to production
+
+I was thinking of building an application for the Gita, mainly for students who are very busy and don’t want to spend time, or even for those who somehow want to learn the knowledge of the Gita.
+
+I planned to make it perfect, covering every possibility I could add to the site.  
+I was using Python for the backend and ReactJS for the frontend.
+
+Started with the frontend and created a basic UI in React.  
+After spending some months i thougth the react frontend won't be **SEO** friendly. So my only choice was **NextJS** on that time.
+
+After spending months in React, I migrated my whole frontend logic to Next.js. But there was a problem, if I migrated the exact React code to Next.js, there was no benefit.  
+As far as I can remember, I was writing messy code until I understood how it should be in a Nextjs app.  
+Again after spending months i refactor whole nextJs for atleast good client and server side rendering.
+
+In backend i wanted fast response and scalable database system so i **STARTED** with Redis and Postgress :)
+
+Didn’t know where I got a massive boilerplate code from on GitHub. Even that boilerplate was difficult **(Skill Issue)** for me to understand, but somehow I managed it, and my backend was running with a massively scalable architecture that was creating problems even with **0 users** :))
+
+I was using a library named FastCRUD for querying and serving the API. I was facing some issues with that library (it had limited documentation), so I removed it from my backend and created simple methods to fetch and serve data through the API. I also added automatic Redis sync to those methods.
+
+Then I released it as a Python package named `FastRDB` :)
+
+Not going to talk about those auth cookie bugs. Those invisible cookie bugs always forced me to read MDN docs 😒
+
+but at the end my backend was working good.
+
+Still, the frontend was messy due to client-side and server-side auth. Like, on the client side and server side, it had different ways to send token cookies, etc.
+
+I was trying to make one API handler that would handle everything, but I messed it up. I was using Axios interceptors, etc. After that, I realized Axios doesn’t support streaming responses 🙂
+
+Then I rewrote the whole API using fetch 😂
+
+After some (many) months, it was time to add data to my app.  
+I was finding some good sql visualizer also operational but i didn't found what i wanted.
+
+Gusse what --\_-- statred another new project named RowSQL (A multiple Database management tool) (Currently building)  
+While building RowSQL i needed good level of understanding of SQL.
+
+So I was exploring supabase to see how they using RLS
+
+To understand more, I removed my whole Python backend and integrated Supabase as the backend for my GitaLink.
+
+Wrote App logic in psql funtions 😂, its like direct calling database from frontend no redis no backend management .
+
+II tried to tell the story in a very short way. Now it’s time to tell you what I would to do if I could go back to when I started GitaLink.
+
+If I could go back in time, I would love to do the same things I did 🙂  
+Because even though whatever I did isn’t running the way I intended, there was countless learning.
+
+It doesn’t matter if the project is running the way I intended. It’s actually running better based on my needs. But definitely, I would love to add planning before writing any code, that would have helped me handle the massive mess faster 😂
+
+Thanks for reading, Bye .. ❤️

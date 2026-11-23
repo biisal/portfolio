@@ -1,0 +1,47 @@
+---
+title: "LinkedIn is spamming to your device"
+excerpt: "LinkedIn is doing AED brute-force scanning"
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1779347250/1778517767491_ao20ej.jpg"
+audio: null
+tags: []
+isProject: false
+published: true
+date: "2026-05-11T17:32:31.941Z"
+updated: "2026-11-18T23:19:15.334Z"
+---
+
+<div class="relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border mb-8">
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1779347250/1778517767491_ao20ej.jpg" alt="" aria-hidden="true" class="w-full h-full! object-cover" loading="lazy" />
+<div class="w-full h-full backdrop-blur-sm absolute inset-0"></div>
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1779347250/1778517767491_ao20ej.jpg" alt="LinkedIn is spamming to your device" fetchpriority="high" class="absolute inset-0 mx-auto h-full! w-auto object-cover" />
+</div>
+
+### If you open Developer Tools on LinkedIn, you will see that LinkedIn is making huge requests to your device.
+
+When I saw it, I thought something was wrong on my side.
+
+Then I did some research and found that nothing is wrong from my side. LinkedIn is scanning our installed extensions, even without asking us.  
+This is not safe.  
+The tools we use in our browser can reveal highly sensitive information.  
+By running these scans, LinkedIn can deduce your job search status, political views, religious views, health data, etc.
+
+According to European data protection laws, accessing this information is strictly prohibited.  
+Here is how it works: [https://browsergate.eu/how-it-works](https://browsergate.eu/how-it-works)  
+In simple, LinkedIn is doing AED (Active Extension Detection) brute-force scanning. It tries many possible extension IDs using fetch() to check which extensions are installed.  
+Chromium based browser extensions can make some files publicly reachable by websites using the `web_accessible_resources` setting in `manifest.json`.  
+Example:
+
+```js
+{
+ "web_accessible_resources": [
+  {
+   "resources": ["icon.png", "content.js"],
+   "matches": ["<all_urls>"]
+  }
+ ]
+}
+```
+
+As of February 2026, LinkedIn is scanning **6,167** extensions this way.  
+To check, just open your Developer Tools (most probably with F12 if you are using Chromium) and check the Network tab.  
+Full info : [https://browsergate.eu/](https://browsergate.eu/)

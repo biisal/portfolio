@@ -1,12 +1,12 @@
 ---
 import ProjectsPage from "@/views/projects";
 import Base from "@/layouts/Base.astro";
-import { getPosts, summary } from "@/lib/blogs";
+import { getPosts } from "@/lib/blogs";
 ---
 
 <Base
   title="Projects | Avisek Ray (biisal)"
   description="Explore a collection of my recent projects, ranging from web applications to backend services and cloud infrastructure."
 >
-  <ProjectsPage projects={getPosts("project").map(summary)} />
+  <ProjectsPage projects={getPosts("project")} />
 </Base>

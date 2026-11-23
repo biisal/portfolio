@@ -1,0 +1,106 @@
+/* Animated binary-tree cover for the AST post. Edges draw in, nodes fade in,
+   then a soft light travels edge by edge in pre-order (what ast.Inspect does)
+   and each node outline warms to the accent colour as it arrives. Theme colours only. */
+.ast-cover {
+  --accent: var(--post-accent, #b9a98b);
+  --node-line: var(--post-line, #2c2823);
+  --muted: var(--post-muted, #9b9486);
+  --text: var(--post-text, #e0dbd1);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  background: transparent;
+}
+.ast-cover svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  border-radius: 0;
+}
+
+/* Static edges draw in once. */
+.ast-cover .edge {
+  stroke: var(--node-line);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ast-draw 0.9s ease-out forwards;
+  animation-delay: calc(var(--i) * 0.2s);
+}
+
+/* A soft light (transparent tail, bright head) slides from parent to child.
+   Its gradient is defined per edge in the SVG and moves with the segment. */
+.ast-cover .flow {
+  stroke-width: 1.5;
+  stroke-linecap: butt;
+  opacity: 0;
+  animation: ast-flow 8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 1.8s - 0.2s);
+}
+
+/* Nodes fade in, then warm up when the light arrives. */
+.ast-cover .node {
+  opacity: 0;
+  animation: ast-fade 0.8s ease-out forwards;
+  animation-delay: calc(var(--i) * 0.2s);
+}
+.ast-cover .node circle {
+  fill: transparent;
+  stroke: var(--muted);
+  stroke-width: 1.5;
+  animation: ast-ring 8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 1.8s + 1s);
+}
+.ast-cover .node text {
+  fill: var(--text);
+  font: 500 24px var(--font-plex-mono, ui-monospace, monospace);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.ast-cover .caption {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1rem;
+  font: 500 0.85rem var(--font-plex-mono, ui-monospace, monospace);
+  color: var(--muted);
+}
+.ast-cover .caption b {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+@keyframes ast-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes ast-fade {
+  to { opacity: 1; }
+}
+/* Travels the whole edge in the first ~22% (1.8s) of the cycle, then rests. */
+@keyframes ast-flow {
+  0% { transform: translate(0, 0); opacity: 0; }
+  5% { opacity: 1; }
+  17% { opacity: 1; }
+  22%, 100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+@keyframes ast-ring {
+  0%, 30%, 100% { stroke: var(--muted); }
+  6%, 16% { stroke: var(--accent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ast-cover .edge,
+  .ast-cover .node,
+  .ast-cover .node circle {
+    animation: none;
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+  .ast-cover .flow {
+    display: none;
+  }
+}

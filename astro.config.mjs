@@ -1,3 +1,4 @@
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
@@ -10,7 +11,19 @@ export default defineConfig({
   output: "static",
   trailingSlash: "never",
   build: { format: "file" },
-  integrations: [react(), sitemap()],
+  markdown: {
+    shikiConfig: {
+      theme: "vitesse-dark",
+      transformers: [
+        {
+          pre(node) {
+            this.addClassToHast(node, "code-block");
+          },
+        },
+      ],
+    },
+  },
+  integrations: [mdx(), react(), sitemap()],
   vite: { plugins: [tailwindcss()] },
   fonts: [
     {

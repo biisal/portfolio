@@ -1,0 +1,135 @@
+---
+title: "Write tests before actual function"
+excerpt: "Why should you write tests before the actual function?"
+coverImage: null
+audio: null
+authorName: "Avisek"
+tags: []
+isProject: false
+published: true
+date: "2026-01-26T11:23:01.580Z"
+updated: "2026-11-18T19:28:06.222Z"
+---
+
+## You should write tests before the actual function
+
+#### After spending 2 week on testing I get to know some important things about writing tests. (You should know it too :)
+
+there is many type of tests like unit, integration, acceptance test etc.
+
+### For now I am working on unit test
+
+This method is called **TDD** (Test Driven Development)  
+in TDD you write the automated test first before the actual code (RED-GREEN-REFACTOR)
+
+1.  You write the failing test first (RED)
+2.  then a minimal code (your actual function) to pass the test (satisfy the compiler)
+3.  after that you clean (refactor) your code
+
+### But Why?
+
+-   It ensures that you are confidant about what will your function do (your plan becomes stronger)
+-   Your compiler (errors) helps you to write the code.
+-   You get aware of the edge cases first.
+-   You write the only thing you need to write.
+
+### Also you need to know when you should use this
+
+like for this function:
+
+```go
+func sum(x int, y int) int {
+  return x+y
+}
+```
+
+writing a test for this function is not a good idea
+
+**TDD** is very useful for
+
+1.  Complex business logic
+2.  Backend systems API
+3.  Reusable functions
+
+TDD will turns your function from "hope this works" into "prove this works" 😎
+
+### 🔴 TDD - RED
+
+Look at this code
+
+```go
+func TestSquareArea(t *testing.T) {
+    got := SquareArea(2)
+    want := 4
+    if got != want {
+        t.Errorf("got %d want %d", got, want)
+    }
+}
+```
+
+Don't get confused if you dont know Golang  
+here we are just testing the `SquareArea` function that is not defined yet
+
+Initality I was thinking "WTH i know the function doesn't exist and the test will fail and im running the test unnecessarly"
+
+but the philosophy of TDD isn't the same as i thought  
+in TDD, you'r not testing what exists, but you define what should exist
+
+#### The Failure proves the test works
+
+if your test fails, that's good. it proves that:
+
+-   the test is being excuteed perfectly
+-   you are not gettng a false positive
+-   useful when you will have multiple test files with multiple test functions
+
+#### Now you have a clear target that:
+
+-   where and which function you need to write
+-   you have a clear goal that you need to only pass the test
+
+### 🟢 TDD - GREEN
+
+Now you just need to write the **minimal** code
+
+```go
+func SquareArea(side int) int {
+    return 0
+}
+```
+
+Remember that you dont need to write the actual function yet
+
+You just need to satisfy the compiler that your function exists with the correct signature
+
+-   Now your test should fail again with different error message
+-   Here you make sure that you got the exact error you were expecting
+-   The error will tell you what the test expecting and you have to write it
+
+i was thinking "why return 0, beacuse i know it will fail 🙂 and the simple ans is `side * side`"  
+Actually it's about intergrity. By writing this enough code to satisfy the compiler you get to see the test fail with a real message : `got 0 want 4`
+
+Now you will fix it properly
+
+```go
+func SquareArea(side int) int {
+    return side * side 
+}
+
+```
+
+### 🟡 TDD - REFACTOR
+
+You have a green signal, you can :
+
+-   Clean Code: you can rename variables or simplify the math. Since the test is passing, you can change the structure of the code without changing its behavior
+-   Refactor your test too, like making helper functions, add table-driven-test if needed so you can add more test cases easily
+-   Run tests and check if the test is passing perfectly
+
+#### Final Summary: The TDD Rhythm
+
+| Phase | What you do | What you want |
+| --- | --- | --- |
+| 🔴 RED | Write a test that fails (or won't compile). | Define the requirement. |
+| 🟢 GREEN | Write the minimal code to pass the test. | Prove the logic works. |
+| 🟡 REFACTOR | Clean up the code and tests. | Ensure long-term quality. |

@@ -1,12 +1,12 @@
 ---
 import TagPage from "@/views/tag";
 import Base from "@/layouts/Base.astro";
-import { getAllTagsWithCount, getPostsByTag, summary } from "@/lib/blogs";
+import { getAllTagsWithCount, getPostsByTag } from "@/lib/blogs";
 
 export function getStaticPaths() {
   return getAllTagsWithCount().map(({ name }) => ({
     params: { tag: name },
-    props: { posts: getPostsByTag(name).map(summary) },
+    props: { posts: getPostsByTag(name) },
   }));
 }
 

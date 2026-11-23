@@ -1,0 +1,216 @@
+---
+title: "CI setup I use for almost all Go Applications"
+excerpt: "Go applications don't need complex CI. Here's the exact pipeline I copy-paste into every project."
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1781076884/blog-content/cmjefo8wj96haxbxzwh4.png"
+audio: null
+authorName: "Avisek"
+tags: []
+isProject: false
+published: true
+date: "2026-06-10T07:10:35.801Z"
+updated: "2026-11-19T21:38:49.495Z"
+---
+
+<div class="relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border mb-8">
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1781076884/blog-content/cmjefo8wj96haxbxzwh4.png" alt="" aria-hidden="true" class="w-full h-full! object-cover" loading="lazy" />
+<div class="w-full h-full backdrop-blur-sm absolute inset-0"></div>
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1781076884/blog-content/cmjefo8wj96haxbxzwh4.png" alt="CI setup I use for almost all Go Applications" fetchpriority="high" class="absolute inset-0 mx-auto h-full! w-auto object-cover" />
+</div>
+
+A simple CI configuration can save you hours of debugging and stress.
+
+If you're a beginner in Go development, Believe me, setting up CI from day one will make your projects more reliable and help you catch issues before they reach production.
+
+## Benefits of Using CI in Your Application
+
+CI helps you catch issues before code is merged into your main branch:
+
+-   Detect syntax errors
+-   Check code formatting issues
+-   Identify known vulnerabilities in dependencies
+-   Run all test cases automatically
+-   Prevent broken code from reaching production
+-   Enforce consistent code quality across the team
+-   Get fast feedback on every pull request
+
+---
+
+If you are new to CI, It's very easy to start with.  
+Create a folder in your repository at `.github/workflows`
+
+You can run this command in your root to create it
+
+```bash
+mkdir -p .github/workflows
+```
+
+In `workflows` folder, you can create multiple CI files, that will run based on the configuration you define in them.
+
+If you are using **Vs code**, You can use **Github Actions** extension which will show errors for incorrect configs in your CI files.
+
+For GitHub CI we use `yml` file
+
+---
+
+## Config
+
+Create a file named `ci.yml` in `.github/workflows`
+
+```yml
+name: Go WEB CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+```
+
+First, we specify the `name` of our CI  
+Then, we specify when the CI should run.
+
+Based on the configuration you can see the CI will run when code is pushed or a pull request is opened againts `main`.
+
+---
+
+After, We need to specify the jobs which will run to check the code.
+
+```yml
+jobs:
+  lint:
+    name: Linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Golangci Lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.10.1
+```
+
+The `runs-on` tells GitHub to allocate a fresh ubuntu virtual machine (Windows and MacOS also supported)  
+The VM is temporary and isolated, and already comes with some common tools like Git, Docker, etc.
+
+In `steps` we define the actions or scripts that run sequentially
+
+---
+
+First, we have:
+
+```yml
+      - name: Checkout
+        uses: actions/checkout@v6
+
+```
+
+This step :
+
+-   Clones the repo to the Ubuntu machine
+-   Check out the commit/branches that triggered this action
+-   Setup credentials in case it needs to interact with the repo
+
+Next:
+
+```yml
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+```
+
+`actions/setup-go@v6` installs and configures Go on the runner.
+
+`with` is used to pass input parameters to an action using:
+
+```yml
+        with:
+          go-version-file: go.mod
+
+```
+
+we specify to install the Go version defined in our go.mod file, so we don't need to change the CI if we change Go version in our app
+
+Then we have:
+
+```yml
+      - name: Golangci Lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.10.1
+
+```
+
+Instead of using thousands of linter (like we do in TS),we use one tool: `golangci`
+
+Golangci Can:
+
+-   Check for Unused variables/imports
+-   Check for code formatting issues
+-   Detect code style violations
+-   [Cache](https://github.com/golangci/golangci-lint-action#performance) results for faster run  
+    etc...
+
+---
+
+Next, we have the dependency vulnerability checking job:
+
+```yml
+  vuln_check:
+    name: Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Run Govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-package: ./...
+
+
+```
+
+`govaulcheck` is a standalone tool created and maintained by the official Go Security Team.  
+Behind the scenes it uses [Go vulnerability database](https://vuln.go.dev/) to check if any dependencies has any vulnerabilities you are using.
+
+---
+
+Finally, we have:
+
+```yml
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Run go test
+        run: go test ./...
+
+      - name: Build Backend
+        run: go build -v -o bin/rowsql ./cmd/server
+```
+
+As you can see, this job runs all the test cases written in our codebase, and then builds the project to verify that everything works correctly.
+
+You can check the full CI file [here](https://github.com/biisal/rowsql/blob/main/.github/workflows/ci.yml)

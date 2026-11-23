@@ -1,0 +1,44 @@
+---
+title: "Understanding HMAC Internals Through Webhook Verification in Go"
+excerpt: "Exploring how webhook verification works in Go and breaking down the internals of HMAC signatures using only the standard library."
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1779294184/435shots_so_uek1uo.png"
+audio: null
+authorName: "Avisek"
+tags: []
+isProject: false
+published: true
+date: "2026-05-20T16:25:28.798Z"
+updated: "2026-11-20T00:45:19.035Z"
+---
+
+<div class="relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border mb-8">
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1779294184/435shots_so_uek1uo.png" alt="" aria-hidden="true" class="w-full h-full! object-cover" loading="lazy" />
+<div class="w-full h-full backdrop-blur-sm absolute inset-0"></div>
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1779294184/435shots_so_uek1uo.png" alt="Understanding HMAC Internals Through Webhook Verification in Go" fetchpriority="high" class="absolute inset-0 mx-auto h-full! w-auto object-cover" />
+</div>
+
+## Was exploring how webhooks work internally
+
+Go’s standard library is an absolute powerhouse  
+Got to know some important things  
+HMAC: its a way to create or verify a signature
+
+The formula
+
+```bash
+HMAC(K,m) = H((K ⊕ opad) || H((K ⊕ ipad) || m))
+```
+
+ipad and opad are fixed padding constants:
+
+```bash
+ipad = 0x36
+opad = 0x5c
+```
+
+1.  At first, we take the key and then we do an XOR with the `ipad`.
+2.  then we concatenate the new key with the message.
+3.  then we make a hash of the full message.
+4.  after that, we take the original key and we do an XOR with the `opad`.
+5.  we concatenate the new key with the hash we got before.
+6.  then we hash the full combination again.

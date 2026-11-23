@@ -1,14 +1,13 @@
 ---
 import "@/styles/html-post.css";
+import { render } from "astro:content";
 
 import BlogPagination from "@/components/blog/blog-pagination";
 import { BlogTags } from "@/components/blog/blog-tags";
 import { Comments } from "@/components/blog/comments";
 import SocialShare from "@/components/blog/social-share";
-import { Player } from "@/components/player";
 import Base from "@/layouts/Base.astro";
-import { getAdjacentPosts, getPosts } from "@/lib/blogs";
-import { highlightCode } from "@/lib/highlight";
+import { getAdjacentPosts, getPostEntry, getPosts } from "@/lib/blogs";
 import { FALLBACK_OG, SITE } from "@/lib/site";
 
 export async function getStaticPaths() {
@@ -17,7 +16,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { prevPost, nextPost } = getAdjacentPosts(post.slug);
-const html = await highlightCode(post.content);
+const { Content } = await render(getPostEntry(post.slug));
 const image = post.coverImage || FALLBACK_OG;
 const date = post.created_at.toLocaleDateString("en-GB", {
   day: "numeric",
@@ -65,29 +64,8 @@ const date = post.created_at.toLocaleDateString("en-GB", {
             {post.title}
           </h1>
         </header>
-        {
-          post.coverImage && (
-            <div class="mb-8 relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border">
-              <img
-                src={post.coverImage}
-                alt=""
-                aria-hidden="true"
-                class="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div class="w-full h-full backdrop-blur-sm absolute inset-0" />
-              <img
-                src={post.coverImage}
-                alt={post.title}
-                fetchpriority="high"
-                class="absolute inset-0 mx-auto h-full w-auto object-cover"
-              />
-            </div>
-          )
-        }
         <div class="relative wrap-break-words max-w-none text-blog-fg">
-          {post.audio && <Player url={post.audio} className="sticky top-20 mb-4 z-40" client:visible />}
-          <div class="html-post" set:html={html} />
+          <div class="html-post"><Content /></div>
           <BlogTags tags={post.tags} className="my-8" />
         </div>
         {post.excerpt && <SocialShare title={post.title} excerpt={post.excerpt} client:visible />}

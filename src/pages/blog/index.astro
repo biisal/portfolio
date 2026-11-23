@@ -1,12 +1,12 @@
 ---
 import BlogIndex from "@/views/blog-index";
 import Base from "@/layouts/Base.astro";
-import { getPosts, summary } from "@/lib/blogs";
+import { getPosts } from "@/lib/blogs";
 ---
 
 <Base
   title="Blog | Avisek Ray (biisal)"
   description="Thoughts, ideas, and code snippets from the void. Exploring full-stack development, cloud infrastructure, and software engineering."
 >
-  <BlogIndex allPosts={getPosts().map(summary)} />
+  <BlogIndex allPosts={getPosts()} />
 </Base>

@@ -1,0 +1,235 @@
+---
+title: "I fixed the lag in my AI agent!"
+excerpt: "From arrays to strings to segments - how I fixed lag and styling bugs while streaming AI responses in a terminal UI, written in Go."
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1790446718/blog-content/duas9w2t6bk4px15qg17.jpg"
+audio: "https://res.cloudinary.com/dorxspa9g/video/upload/v1786291802/output_f08d7o.wav"
+authorName: "Avisek"
+tags: ["project","go","bai"]
+isProject: true
+published: true
+date: "2026-08-09T16:16:39.366Z"
+updated: "2026-11-20T03:18:23.111Z"
+---
+
+import { Player } from "@/components/player";
+
+<div class="relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border mb-8">
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1790446718/blog-content/duas9w2t6bk4px15qg17.jpg" alt="" aria-hidden="true" class="w-full h-full! object-cover" loading="lazy" />
+<div class="w-full h-full backdrop-blur-sm absolute inset-0"></div>
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1790446718/blog-content/duas9w2t6bk4px15qg17.jpg" alt="I fixed the lag in my AI agent!" fetchpriority="high" class="absolute inset-0 mx-auto h-full! w-auto object-cover" />
+</div>
+
+<Player url="https://res.cloudinary.com/dorxspa9g/video/upload/v1786291802/output_f08d7o.wav" className="sticky top-20 mb-4 z-40" client:visible />
+
+Previously in godo (my old TUI), I was initially using an array to store AI responses and user input.
+
+This worked well until I added streaming for the responses.
+
+My first approach was to modify the array 💀 while streaming.
+
+So the flow was: when a new chunk arrives, check if we're already streaming... if so, modify the last element of the array and render the output by looping through the array.
+
+This worked fine until the model started hallucinating too frequently, and the array became a huge freight train (of re-renders).
+
+To fix this my dumb brain found a new approach 😊  
+Instead of keeping everything in array keep all in a big string.  
+![meme-laugh](https://res.cloudinary.com/dorxspa9g/image/upload/v1779954899/blog-content/qs9wpzfduys7iqwnqqeg.png)
+
+This is much faster than the big array approach because I was using a StringBuilder this time.
+
+Strings are immutable, which means you can't modify a string in place. When you do:  
+`str += newContent`  
+this won't modify str...  
+instead, it'll create a bunch of copies, which is inefficient and creates extra headache for the garbage collector.
+
+But StringBuilder is a mutable object which handles string concatenation efficiently.
+
+It handles an internal buffer and appends the new value to it.
+
+It was better as long as you're handling simple chat.
+
+But when I implemented thinking and tool calling, it got messier, buggy and inaccurate across multiple events.
+
+Now the TUI isn't that laggy anymore, but it's pretty buggy 😂. Even though you won't normally notice it, it's too much of a headache to handle.
+
+Also, for each text segment we need to apply different styles.
+
+For example, if the agent is thinking, it should be in a muted color; if it's performing a function call, that should be in a different color.
+
+If we write the output directly to the builder, we end up getting text like:  
+`<SomeColorStyle>message-chunk<SomeColorStyle>`
+
+This makes the string unnecessarily bigger.  
+What we need instead is:  
+`<ThinkingColorStyle>{the whole thinking block ...}<ThinkingColorStyle>`
+
+To handle this, I added a StringBuilder for the current thinking content, plus a bunch of variables to handle events like: when the agent started thinking, when it ended, when it's responding, when it's calling a tool, when the tool call result arrives... and more shit.
+
+But this time, I've applied a new approach in my new AI agent TUI (bai)  
+the simple approach that fixed the old issues I was having in godo.
+
+<figure class="my-10 font-mono text-[0.9rem] leading-normal text-(--post-text) border border-(--post-muted) p-5" aria-label="Message blocks: processed prefix content, then the active mode block"><div class="grid min-h-44 place-items-center border border-(--post-muted) px-4">prefix content that was already processed</div><div class="px-1 py-2.5">&lt;ActiveModeColor&gt;</div><div class="min-h-11 border border-(--post-muted)"></div><div class="px-1 py-2.5">&lt;ActiveModeColor&gt;</div></figure>
+
+We should change what the last thing we were doing (But not like the first one).  
+In this approach, I combined both the string and the array.
+
+Instead of a bunch of variables, I kept one field that holds the active mode
+
+> If you dont understand Golang, don't worry stay with me!
+
+```go
+type Segment struct {
+	Kind broker.EventType
+	buf  strings.Builder
+}
+
+type Content struct {
+	active *Segment
+	 ...
+}
+```
+
+Now we don't need to use multiple varibles.
+
+When the agent fires a "thinking" event, we pass the event type (which is thinking in this example) and the text to a function/method.
+
+In the function, we check if the event type is the same as the old one. If it's the same, that means the model is still thinking, just like before, so we keep the text in active's buf variable, which is a StringBuilder.
+
+```go
+func (c *Content) AddSegment(kind broker.EventType, text string) {
+	...
+	c.active.buf.WriteString(text)
+}
+```
+
+If the event type is not the same as the old one, that means this is a totally new event, it could be thinking → normal responding, or a user message itself.
+
+For that, we have to change the active event type to the given (new) event type, and reset the buf.
+
+```go
+func (c *Content) AddSegment(kind broker.EventType, text string) {
+	if c.active == nil || c.active.Kind != kind {
+		...
+		c.active = &Segment{Kind: kind, buf: strings.Builder{}}
+	}
+	c.active.buf.WriteString(text)
+}
+```
+
+If the event type is different, that means the old event has already been handled/completed.
+
+So before we reset, we need to store the old data in a variable:
+
+```go
+type Content struct {
+	active *Segment
+	rendered strings.Builder
+	...
+}
+```
+
+Before resetting, just keep the old active buf content by prefixing it (appending it to rendered):
+
+```go
+func (c *Content) flushActive() {
+	if c.active != nil {
+		c.rendered.WriteString(renderSegment(c.active.Kind, c.active, c.width))
+		c.blocks = append(c.blocks, c.active)
+	}
+
+	c.rendered.WriteString("\n\n")
+	c.active = nil
+}
+```
+
+<figure class="my-10 font-mono text-[0.9rem] leading-normal text-(--post-text) flex flex-col sm:grid sm:grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)] sm:grid-rows-[auto_2.75rem_auto_2.75rem_auto] sm:items-center" aria-label="Flow: model started thinking, keep storing in the active builder, model changed from thinking to tool calling, add active content to the prefix builder"><div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-1 sm:row-start-1">model started thinking</div><span class="grid place-items-center text-[1.4rem] leading-none text-(--post-muted) h-10 sm:col-start-1 sm:row-start-2 sm:h-auto">↓</span><div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-1 sm:row-start-3">keep storing in active builder</div><span class="grid place-items-center text-[1.4rem] leading-none text-(--post-muted) h-10 sm:col-start-2 sm:row-start-3 sm:h-auto"><span class="sm:hidden">↓</span><span class="hidden sm:inline">→</span></span><div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-3 sm:row-start-3">model changed from thinking to tool calling</div><span class="grid place-items-center text-[1.4rem] leading-none text-(--post-muted) h-10 sm:col-start-3 sm:row-start-4 sm:h-auto">↓</span><div class="border border-(--post-muted) px-4 py-3.5 text-center sm:col-start-3 sm:row-start-5">add active content to prefix builder</div></figure>
+
+Now styling is easy peasy:
+
+```go
+func renderSegment(kind broker.EventType, seg *Segment, width int) string {
+	var style lipgloss.Style
+	switch kind {
+	case broker.EventAgentThinking:
+		style = StyleThinking
+	case broker.EventAgentError:
+		style = StyleError
+	case broker.EventAgentResponse:
+		style = StyleResponse
+	case broker.EventUserMessage:
+		style = StyleUserInput
+	}
+	return style.Width(width).Render(seg.buf.String())
+}
+
+```
+
+Styling wraps the whole block instead of wrapping each chunk.  
+Now, while rendering the content, we just add the prefix and the active buf, and that's it 👀
+
+```go
+func (c *Content) Render() string {
+	var out strings.Builder
+	out.WriteString(c.rendered.String())
+	if c.active != nil {
+		out.WriteString(renderSegment(c.active.Kind, c.active, c.width))
+	}
+	return out.String()
+}
+```
+
+You might notice that we're passing the width of the terminal into renderSegment, and later we're storing the styled output in the rendered builder too. But the terminal width can change...
+
+the user might resize their terminal  
+or maybe they split their terminal to use Claude Code. I don't want my TUI to break because of that.
+
+That's why I'm storing the active segment in a slice before flushing  
+you can think slice in go as a dynamic array
+
+```go
+func (c *Content) flushActive() {
+	if c.active != nil {
+		c.rendered.WriteString(renderSegment(c.active.Kind, c.active, c.width))
+		c.blocks = append(c.blocks, c.active) <-
+	}
+
+	c.rendered.WriteString("\n\n")
+	c.active = nil
+}
+
+```
+
+I'm using the slice to store all the completed segments
+
+```go
+type Content struct {
+	active   *Segment
+	rendered strings.Builder
+	blocks   []*Segment // [thinking-content, normal-response, user-input]
+	width    int
+	height   int
+}
+```
+
+And when the user resizes their terminal, we loop through the blocks, apply the style (with the current width), and just replace the rendered builder's content 😎
+
+```go
+func (c *Content) ReRender() {
+	out := strings.Builder{}
+	for _, block := range c.blocks {
+		out.WriteString(renderSegment(block.Kind, block, c.width))
+		out.WriteString("\n\n")
+	}
+	c.rendered.Reset()
+	c.rendered.WriteString(out.String())
+}
+```
+
+The code I showed here is just a starting point, and it'll change over time.  
+If you have any better approaches, comment them down 🙂, or send a PR 😁 [github.com/biisal/bai](https://github.com/biisal/bai)
+
+Thanks for reading... ❤️
+
+> Bad programmers worry about the code, Good programmers worry about data structures and their relationships.
+> 
+> \-- Linus Torvalds

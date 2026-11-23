@@ -1,0 +1,192 @@
+---
+title: "Understanding Abstract Syntax Trees with Go"
+excerpt: "From binary tree fundamentals to how compilers use ASTs, and how to traverse them with Go's ast package."
+coverImage: null
+audio: null
+authorName: "Avisek Ray"
+tags: ["go", "ast", "dsa"]
+isProject: false
+published: true
+date: "2026-11-23T00:00:00.000Z"
+---
+
+import "@/styles/blogs/learning-ast-and-binary-trees-in-go/ast-cover.css";
+import "@/styles/blogs/learning-ast-and-binary-trees-in-go/ast-pipeline.css";
+
+<div class="ast-cover" role="img" aria-label="Animated binary tree for the expression a + b * c, lit up in pre-order">
+  <svg viewBox="0 0 800 400" aria-hidden="true">
+    <defs>
+    <linearGradient id="ast-flow-1" gradientUnits="userSpaceOnUse" x1="368.0" y1="114.0" x2="339.2" y2="135.6">
+      <stop offset="0" style={{stopColor: "var(--accent)", stopOpacity: 0}} />
+      <stop offset="1" style={{stopColor: "var(--accent)", stopOpacity: 1}} />
+    </linearGradient>
+    <linearGradient id="ast-flow-2" gradientUnits="userSpaceOnUse" x1="432.0" y1="114.0" x2="460.8" y2="135.6">
+      <stop offset="0" style={{stopColor: "var(--accent)", stopOpacity: 0}} />
+      <stop offset="1" style={{stopColor: "var(--accent)", stopOpacity: 1}} />
+    </linearGradient>
+    <linearGradient id="ast-flow-3" gradientUnits="userSpaceOnUse" x1="534.7" y1="241.0" x2="522.9" y2="255.4">
+      <stop offset="0" style={{stopColor: "var(--accent)", stopOpacity: 0}} />
+      <stop offset="1" style={{stopColor: "var(--accent)", stopOpacity: 1}} />
+    </linearGradient>
+    <linearGradient id="ast-flow-4" gradientUnits="userSpaceOnUse" x1="585.3" y1="241.0" x2="597.1" y2="255.4">
+      <stop offset="0" style={{stopColor: "var(--accent)", stopOpacity: 0}} />
+      <stop offset="1" style={{stopColor: "var(--accent)", stopOpacity: 1}} />
+    </linearGradient>
+    </defs>
+    <line class="edge" style={{"--i": 1}} pathLength="1" x1="368.0" y1="114.0" x2="272.0" y2="186.0" />
+    <line class="edge" style={{"--i": 2}} pathLength="1" x1="432.0" y1="114.0" x2="528.0" y2="186.0" />
+    <line class="edge" style={{"--i": 3}} pathLength="1" x1="534.7" y1="241.0" x2="495.3" y2="289.0" />
+    <line class="edge" style={{"--i": 4}} pathLength="1" x1="585.3" y1="241.0" x2="624.7" y2="289.0" />
+    <line class="flow" style={{"--i": 1, "--dx": "-67.2px", "--dy": "50.4px"}} stroke="url(#ast-flow-1)" x1="368.0" y1="114.0" x2="339.2" y2="135.6" />
+    <line class="flow" style={{"--i": 2, "--dx": "67.2px", "--dy": "50.4px"}} stroke="url(#ast-flow-2)" x1="432.0" y1="114.0" x2="460.8" y2="135.6" />
+    <line class="flow" style={{"--i": 3, "--dx": "-27.5px", "--dy": "33.7px"}} stroke="url(#ast-flow-3)" x1="534.7" y1="241.0" x2="522.9" y2="255.4" />
+    <line class="flow" style={{"--i": 4, "--dx": "27.5px", "--dy": "33.7px"}} stroke="url(#ast-flow-4)" x1="585.3" y1="241.0" x2="597.1" y2="255.4" />
+    <g class="node" style={{"--i": 0}}><circle cx="400" cy="90" r="34" /><text x="400" y="90">{"+"}</text></g>
+    <g class="node" style={{"--i": 1}}><circle cx="240" cy="210" r="34" /><text x="240" y="210">{"a"}</text></g>
+    <g class="node" style={{"--i": 2}}><circle cx="560" cy="210" r="34" /><text x="560" y="210">{"*"}</text></g>
+    <g class="node" style={{"--i": 3}}><circle cx="470" cy="320" r="34" /><text x="470" y="320">{"b"}</text></g>
+    <g class="node" style={{"--i": 4}}><circle cx="650" cy="320" r="34" /><text x="650" y="320">{"c"}</text></g>
+  </svg>
+</div>
+
+I was exploring the source code of [SQLc](https://github.com/sqlc-dev/sqlc), which used to make Go code from sql queries.  
+SQLc generates code using AST (Abstract Syntax Trees) so i started learing about it.
+
+But while learning about AST, I started revising Binary Trees again.
+
+In a generic tree, a node can have multiple children.
+
+But in a binary tree, every node can have at most two children:
+
+- Left child
+- Right child
+
+A node can have zero, one, or two children.
+
+Nodes also have relationships:
+
+- Parent: A node directly above another node.
+- Child: A node directly below its parent.
+- Siblings: Two nodes that share the same parent.
+
+For example:
+
+```text
+       A
+      ↙ ↘
+    B     C
+```
+
+Here, A is the parent, while B and C are its children and siblings to each other.
+
+There's also something called a subtree.
+
+A subtree is a tree formed by taking a node and all its descendants.
+
+For example, B and everything below it form a subtree of A.
+
+One interesting thing: ASTs use tree structures to represent source code.
+
+An expression like a + b \* c can be represented as a tree where operators and operands become nodes.
+
+Understanding trees makes it much easier to understand how compilers and tools like SQL parsers work.
+
+Back to the basics 🙂
+
+With the tree basics fresh again, I went back to my original question: what exactly is an AST?
+
+So I read about AST (Abstract Syntax Tree).
+
+AST is an intermediate representation of source code in a tree structure.
+
+Simply, compilers don't directly understand source code as plain text. They parse the code and convert its structure into an AST, making it easier to analyze, understand relationships between expressions, and perform further compilation steps.
+
+A compiler has two main parts:
+
+Frontend: Reads and understands the source code.<br/>
+Backend: Takes the representation produced by the frontend and generates machine code.
+
+The frontend reads the raw code and creates a tree representation (AST) so the next stages of the compiler can work with it.
+
+Means:  
+Your code → Compiler frontend reads it → Creates an AST → Backend processes it → Machine code.
+
+<div class="ast-pipeline" role="img" aria-label="Your code, compiler frontend, AST, backend, machine code">
+  <div class="step">Your code</div>
+  <div class="arrow"></div>
+  <div class="step">Compiler frontend reads it</div>
+  <div class="arrow"></div>
+  <div class="step accent">Creates an AST</div>
+  <div class="arrow"></div>
+  <div class="step">Backend processes it</div>
+  <div class="arrow"></div>
+  <div class="step">Machine code</div>
+</div>
+
+There are many tools built with this concept that we use eveyday, not just language compilers. For example, Prettier, Oxlint, and Babel.    
+If you've worked with the JS ecosystem, especially React, you might have come across Babel.
+
+What does Babel do? It takes the latest JavaScript syntax you write and transforms it into code that is compatible with older browsers.
+
+But why does an AST use a tree structure and not something else? 🤔
+
+Because nesting and operator precedence become explicit in a tree structure.
+
+Go also provides standard libraries (like go/ast, go/perser, go/token almost everything..) to experiment with and build tools around ASTs.
+
+One thing I've realized is how important these things are in our daily development, yet we're often unaware of how they work behind the scenes.
+
+Hats off to the programmers who built these things without Claude. 😂
+
+Ok, enough theory. Let's see how this works in Go.
+
+I've been reading Go AST docs to play around with ASTs in Go.
+
+In a binary tree, just like siblings, we have ancestors too.
+
+Simply put, a node's ancestors are its parent, grandparent, great-grandparent, and so on.
+
+For example, if A is the parent of B and B is the parent of C, then the ancestors of C are B and A.
+
+Ancestor: Parent, grandparent, great-grandparent, and so on.
+
+Go's ast package provides a very important method called Inspect.
+
+We can use it to traverse the AST of the source code. It traverses in Depth-First Order.
+
+```go
+ast.Inspect(node, func(n ast.Node) bool {...})
+```
+
+- The first argument is the starting node from where we start traversing.
+- The second argument is a callback function that runs while visiting all the nodes.
+
+ast.Node is an interface provided by Go. So, the node can be nil too.
+
+After visiting all the children, it calls the callback function with nil (`f(nil)`).
+
+That's why, in the callback, we need to first check if the node is nil, otherwise it can trigger a panic.
+
+But how do we get the starting node? 🤔
+
+Go provides token package,  
+Using `token.NewFileSet()`, we can create an empty file set.
+
+Then, using `parser.ParseFile(fset, "demo.go", src, 0)`, we can parse our source code. It returns the node that we can use to inspect the whole AST.
+
+We may not need the Inspect method in every case because, since Go 1.23, Go provides Preorder and PreorderStack, which are more convenient to use.
+
+Preorder returns an iterator that takes a root node as an argument.
+
+This is useful because:
+
+- We don't need to check for nil.
+- We can instantly break if we find our target node.
+
+But there's one limitation: you can't skip any subtree.
+
+Getting the node isn't enough every time. We need the full context of a node, like its parent, ancestors, and so on.
+
+That's where PreorderStack is useful.
+
+It provides the full context of the node. It also works like the Inspect method, where you can use a callback function and return a boolean to skip a subtree.

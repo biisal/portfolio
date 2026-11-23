@@ -1,0 +1,547 @@
+---
+title: "I Learned MCP From Anthropic's Course in 2 Days"
+excerpt: "I Learned MCP in weekend from Anthropic's Course. MCP client, server, tools, prompts, resources all."
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1780770428/blog-content/s328j53sksiw5nlzghdh.png"
+audio: "https://res.cloudinary.com/dorxspa9g/video/upload/v1782151448/mcp_pydo12.wav"
+authorName: "Avisek"
+tags: ["MCP","AI","Claude","Antrophic","Model Context Protocol","OpenAI","Sarvam AI"]
+isProject: false
+published: true
+date: "2026-06-06T11:36:56.029Z"
+updated: "2026-11-19T19:47:54.791Z"
+---
+
+import { Player } from "@/components/player";
+
+<div class="relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border mb-8">
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1780770428/blog-content/s328j53sksiw5nlzghdh.png" alt="" aria-hidden="true" class="w-full h-full! object-cover" loading="lazy" />
+<div class="w-full h-full backdrop-blur-sm absolute inset-0"></div>
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1780770428/blog-content/s328j53sksiw5nlzghdh.png" alt="I Learned MCP From Anthropic's Course in 2 Days" fetchpriority="high" class="absolute inset-0 mx-auto h-full! w-auto object-cover" />
+</div>
+
+<Player url="https://res.cloudinary.com/dorxspa9g/video/upload/v1782151448/mcp_pydo12.wav" className="sticky top-20 mb-4 z-40" client:visible />
+
+## I started a course from antrophic about MCP
+
+In this blog im going to tell you what i have learned from the course  
+so if you are thiking to join the course atleast you get a overview of it
+
+Okay, to continue with the course you will need to know besics of python.  
+The course suggest to have `uv` installed in your system (this is most common nowdays for python devs) but there is detailed instruction for non `uv` users
+
+If don't you have installed uv you can simply instll it from : [docs.astral.sh](https://docs.astral.sh/uv/)
+
+At the point when i started the course i had very less knowladge about MCP (Model Context Protocol)
+
+---
+
+## What is MCP
+
+MCP is a communication layer. Before understanding MCP, we need to understand what a `tool` is in the AI world. Tools are nothing but some functions that we execute when AI suggests them. For example, imagine we have a function called `get_current_date`.
+
+```python
+def get_current_date():
+    return datetime.datetime.now().strftime("%Y-%m-%d")	
+```
+
+when user asks what is the time, instead of guessing the model will respond by asking to run the tool `get_current_date`  
+and our application will execute it and send the result to the model and the model will tell the user what is the current date
+
+This is what **tool calling**
+
+#### Okay now get back in MCP
+
+![mcp overview](https://res.cloudinary.com/dorxspa9g/image/upload/v1780742483/blog-content/m0bl2kzojixtrrtm2yk1.png)
+
+you can see in this diagram that the first box contains our server where the model is running as a chatbot or any ai assistant along with a MCP client  
+MCP client is used to send standardized request. when the model goes beyond its knowledge context or needs to perform an action, the client makes a standardized request
+
+You can than see the arrows pointing from MCP client to the MCP servers
+
+---
+
+## What is an mcp server
+
+An MCP server is a dedicated service that exposes tools, data, and instructions to the AI model in a standardized way. It acts as the bridge between your AI application and the outside world.
+
+-   Resources : Data that the model can read (like a text file, database data)
+-   tools: Functions the model can trigger
+-   propmts : Pre defined instructions or templates
+
+At the end, we have outside services  
+These are the external resource that ai wants to access like any external website or drive data
+
+---
+
+## What was the problem before MCP?
+
+For example if you ask the model to get your Github data the model will need some tools to execute. User might ask "get the URLs of all my repositories". the model will need to run tools to access githib api.
+
+Github with massive functionality its very hard to make each tool for each app. Without mcp you would have to create huge number of tools to handle all github features
+
+![problem-without-mcp](https://res.cloudinary.com/dorxspa9g/image/upload/v1780742533/blog-content/nklykxdazvhjnzqphlyl.png)
+
+---
+
+## How MCP solved it ?
+
+MCP shifts these tools from our server to a dedicated MCP server.  
+A dedicated Github MCP server will handle all tool management instead of our server
+
+Instead of creating each tool from scratch, our application just connects to that server.
+
+![benifit of using mcp](https://res.cloudinary.com/dorxspa9g/image/upload/v1780742583/blog-content/ueffsz1ksu8ixqtyr9up.png)
+
+---
+
+### Is Tool use/calling and MCP the same?
+
+No, tool use is how the model calls the tools, but mcp is what provides you the schemas and functions of various tools that are already defined.
+
+### Do you need to make all MCP servers?
+
+No, most of the time the service provider will provide an MCP server for your application. But you can make your own MCP server.  
+The same apllies for MCP client.
+
+---
+
+## What is an MCP Client
+
+The MCP client is used to communicate to the MCP server and your application server does not connect to the MCP server directly  
+MCP client is the bridge that enables communication from application server to MCP server  
+MCP client is an access point of various tools implemented by the MCP server
+
+MCP is transport agnostic, which means the client can connect to the server in various communication protocols. If both client and server in same physical machine, it can use `standard io` . It can also use http or websoket etc.
+
+They communicate each other exchanging **messages**
+
+![mcp-communication-flow](https://res.cloudinary.com/dorxspa9g/image/upload/v1780742648/blog-content/il6t9ohvjr6adnhf3d0z.png)
+
+All allowed messages (ListToolRequest, LisToolResponse etc) are defined in MCP spec.
+
+There are more messages like `CallToolRequest`, `CallToolResponse`.
+
+![mcp-calltoolrequest-calltoolresponse](https://res.cloudinary.com/dorxspa9g/image/upload/v1780742703/blog-content/vkth93qibfthkst386iu.png)
+
+---
+
+## How does mcp work
+
+![how-mcp-works](https://res.cloudinary.com/dorxspa9g/image/upload/v1780742770/blog-content/e1emk5k7hc9dwu4z0qkv.png)
+
+When a user sends a message, instead of forwarding it directly to the model, we call the MCP client, which in turn calls the MCP server to retrieve its list of available tools.
+
+Once we have the tools, we send the user's message along with the tool list to the model. If the request requires a tool call, the model responds with a tool call response.
+
+The MCP client then sends a `CallToolRequest` to the MCP server, which executes the tool and returns the result to the MCP client. Our server receives this result and forwards it back to the model.
+
+The model processes the result and returns a summarized response, which we then send back to the user.
+
+---
+
+## Project Setup
+
+If you follow the course they have provided some boilerplate code which uses Anthropic API key 🙄
+
+So I changed whole codebase to use OpenAI sdk instead of Anthropic using **claude**
+
+I will be using [sarvam ai api](https://www.sarvam.ai/) api key for the project.  
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1780743056/Pasted_image_20260602092231_u29gb8.png" alt="" class="rounded-md" />
+
+For most projects you will implement only one thing, either an MCP client or an MCP server.
+
+but, Here we are going to implement a MCP client and a custom MCP server
+
+![mcp-client-server](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743171/blog-content/uqspytfmwkqgcgrj8ng3.png)
+
+---
+
+## Project goal
+
+we will be building a chatbot which can read and update documents
+
+You can clone the boilerplate repository diretly from here: [github.com/biisal/mcp-course](https://github.com/biisal/mcp-course)
+
+Atfirst read the [README.md](dummy-url) file to setup the project
+
+![mcp-cli-test](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743206/blog-content/xdct3o2bemkcpnkm1qdy.png)
+
+You can see the chatbot is working but it does not have functionality to read or update documents  
+In this project we are using official MCP sdk for python
+
+```python
+from mcp.server.fastmcp import FastMCP
+```
+
+Look at `mcp_server.py` file
+
+```python
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("DocumentMCP", log_level="ERROR")
+
+
+docs = {
+    "deposition.md": "This deposition covers the testimony of Angela Smith, P.E.",
+    "report.pdf": "The report details the state of a 20m condenser tower.",
+    "financials.docx": "These financials outline the project's budget and expenditures.",
+    "outlook.pdf": "This document presents the projected future performance of the system.",
+    "plan.md": "The plan outlines the steps for the project's implementation.",
+    "spec.txt": "These specifications define the technical requirements for the equipment.",
+}
+
+# TODO: Write a tool to read a doc
+# TODO: Write a tool to edit a doc
+# TODO: Write a resource to return all doc id's
+# TODO: Write a resource to return the contents of a particular doc
+# TODO: Write a prompt to rewrite a doc in markdown format
+# TODO: Write a prompt to summarize a doc
+
+
+if __name__ == "__main__":
+    mcp.run(transport="stdio")
+
+```
+
+In this file we will write some tools (functions) for our MCP server
+
+#### I wrote some tools you can copy
+
+For reading:
+
+```python
+from pydantic import Field # top of your file
+# TODO: Write a tool to read a doc
+@mcp.tool(name="read_doc", description="Read the content of a file")
+def read_doc(doc_id : str =  Field(description="the id of the file to read")):
+    doc = docs.get(doc_id, None)
+    if doc is None:
+        raise ValueError(f"Document {doc_id} not found")
+    else:
+        return doc 
+```
+
+For editing documents:
+
+```python
+# TODO: Write a tool to edit a doc
+@mcp.tool(name="edit_doc", description="Edit the content of a file")
+def edit_doc(
+    doc_id: str = Field(description="the id of the file to edit"),
+    old_string: str = Field(description="the new content of the file"),
+    new_string: str = Field(description="the new content of the file"),
+):
+    doc = docs.get(doc_id, None)
+    if doc is None:
+        raise ValueError(f"Document {doc_id} not found")
+    else:
+        docs[doc_id] = doc.replace(old_string, new_string)
+        return doc
+```
+
+Now we have 2 tools. What if we could test them 👀  
+Yes, we can test our tools in our browser
+
+The MCP SDK for Python provides web based debugger, which we can use to test the tools
+
+To test this you have to active your python environment.You can see full details in README.md file
+
+```markdown
+1. Create and activate a virtual environment:
+
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+After that, run `mcp dev mcp_server.py`
+
+![mcp-cli-start](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743267/blog-content/j0qzf4zz3eiwizsu2uzu.png)
+
+Which will run the debugger
+
+![mcp-debugger](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743352/blog-content/uczfbv3c62qviaunkgyd.png)
+
+If you Click the Connect button you will see all of your resourses tools etc.
+
+![mcp-debugger-resources-tools](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743398/blog-content/lk2sjk0dbo9nojfzad7n.png)
+
+We can navigate to the tools section, which will show all the tools we have built and we can also test them there
+
+![mcp-debugger-tools](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743442/blog-content/g3ukc2ao8uo1kb1kkahb.png)
+
+This is very helpful while you are working with MCP
+
+---
+
+## Implementing MCP client
+
+Before implementing the client, lets look at the main function in `main.py` file
+
+```python
+async def main():
+    openai_service = OpenAIService(model=openai_model)
+
+    server_scripts = sys.argv[1:]
+    clients = {}
+
+    command, args = (
+        ("uv", ["run", "mcp_server.py"])
+        if os.getenv("USE_UV", "0") == "1"
+        else ("python", ["mcp_server.py"])
+    )
+
+    async with AsyncExitStack() as stack:
+        doc_client = await stack.enter_async_context(
+            MCPClient(command=command, args=args)
+        )
+        clients["doc_client"] = doc_client
+
+        for i, server_script in enumerate(server_scripts):
+            client_id = f"client_{i}_{server_script}"
+            client = await stack.enter_async_context(
+                MCPClient(command="uv", args=["run", server_script])
+            )
+            clients[client_id] = client
+
+        chat = CliChat(
+            doc_client=doc_client,
+            clients=clients,
+            claude_service=openai_service,
+        )
+
+        cli = CliApp(chat)
+        await cli.initialize()
+        await cli.run()
+```
+
+We don't know how many clients have to be created.
+
+```python
+	for i, server_script in enumerate(server_scripts):
+		client_id = f"client_{i}_{server_script}"
+		client = await stack.enter_async_context(
+			MCPClient(command="uv", args=["run", server_script])
+		)
+		clients[client_id] = client
+```
+
+That's why `AsyncExitStack` is used to clean up on exit of the `main` function  
+After that, we are initializing `CliChat` with those clients
+
+`CliChat` has bunch of methods you can check in `core/cli_chat.py`
+
+Our MCP server has methods called `list_tools` and `call_tool` but our MCP client is still not aware of them, so we have to implement them.
+
+in `mcp_client.py` file check `list_tools, call_tool, list_propmts` functions and replace with:
+
+```python
+    async def list_tools(self) -> list[types.Tool]:
+        result = await self.session().list_tools()
+        return result.tools
+
+    async def call_tool(
+        self, tool_name: str, tool_input: dict[str, Any]
+    ) -> types.CallToolResult | None:
+        return await self.session().call_tool(tool_name, tool_input)
+
+    async def list_prompts(self) -> list[types.Prompt]:
+        result = await self.session().list_prompts()
+        return result.prompts
+```
+
+Now we can get a list of tools, call any tool, and a list of prompts
+
+To test it replace the `main` function with this
+
+```python
+async def main():
+    async with MCPClient(
+        # If using Python without UV, 
+        # update command to 'python' and remove "run" from args.
+        command="uv",
+        args=["run", "mcp_server.py"],
+    ) as _client:
+        print(await _client.list_tools())
+        pass
+
+```
+
+Now if you run `uv run mcp_client.py` or `python mcp_client.py` (based on ur setup)  
+You should see a list of tools as output  
+![mcp-tools-test](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743505/blog-content/pudr7bukbliacople0xt.png)
+
+Now we can test our chat CLI
+
+![mcp-cli-app-tools](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743558/blog-content/bpuuldbpfrcbl2opvdj2.png)
+
+It's working properly 👀
+
+---
+
+### MCP Resource
+
+Now we are going to add an autocomplete feature in our CLI  
+on typing `@`, we will get file name suggetions
+
+To build this we will need to use MCP resource.
+
+![mcp-resources-flow](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743594/blog-content/qyj1gymnbmh6c93czjs5.png)
+
+To create a resource we will need the `URI` and `mime_type` of the resource
+
+-   URI is just like a typical HTTP URL
+-   We use `mime_type` to hint the client about the data type we will return. This will help the client build applications with less stress
+
+There are 2 types of resources
+
+-   Direct resources:
+    -   Direct resources are static, because the URI doesn't changes. Ex : `docs://documents`
+-   Templated resources:
+    -   Templated resources are dynamic URLs that include parameters in URI. The Python SDK automatically parses these parameters and passes them as keyword arguments to your function. e.g. `docs://documents/{doc_id}`  
+        In `mcp_server.py`, add these resources
+
+```python
+# TODO: Write a resource to return all doc id's
+@mcp.resource(name="list_docs", uri="docs://documents", mime_type="application/json")
+def list_docs() -> list[str]:
+    return list(docs.keys())
+
+
+# TODO: Write a resource to return the contents of a particular doc
+@mcp.resource(name="read_doc", uri="docs://documents/{doc_id}", mime_type="text/plain")
+def fetch_doc(doc_id: str) -> str:
+    doc = docs.get(doc_id, None)
+    if doc is None:
+        raise ValueError(f"Document {doc_id} not found")
+    return doc
+```
+
+Now we can test it in our browser by running `mcp dev mcp_server.py`
+
+![mcp-debugger-resources](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743630/blog-content/rpbruxlsbxw1fojolfay.png)
+
+We can access our MCP resources in resources tab
+
+Now we have to complete the `read_resources` function present in `mcp_client.py`
+
+```python
+    async def read_resource(self, uri: str) -> Any:
+        # TODO: Read a resource, parse the contents and return it
+        result = await self.session().read_resource(AnyUrl(uri))
+        if not result.contents or len(result.contents) == 0:
+            return "No resource found"
+
+        resource = result.contents[0]
+
+        if isinstance(resource, types.TextResourceContents):
+            if resource.mimeType == "application/json":
+                return json.loads(resource.text)
+            return resource.text
+```
+
+Also don't forgot to add the new imports
+
+```python
+import json 
+from pydantic import AnyUrl
+```
+
+That's it.. run `main.py` and type `@`  
+You will see the completion is working
+
+![mcp-autocompletion-cli](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743688/blog-content/ngxcaqk0u8v63vx9zapv.png)  
+![mcp-resources-output-test](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743738/blog-content/r0m70pvtoo8almxs9ijz.png)
+
+The codebase using `prompt_toolkit` for cli  
+you can check whole completion login in `core/cli` file
+
+---
+
+### Prompt in MCP
+
+Prompts provide reusable instructions.  
+An MCP server lets you define high-quality prompts so users don't have to write them from scratch every time.
+
+For a specific application, some prompts are common for all users. Instead of having each user create the prompts repeatedly you can define them once in MCP server and make them available to everyone.
+
+In our MCP server it is easy to define prompts like tools and resources.
+
+Now we are going to build a feature where, when a user types `/`, we will show a completion for `/format_doc`, and then on pressing space, we will show a list of docs.
+
+When the user sends this, we will use our high-quality prompt to format the docs in Markdown syntax using the model.
+
+You cad add prompt like this:
+
+```python
+# TODO: Write a prompt to rewrite a doc in markdown format
+@mcp.prompt(name="format_doc", description="propmt to Rewrite a doc in markdown format")
+def format_doc_prompt(
+    doc_id: str = Field(description="the id of the doc to format"),
+) -> list[base.Message]:
+    prompt = f"""
+Your goal is to reformat a document to be written with markdown syntax.
+
+The id of the document you need to reformat is:
+<document_id>
+{doc_id}
+</document_id>
+
+Add in headers, bullet points, tables, etc as necessary. Feel free to add in extra formatting that improves readability.
+
+Use the 'edit_document' tool to edit the document. After the document has been reformatted, provide a short summary of the changes you made.
+"""
+    return [base.Message(content=prompt)]
+```
+
+Now we can test it in our MCP debugger by running `mcp dev mcp_server.py`  
+![mcp-prompts](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743829/blog-content/xxqlacu3cxhziqwupddr.png)
+
+Add prompts in `mcp_client.py` file
+
+```python
+    async def list_prompts(self) -> list[types.Prompt]:
+        # TODO: Return a list of prompts defined by the MCP server
+        result = await self.session().list_prompts()
+        return result.prompts
+
+    async def get_prompt(self, prompt_name, args: dict[str, str]):
+        # TODO: Get a particular prompt defined by the MCP server
+        return await self.session().get_prompt(prompt_name, args)
+
+```
+
+Run `uv run main.py` to test it.  
+After running `uv run main.py` type `/f` you will see a compilation for `/format_doc`
+
+Press Tab to select it, and then press Space. You will see a list of our docs.
+
+![mcp-cli](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743882/blog-content/xeqzav4qhhcqwqp2ts2h.png)
+
+![mcp-cli](https://res.cloudinary.com/dorxspa9g/image/upload/v1780743896/blog-content/bl1kl4a2vccqs24rcg2x.png)
+
+Our model successfully formated the docs to markdown syntax
+
+Before finishing lets recap what we have learned  
+So, we have 3 MCP primitives
+
+-   tools:
+    -   tools are model controlled. The model chooses when to call these tools. this tools are the core or additional functionality of the model
+    -   example : search on web, read a file
+-   prompts:
+    -   prompts are user-controlled. user decides when to use these. used to help user avoid rewriting common instructions
+    -   example: 'review this code', "summarize this blog"
+-   resources:
+    -   resources are application controlled. expose data that model can read
+    -   example: documentation file, Configuration files, Knowledge base articles
+
+---
+
+## How was the course? : review
+
+I'm rating it 10/10 because the code helped me understand MCP beautifully, free of cost. Even though the code was Claude specific, I have already changed it and you can find the code here. [biisal/mcp-course](https://github.com/biisal/mcp-course)
+
+## Should you check it out?
+
+If you are a beginner on this topic, you can check it out. If you have read my full blog, you will understand the course much faster and get a certificate.
+
+Thanks for reading... ❤️

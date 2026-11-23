@@ -1,11 +1,11 @@
 ---
 import Home from "@/views/home";
 import Base from "@/layouts/Base.astro";
-import { getPosts, summary } from "@/lib/blogs";
+import { getPosts } from "@/lib/blogs";
 import { NAME, SITE, SITE_DESC } from "@/lib/site";
 
-const latestPosts = getPosts("all", 4).map(summary);
-const projects = getPosts("project", 4).map(summary);
+const latestPosts = getPosts("all", 4);
+const projects = getPosts("project", 4);
 ---
 
 <Base

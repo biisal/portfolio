@@ -1,0 +1,290 @@
+---
+title: "The only shell (terminal) config you need"
+excerpt: "A minimal and powerful Zsh setup with fuzzy search, autosuggestions, smart navigation, and a clean terminal workflow for Linux and macOS"
+coverImage: "https://res.cloudinary.com/dorxspa9g/image/upload/v1779956535/shell-blog-comp_pshwy4.png"
+audio: null
+authorName: "Avisek"
+tags: []
+isProject: false
+published: true
+date: "2026-05-27T18:19:20.314Z"
+updated: "2026-11-20T02:13:03.862Z"
+---
+
+<div class="relative w-full aspect-2/1 rounded-lg overflow-hidden border border-blog-inactive-border mb-8">
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1779956535/shell-blog-comp_pshwy4.png" alt="" aria-hidden="true" class="w-full h-full! object-cover" loading="lazy" />
+<div class="w-full h-full backdrop-blur-sm absolute inset-0"></div>
+<img src="https://res.cloudinary.com/dorxspa9g/image/upload/v1779956535/shell-blog-comp_pshwy4.png" alt="The only shell (terminal) config you need" fetchpriority="high" class="absolute inset-0 mx-auto h-full! w-auto object-cover" />
+</div>
+
+## I Spent Months Building My Shell Config So You Don’t Have To
+
+I used to be a Linux user and now I'm using MacOS, you know both are similar in terms of terminal environment, Unix tooling, and shell workflows.
+
+If your shell setup is bad, your workflow probably is too
+
+TBH I used to tweak my shell every week.
+
+Now I haven’t touched the core setup in 6 months, which probably means I finally got it right.
+
+### My plugin manager **free** config includes:
+
+-   Fast and minimal Zsh setup
+-   Smart directory jumping using zoxid
+-   Fuzzy search everywhere with fzf
+-   Git-aware custom prompt
+-   Custom widgets for notes, diary, and MDN browsing
+-   Instant note-taking workflow inside Neovim
+-   Syntax highlighting and command autosuggestions
+-   Fast tab completion with fuzzy matching
+-   Docker utility aliases and cleanup helpers
+-   Large shared shell history across sessions
+-   Cross-platform workflow between Linux and macOS
+-   Terminal-first productivity setup
+-   Minimal plugins with low maintenance
+-   Keyboard-driven workflow with custom keybindings
+-   Reproducible and stable daily-driver configuration
+
+> Assuming you already have Zsh installed
+
+---
+
+### First thing: Installing the plugins
+
+I’m not using any plugin manager because, WHY?
+
+create a file named `.zsh_functions` in your home dir and paste it:
+
+```zsh
+ZDOTDIR="$HOME/.zsh"
+function zsh_add_file() {
+  [[ -f "$ZDOTDIR/$1" ]] && source "$ZDOTDIR/$1"
+}
+
+function zsh_add_plugin() {
+  local repo="$1"
+  local plugin_name="${repo##*/}"
+
+  local plugin_dir="$ZDOTDIR/plugins/$plugin_name"
+
+  if [[ -d "$plugin_dir" ]]; then
+    zsh_add_file "plugins/$plugin_name/$plugin_name.zsh"
+    return
+  fi
+
+  # Otherwise → clone from GitHub
+  echo "Installing $plugin_name..."
+  git clone "https://github.com/$repo.git" "$plugin_dir"
+
+  # After cloning → load it
+  zsh_add_file "plugins/$plugin_name/$plugin_name.plugin.zsh"
+  zsh_add_file "plugins/$plugin_name/$plugin_name.zsh"
+}
+
+# yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
+
+git_status() {
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+  user=$(git config user.name)
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  echo "($user | $branch)"
+}
+
+```
+
+And your plugin manager is ready 😂  
+the `zsh_add_plugin` function will download all the plugins we will specify.
+
+> You can find the full configuration here [biisal/dotfiles](https://github.com/biisal/dotfiles-mac)
+
+To make the shell powerful and beautiful, you only need to work with two files:
+
+1.  `.zshrc`
+2.  `.zsh_functions`
+
+Both files should be located in your home directory.
+
+---
+
+### Autosuggestions and Better Completion
+
+One of the biggest quality-of-life improvements in my shell workflow comes from autosuggestions and fuzzy completions.
+
+First inatall **fzf** if you haven't already
+
+```zsh
+source "$HOME/.zsh_functions"
+
+zsh_add_plugin "zsh-users/zsh-autosuggestions"
+zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
+zsh_add_plugin "Aloxaf/fzf-tab"
+
+source <(fzf --zsh)
+```
+
+I use:
+
+**"zsh-users/zsh-autosuggestions"** for inline command suggestions  
+![auto-suggetion](https://res.cloudinary.com/dorxspa9g/image/upload/v1779950542/blog-content/zsmpstjpaajlo5ur9bkx.png)
+
+**"zsh-users/zsh-syntax-highlighting"** for syntax highlighting  
+![pasted-image-1779951212881](https://res.cloudinary.com/dorxspa9g/image/upload/v1779951214/blog-content/gcn9soaaz8exbuacz0zg.png)
+
+**"Aloxaf/fzf-tab"** for fuzzy tab completion
+
+![tab-completion](https://res.cloudinary.com/dorxspa9g/image/upload/v1779951579/blog-content/sadzlrs7r106so5d0c8n.png)
+
+---
+
+### Custom Keybinds
+
+I added a few custom keybindings to make navigation and history searching feel more natural.
+
+```zsh
+# Keybindings
+bindkey '^E' autosuggest-accept
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
+bindkey '^A' beginning-of-line
+bindkey '^?' backward-delete-char
+bindkey "^[[3~" delete-char
+bindkey '^[[D' backward-char
+bindkey '^[[C' forward-char
+```
+
+---
+
+### Mimimal but Powerfull PROMPT
+
+if you look at the `.zsh_functions` file you can see there is a function named `git_status`
+
+```zsh
+# .zsh_functions
+git_status() {
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+  user=$(git config user.name)
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  echo "($user | $branch)"
+}
+```
+
+Here I use that function directly inside the shell prompt to display useful git information.
+
+```zsh
+setopt PROMPT_SUBST
+PROMPT='%F{#66FF7E}%n%f@%m %F{#43C0FE}%~%f %F{#C39AFF}$(git_status)%f %B%F{#FF00E4}%f%b '
+```
+
+![git-status](https://res.cloudinary.com/dorxspa9g/image/upload/v1779952276/blog-content/d8pla4f4yww2mfi5xdd9.png)
+
+This is very useful when you are working on a repository that has multiple branches or when you have multiple Git users.
+
+---
+
+### Storing the command history for future auto suggetion
+
+```zsh
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=500000
+SAVEHIST=500000
+setopt appendhistory
+setopt INC_APPEND_HISTORY  
+setopt SHARE_HISTORY
+```
+
+The autosuggestions mainly rely on shell history, so keeping shared history file makes suggestions significantly more useful over time.
+
+you can modify the size based on your needs.
+
+---
+
+### The easy CD
+
+I use **zoxide** to make directory navigation much faste
+
+```zsh
+eval "$(zoxide init zsh)"
+alias cd=z
+```
+
+![cd-zoxide](https://res.cloudinary.com/dorxspa9g/image/upload/v1779952276/blog-content/d8pla4f4yww2mfi5xdd9.png)
+
+---
+
+### Note Taking
+
+Terminal is enough to take notes for me 👀
+
+```zsh
+note_logic(){
+	cd ~/notes || return
+	nvim -c "set wrap linebreak" "$(date +%Y/%b-%d | tr 'A-Z' 'a-z').md"
+	cd - > /dev/null
+}
+
+notes_logic() { 
+	cd ~/notes || return 
+	local count=$(ls -1 **/*.md | wc -l | tr -d ' ')
+	fileName=$(fzf --prompt="~/notes [$count]> " --border=rounded \
+		--margin=1,2 \
+		--no-sort \
+		--preview-window="right:60%:border-left" \
+		--preview="bat --color=always --style=numbers,changes --line-range :500 {}" < /dev/tty)
+		if [ -n "$fileName" ]; then
+		nvim $fileName
+		fi
+		cd - > /dev/null
+}
+alias notes=notes_logic
+alias note=note_logic
+```
+
+This will open Neovim when you run `note`, and when you save, it will store your note using the current date as the filename.
+
+Run `notes` to get a list of your notes, then press Enter to view or modify them using Neovim.
+
+![notes](https://res.cloudinary.com/dorxspa9g/image/upload/v1779954662/blog-content/czeqjixelnqktzahzbyf.png)
+
+---
+
+### ENV management
+
+Keeping environment variables directly inside the config file is not a good idea.
+
+> This is not for vibe coders  
+> ![pasted-image-1779954896834](https://res.cloudinary.com/dorxspa9g/image/upload/v1779954899/blog-content/qs9wpzfduys7iqwnqqeg.png)
+
+So I keep my environment variables inside a ~/.secrets.sh file.  
+Then, inside my config file, I simply source it:
+
+```zsh
+relaod(){
+	source "$HOME/.secrets.sh"
+}
+
+alias reload=relaod
+source "$HOME/.secrets.sh"
+```
+
+when i modify the `.secrets.sh` file i just run `reload` command instead reloding the full shell
+
+some aliases you can use
+
+```zsh
+# for stopping and removing all Docker containers
+alias dsa='docker stop $(docker ps -q)'
+alias dra='docker rm $(docker ps -a -q)'
+```
+
+you are done!
+
+Thanks for reading... ❤️

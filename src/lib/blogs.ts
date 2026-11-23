@@ -1,35 +1,27 @@
-import { posts } from "@/data/posts";
+import { getCollection } from "astro:content";
 import type { BlogPost } from "@/lib/types";
 
-const bodies = import.meta.glob("/content/blog/*.html", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-}) as Record<string, string>;
+const entries = await getCollection("blog", ({ data }) => data.published);
 
-const allPosts: BlogPost[] = posts
-  .filter((p) => p.published)
-  .map((p) => {
-    const body = bodies[`/content/blog/${p.file}`];
-    if (body === undefined) throw new Error(`Missing blog file: ${p.file}`);
-    const created = new Date(p.date);
-    return {
-      id: p.slug,
-      slug: p.slug,
-      title: p.title,
-      excerpt: p.excerpt,
-      content: body.trim(),
-      authorName: p.authorName ?? "Avisek Ray",
-      coverImage: p.coverImage,
-      audio: p.audio,
-      published: p.published,
-      tags: p.tags,
-      isProject: p.isProject,
-      created_at: created,
-      updated_at: p.updated ? new Date(p.updated) : created,
-    } satisfies BlogPost;
-  })
+const allPosts: BlogPost[] = entries
+  .map(({ id, data }) => ({
+    id,
+    slug: id,
+    title: data.title,
+    excerpt: data.excerpt,
+    authorName: data.authorName,
+    coverImage: data.coverImage,
+    audio: data.audio,
+    published: data.published,
+    tags: data.tags,
+    isProject: data.isProject,
+    created_at: data.date,
+    updated_at: data.updated ?? data.date,
+  }) satisfies BlogPost)
   .sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+
+/** Content-collection entry for a slug; render it with `render(entry)`. */
+export const getPostEntry = (slug: string) => entries.find((e) => e.id === slug)!;
 
 export const getPosts = (filter: "all" | "project" = "all", limit?: number) => {
   const posts =
@@ -58,6 +50,3 @@ export const getAdjacentPosts = (slug: string) => {
     nextPost: i < allPosts.length - 1 ? allPosts[i + 1] : null,
   };
 };
-
-/** List-safe copy: drops the HTML body so client islands don't ship every post. */
-export const summary = (post: BlogPost): BlogPost => ({ ...post, content: "" });
